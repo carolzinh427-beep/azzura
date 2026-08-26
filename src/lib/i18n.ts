@@ -193,7 +193,7 @@ export const translations: Record<Language, Translations> = {
       'ARCHITECTURAL NIGHTLIFE',
       'CURATED ELECTRONIC PURITY',
       'VOID ACOUSTICS SOUND',
-      'INTIMATE SANCTUARY',
+      'AZZURA',
     ],
     nextEvent: {
       sectionBadge: 'CURATED SESSION',
@@ -365,7 +365,7 @@ export const translations: Record<Language, Translations> = {
       'ARQUITETURA NOTURNA',
       'EXCELÊNCIA ELETRÔNICA',
       'SISTEMA DE SOM VOID ACOUSTICS',
-      'SANTUÁRIO SENSORIAL',
+      'AZZURA',
     ],
     nextEvent: {
       sectionBadge: 'SESSÃO EM DESTAQUE',
