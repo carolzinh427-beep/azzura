@@ -23,10 +23,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const autoStopTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // High-Definition Melodic Techno & Deep House Groove (Hardware Accelerated, Stutter-Free)
-    const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3');
+    // Studio-Quality Melodic House & Techno Track (Local Asset, Zero Network Latency, 100% Stutter-Free)
+    const audio = new Audio('/audio/azzura-beat.wav');
     audio.loop = true;
-    audio.volume = 0.80;
+    audio.volume = 0.95; // Clear, loud and punchy
     audio.preload = 'auto';
     audioRef.current = audio;
 
@@ -44,16 +44,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
-      audioRef.current.volume = 0.80;
-      audioRef.current.play().catch(() => {});
+      audioRef.current.volume = 0.95;
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Audio play request:', err);
+        });
+      }
     }
 
     if (isHoverTrigger) {
       if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
-      // Play 8.5 seconds preview on emblem hover, then smooth fade
+      // Play 7.74s full 4-bar phrase preview on hover, then fade out smoothly
       autoStopTimeoutRef.current = window.setTimeout(() => {
         stopAtmosphereAudio();
-      }, 8500);
+      }, 7740);
     }
   };
 
@@ -66,30 +71,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     if (audioRef.current && !audioRef.current.paused) {
       let currentVol = audioRef.current.volume;
       const fadeInterval = setInterval(() => {
-        if (!audioRef.current || currentVol <= 0.08) {
+        if (!audioRef.current || currentVol <= 0.1) {
           clearInterval(fadeInterval);
           if (audioRef.current) {
             audioRef.current.pause();
-            audioRef.current.volume = 0.80;
+            audioRef.current.volume = 0.95;
           }
           isPlayingRef.current = false;
           setIsPlaying(false);
         } else {
-          currentVol -= 0.12;
+          currentVol -= 0.15;
           if (audioRef.current) audioRef.current.volume = Math.max(0, currentVol);
         }
-      }, 35);
+      }, 30);
     } else {
       isPlayingRef.current = false;
       setIsPlaying(false);
     }
   };
 
-  // Emblem hover trigger: plays audio preview smoothly
+  // Emblem hover and click triggers
   const handleEmblemHover = () => {
     if (!isPlayingRef.current) {
       startAtmosphereAudio(true);
     }
+  };
+
+  const handleEmblemClick = () => {
+    toggleAudio();
   };
 
   const toggleAudio = () => {
@@ -129,14 +138,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Main Hero Container */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         
-        {/* 1. Liquid Chrome Metallic Emblem with Single-Instance Hover Audio */}
+        {/* 1. Liquid Chrome Metallic Emblem with Hover & Click Audio */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85, y: -15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           onMouseEnter={handleEmblemHover}
+          onClick={handleEmblemClick}
           className="relative w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center mb-2 pointer-events-auto cursor-pointer group"
-          title="Passe o cursor para tocar o áudio"
+          title="Clique ou passe o cursor para tocar o áudio"
         >
           {/* Subtle Ambient Backlight Glow */}
           <div className="absolute inset-2 sm:inset-4 rounded-full bg-[#A855F7]/30 blur-xl pointer-events-none group-hover:bg-[#A855F7]/50 transition-all duration-700" />
