@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GalleryItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 import AccordionGallery from '../common/AccordionGallery';
@@ -10,6 +10,18 @@ interface GallerySectionProps {
 export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    return typeof window !== 'undefined' ? window.innerWidth <= 640 : false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const categories = ['ALL', 'Rooftop', 'Atmosphere', 'Artists', 'Crowd'];
 
@@ -18,7 +30,10 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
     return item.category.toLowerCase() === activeCategory.toLowerCase();
   });
 
-  const accordionItems = filteredItems.map((item) => ({
+  // On Desktop: show all images. On Mobile: strictly cap to 5 images for clean vertical layout.
+  const displayItems = isMobile ? filteredItems.slice(0, 5) : filteredItems;
+
+  const accordionItems = displayItems.map((item) => ({
     image: item.image,
     label: `${item.title} // ${item.category}`,
     link: '#',
@@ -63,7 +78,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
         {/* 3D GSAP Accordion Gallery */}
         <div>
           <AccordionGallery
-            key={activeCategory}
+            key={`${activeCategory}-${isMobile ? 'mob' : 'desk'}`}
             items={accordionItems}
             defaultIndex={Math.min(2, Math.max(0, accordionItems.length - 1))}
             expandRatio={0.52}
@@ -81,7 +96,9 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
 
           <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[10px] sm:text-[11px] font-mono text-zinc-500">
             <span>PASSE O CURSOR OU TOQUE PARA EXPANDIR // INTERAÇÃO PERSPECTIVA</span>
-            <span className="text-[#C084FC]">GSAP 3D ACCORDION</span>
+            <span className="text-[#C084FC]">
+              {isMobile ? '5 FOTOS SELECIONADAS' : 'TODAS AS FOTOS'}
+            </span>
           </div>
         </div>
       </div>
