@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <rect width="600" height="600" fill="none"/>
+  <g transform="translate(100, 100)">
+    <!-- Elegant Geometric AZ Emblem -->
+    <path d="M 50 300 L 150 60 L 250 300 L 195 300 L 150 180 L 105 300 Z" fill="#000000"/>
+    <path d="M 115 230 L 185 230 L 185 250 L 115 250 Z" fill="#000000"/>
+    <path d="M 210 100 L 350 100 L 240 260 L 360 260 L 360 300 L 200 300 L 310 140 L 210 140 Z" fill="#000000"/>
+    <!-- Atmosphere Ring / Orbit -->
+    <circle cx="200" cy="200" r="175" fill="none" stroke="#000000" stroke-width="24"/>
+  </g>
+</svg>

@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Compass, Eye, Disc3 } from 'lucide-react';
+import { Compass, Eye, Disc3, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../lib/LanguageContext';
+import MetallicPaint from '../common/MetallicPaint';
 
 export const ExperienceSection: React.FC = () => {
   const { t } = useLanguage();
@@ -69,7 +70,7 @@ export const ExperienceSection: React.FC = () => {
 
         {/* Asymmetric Editorial Collage & Narratives */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Left Column: Asymmetric Images with Scroll Parallax */}
+          {/* Left Column: Asymmetric Images + Liquid Chrome Metal Emblem */}
           <div className="lg:col-span-6 space-y-8">
             <motion.div
               style={{ y: yParallax }}
@@ -92,17 +93,54 @@ export const ExperienceSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Secondary Floating Overlapping Card */}
+            {/* Liquid Metal Insignia Box (MetallicPaint Integration) */}
             <motion.div
               style={{ y: yParallaxFast }}
-              className="hidden sm:block ml-auto -mt-24 w-2/3 p-6 bg-[#0E0E0E]/90 border border-white/15 backdrop-blur-xl shadow-2xl relative z-20"
+              className="relative p-6 sm:p-8 bg-[#090909] border border-white/15 shadow-2xl overflow-hidden group"
             >
-              <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block mb-2">
-                {t.experience.curatedTitle}
-              </span>
-              <p className="text-xs text-zinc-300 font-mono leading-relaxed">
-                {t.experience.curatedDesc}
-              </p>
+              <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
+                  <span className="text-[10px] font-mono text-zinc-300 tracking-widest uppercase">
+                    LIQUID CHROME EMBLEM
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-[#3B82F6]">
+                  INTERACTIVE
+                </span>
+              </div>
+
+              {/* WebGL Metallic Paint Canvas Container */}
+              <div className="relative w-full aspect-[16/9] sm:h-48 overflow-hidden rounded-none bg-black/40 border border-white/10 flex items-center justify-center">
+                <MetallicPaint
+                  imageSrc="/azzura-emblem.svg"
+                  seed={42}
+                  scale={3.5}
+                  patternSharpness={1.2}
+                  noiseScale={0.6}
+                  speed={0.35}
+                  liquid={0.65}
+                  mouseAnimation={true}
+                  brightness={1.8}
+                  contrast={0.6}
+                  refraction={0.015}
+                  blur={0.012}
+                  chromaticSpread={1.8}
+                  fresnel={1.2}
+                  angle={15}
+                  waveAmplitude={0.9}
+                  distortion={0.8}
+                  contour={0.25}
+                  lightColor="#FFFFFF"
+                  darkColor="#050505"
+                  tintColor="#2563EB"
+                />
+              </div>
+
+              <div className="mt-4 flex items-center justify-between text-[10px] font-mono text-zinc-400">
+                <span>AZZURA SOUND INSIGNIA</span>
+                <span className="text-zinc-500">HOVER TO DISTORT CHROMIUM</span>
+              </div>
             </motion.div>
           </div>
 
