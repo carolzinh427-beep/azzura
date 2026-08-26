@@ -93,13 +93,6 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
             tilt={8}
             showLabels={true}
           />
-
-          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[10px] sm:text-[11px] font-mono text-zinc-500">
-            <span>PASSE O CURSOR OU TOQUE PARA EXPANDIR // INTERAÇÃO PERSPECTIVA</span>
-            <span className="text-[#C084FC]">
-              {isMobile ? '5 FOTOS SELECIONADAS' : 'TODAS AS FOTOS'}
-            </span>
-          </div>
         </div>
       </div>
     </section>
