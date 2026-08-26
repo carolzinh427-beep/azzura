@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 import EchoText from '../common/EchoText';
@@ -27,10 +27,99 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
   const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   const opacityText = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
+  // High-Volume Resonant Electronic Metallic Sound Engine
+  const playEmblemSound = (boost: boolean = true) => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+
+      const now = ctx.currentTime;
+      const masterGain = ctx.createGain();
+      // Louder master gain (up to 0.95)
+      masterGain.gain.setValueAtTime(0.001, now);
+      masterGain.gain.exponentialRampToValueAtTime(boost ? 0.95 : 0.75, now + 0.06);
+      masterGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+      masterGain.connect(ctx.destination);
+
+      // 1. Deep Sub-Bass Impact (50Hz -> 100Hz -> 38Hz)
+      const subOsc = ctx.createOscillator();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(60, now);
+      subOsc.frequency.exponentialRampToValueAtTime(120, now + 0.25);
+      subOsc.frequency.exponentialRampToValueAtTime(40, now + 1.2);
+
+      const subGain = ctx.createGain();
+      subGain.gain.setValueAtTime(0.9, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
+      subOsc.connect(subGain);
+      subGain.connect(masterGain);
+
+      // 2. Resonant Metallic FM Modulator for Chrome Sheen
+      const carrier = ctx.createOscillator();
+      const modulator = ctx.createOscillator();
+      const modGain = ctx.createGain();
+
+      carrier.type = 'sawtooth';
+      carrier.frequency.setValueAtTime(220, now);
+      carrier.frequency.exponentialRampToValueAtTime(520, now + 0.35);
+
+      modulator.type = 'triangle';
+      modulator.frequency.setValueAtTime(329.63, now); // E4 harmonic
+
+      modGain.gain.setValueAtTime(450, now);
+      modGain.gain.exponentialRampToValueAtTime(15, now + 0.9);
+
+      modulator.connect(carrier.frequency);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(900, now);
+      filter.frequency.exponentialRampToValueAtTime(3200, now + 0.2);
+      filter.frequency.exponentialRampToValueAtTime(500, now + 1.2);
+      filter.Q.setValueAtTime(7.5, now);
+
+      carrier.connect(filter);
+      filter.connect(masterGain);
+
+      // 3. Shimmering High Overtone (Chime Texture)
+      const shimmer = ctx.createOscillator();
+      shimmer.type = 'sine';
+      shimmer.frequency.setValueAtTime(1046.5, now); // C6
+      shimmer.frequency.exponentialRampToValueAtTime(2093, now + 0.28);
+
+      const shimmerGain = ctx.createGain();
+      shimmerGain.gain.setValueAtTime(0.45, now);
+      shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+
+      shimmer.connect(shimmerGain);
+      shimmerGain.connect(masterGain);
+
+      subOsc.start(now);
+      carrier.start(now);
+      modulator.start(now);
+      shimmer.start(now);
+
+      subOsc.stop(now + 1.4);
+      carrier.stop(now + 1.4);
+      modulator.stop(now + 1.4);
+      shimmer.stop(now + 1.4);
+    } catch {
+      // AudioContext fallback
+    }
+  };
+
   const toggleSound = () => {
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
+      videoRef.current.volume = 1.0;
       setIsMuted(!isMuted);
+      if (isMuted) {
+        playEmblemSound(true);
+      }
     }
   };
 
@@ -95,7 +184,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           onClick={toggleSound}
-          className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-black/50 hover:bg-black/80 border border-white/15 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-colors"
+          className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-black/50 hover:bg-black/80 border border-white/15 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-colors cursor-pointer"
           aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
         >
           {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-[#A855F7]" />}
@@ -108,12 +197,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         style={{ opacity: opacityText }}
         className="relative z-10 px-4 sm:px-8 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4"
       >
-        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA */}
+        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA with Sound Trigger on Hover & Click */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-40 sm:w-56 md:w-64 h-24 sm:h-32 flex items-center justify-center pointer-events-auto cursor-pointer"
+          onMouseEnter={() => playEmblemSound(true)}
+          onClick={() => playEmblemSound(true)}
+          title="Interactive Sonic Liquid Chrome Emblem - Click or Hover for Audio"
+          className="relative w-40 sm:w-56 md:w-64 h-24 sm:h-32 flex items-center justify-center pointer-events-auto cursor-pointer group"
         >
           <MetallicPaint
             imageSrc="/azzura-emblem.svg"
@@ -138,6 +230,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             darkColor="#050505"
             tintColor="#A855F7"
           />
+
+          <div className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-mono text-[#C084FC] flex items-center gap-1 bg-black/80 px-2 py-0.5 rounded-full border border-[#9333EA]/30 pointer-events-none">
+            <Sparkles className="w-2.5 h-2.5" />
+            <span>SONIC CHROMIUM</span>
+          </div>
         </motion.div>
 
         {/* 2. Manifesto Tagline */}
