@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Disc3 } from 'lucide-react';
 import LightTunnel from '../common/LightTunnel';
-import MaskedHeading from '../common/MaskedHeading';
+import FoldText from '../common/FoldText';
 
 interface ExperienceSectionProps {
   onOpenTickets?: () => void;
@@ -44,24 +44,22 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTick
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/90 backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/90 max-w-2xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
         >
-          {/* MaskedHeading Component: Ultra-luminous, High Contrast & Fully Legible */}
-          <div className="w-full">
-            <MaskedHeading
-              text="THE ATMOSPHERE IS EVERYTHING"
-              tag="h2"
-              src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1600&auto=format&fit=crop"
-              fillScale={1.35}
-              parallax={34}
-              drift={16}
-              brightness={1.8}
-              saturation={1.6}
-              reveal="rise"
-              trigger="view"
-              align="center"
-              weight={900}
-              tracking={-0.02}
-              textScale={0.115}
-              className="font-display font-black uppercase text-white"
+          {/* FoldText Component from React Bits: 3D Origami Unfold Effect */}
+          <div className="w-full flex flex-col items-center justify-center text-center">
+            <FoldText
+              text="THE ATMOSPHERE&#10;IS EVERYTHING"
+              splitBy="char"
+              hinge="top"
+              trigger="scroll"
+              duration={0.7}
+              stagger={0.035}
+              ease="power3.out"
+              perspective={800}
+              creaseShading={0.45}
+              fontSize="clamp(2.2rem, 5.5vw, 4.4rem)"
+              fontWeight={900}
+              color="#FFFFFF"
+              className="font-display font-black tracking-tight text-white drop-shadow-[0_0_30px_rgba(192,132,252,0.4)]"
             />
           </div>
 
