@@ -88,7 +88,7 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
       const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
 
       if (isMobile) {
-        // Mobile layout handling
+        // Mobile vertical accordion
         panels.forEach((panel, i) => {
           if (!panel) return;
           const isActive = i === active;
@@ -97,16 +97,16 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
           const text = textRefs.current[i];
 
           gsap.to(panel, {
-            height: isActive ? 240 : 90,
-            duration: animate ? 0.4 : 0,
+            height: isActive ? 230 : 84,
+            duration: animate ? 0.35 : 0,
             ease: 'power2.out',
           });
 
           if (media) {
             gsap.to(media, {
-              '--ag-gray': isActive ? 0 : (grayscale ? 1 : 0),
+              '--ag-gray': isActive ? 0 : 0.85,
               '--ag-dim': isActive ? 0 : 0.35,
-              duration: animate ? 0.4 : 0,
+              duration: animate ? 0.35 : 0,
             });
           }
 
@@ -114,13 +114,14 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
             if (isActive) {
               gsap.to([bar, text], { opacity: 1, x: 0, duration: 0.3 });
             } else {
-              gsap.to([bar, text], { opacity: 0, x: -10, duration: 0.2 });
+              gsap.to([bar, text], { opacity: 0.65, x: 0, duration: 0.2 });
             }
           }
         });
         return;
       }
 
+      // Desktop horizontal 3D accordion
       const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
       const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
       const mediaSize = mediaSizeRef.current;
@@ -193,6 +194,12 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
     if (!el) return;
 
     const measure = () => {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+      if (isMobile) {
+        applyLayout(!firstRunRef.current);
+        return;
+      }
+
       const rect = el.getBoundingClientRect();
       const total = vertical ? rect.height : rect.width;
       const usable = Math.max(total - gap * (count - 1), 120);
@@ -220,14 +227,12 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
   }, []);
 
   const handleEnter = (i: number) => {
-    if (trigger === 'hover') setActive(i);
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || window.innerWidth <= 640);
+    if (trigger === 'hover' && !isTouch) setActive(i);
   };
 
-  const handleClick = (i: number, e: React.MouseEvent) => {
-    if (i !== active) {
-      e.preventDefault();
-      setActive(i);
-    }
+  const handleClick = (i: number) => {
+    setActive(i);
     onItemClick?.(i);
   };
 
@@ -266,7 +271,7 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
             className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
             style={{ borderRadius: `${radius}px` }}
             href={item.link && item.link !== '#' ? item.link : undefined}
-            onClick={e => handleClick(i, e)}
+            onClick={() => handleClick(i)}
             onMouseEnter={() => handleEnter(i)}
             onFocus={() => setActive(i)}
             onKeyDown={e => handleKeyDown(i, e)}
@@ -277,7 +282,7 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
           >
             <span className="ag-panel__frame">
               <span className="ag-panel__media" ref={(el: any) => { mediaRefs.current[i] = el; }}>
-                <img src={item.image} alt={item.alt || item.label || ''} draggable="false" loading="lazy" />
+                <img src={item.image} alt={item.alt || item.label || ''} draggable="false" loading="lazy" decoding="async" />
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
