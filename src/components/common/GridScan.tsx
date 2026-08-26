@@ -363,6 +363,7 @@ export interface GridScanProps {
   scanPhaseTaper?: number;
   scanDuration?: number;
   scanDelay?: number;
+  mouseInteraction?: boolean;
   enableGyro?: boolean;
   scanOnClick?: boolean;
   snapBackDelay?: number;
@@ -391,8 +392,9 @@ export const GridScan: React.FC<GridScanProps> = ({
   scanPhaseTaper = 0.9,
   scanDuration = 2.5,
   scanDelay = 1.5,
+  mouseInteraction = true,
   enableGyro = false,
-  scanOnClick = true,
+  scanOnClick = false,
   snapBackDelay = 250,
   className = '',
   style
@@ -433,7 +435,7 @@ export const GridScan: React.FC<GridScanProps> = ({
     }
   };
 
-  const s = THREE.MathUtils.clamp(sensitivity, 0, 1);
+  const s = mouseInteraction ? THREE.MathUtils.clamp(sensitivity, 0, 1) : 0;
   const skewScale = THREE.MathUtils.lerp(0.06, 0.2, s);
   const tiltScale = THREE.MathUtils.lerp(0.12, 0.3, s);
   const yawScale = THREE.MathUtils.lerp(0.1, 0.28, s);
@@ -442,6 +444,11 @@ export const GridScan: React.FC<GridScanProps> = ({
   const yBoost = THREE.MathUtils.lerp(1.2, 1.6, s);
 
   useEffect(() => {
+    if (!mouseInteraction) {
+      lookTarget.current.set(0, 0);
+      return;
+    }
+
     const onWindowMove = (e: MouseEvent) => {
       const el = containerRef.current;
       if (!el) return;
@@ -453,10 +460,10 @@ export const GridScan: React.FC<GridScanProps> = ({
 
     window.addEventListener('mousemove', onWindowMove);
     return () => window.removeEventListener('mousemove', onWindowMove);
-  }, []);
+  }, [mouseInteraction]);
 
   useEffect(() => {
-    if (!enableGyro) return;
+    if (!enableGyro || !mouseInteraction) return;
     const onOrientation = (e: DeviceOrientationEvent) => {
       const gamma = e.gamma ?? 0;
       const beta = e.beta ?? 0;
@@ -467,7 +474,7 @@ export const GridScan: React.FC<GridScanProps> = ({
     };
     window.addEventListener('deviceorientation', onOrientation);
     return () => window.removeEventListener('deviceorientation', onOrientation);
-  }, [enableGyro]);
+  }, [enableGyro, mouseInteraction]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -486,6 +493,7 @@ export const GridScan: React.FC<GridScanProps> = ({
       }
     };
     const onLeave = () => {
+      if (!mouseInteraction) return;
       if (leaveTimer) clearTimeout(leaveTimer);
       leaveTimer = window.setTimeout(() => {
         lookTarget.current.set(0, 0);
@@ -503,7 +511,7 @@ export const GridScan: React.FC<GridScanProps> = ({
       if (scanOnClick) el.removeEventListener('click', onClick);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [snapBackDelay, scanOnClick]);
+  }, [snapBackDelay, scanOnClick, mouseInteraction]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -601,36 +609,42 @@ export const GridScan: React.FC<GridScanProps> = ({
       const dt = Math.max(0, Math.min(0.1, (now - last) / 1000));
       last = now;
 
-      lookCurrent.current.copy(
-        smoothDampVec2(lookCurrent.current, lookTarget.current, lookVel.current, smoothTime, maxSpeed, dt)
-      );
+      if (mouseInteraction) {
+        lookCurrent.current.copy(
+          smoothDampVec2(lookCurrent.current, lookTarget.current, lookVel.current, smoothTime, maxSpeed, dt)
+        );
 
-      const tiltSm = smoothDampFloat(
-        tiltCurrent.current,
-        tiltTarget.current,
-        { v: tiltVel.current },
-        smoothTime,
-        maxSpeed,
-        dt
-      );
-      tiltCurrent.current = tiltSm.value;
-      tiltVel.current = tiltSm.v;
+        const tiltSm = smoothDampFloat(
+          tiltCurrent.current,
+          tiltTarget.current,
+          { v: tiltVel.current },
+          smoothTime,
+          maxSpeed,
+          dt
+        );
+        tiltCurrent.current = tiltSm.value;
+        tiltVel.current = tiltSm.v;
 
-      const yawSm = smoothDampFloat(
-        yawCurrent.current,
-        yawTarget.current,
-        { v: yawVel.current },
-        smoothTime,
-        maxSpeed,
-        dt
-      );
-      yawCurrent.current = yawSm.value;
-      yawVel.current = yawSm.v;
+        const yawSm = smoothDampFloat(
+          yawCurrent.current,
+          yawTarget.current,
+          { v: yawVel.current },
+          smoothTime,
+          maxSpeed,
+          dt
+        );
+        yawCurrent.current = yawSm.value;
+        yawVel.current = yawSm.v;
 
-      const skew = new THREE.Vector2(lookCurrent.current.x * skewScale, -lookCurrent.current.y * yBoost * skewScale);
-      material.uniforms.uSkew.value.set(skew.x, skew.y);
-      material.uniforms.uTilt.value = tiltCurrent.current * tiltScale;
-      material.uniforms.uYaw.value = THREE.MathUtils.clamp(yawCurrent.current * yawScale, -0.6, 0.6);
+        const skew = new THREE.Vector2(lookCurrent.current.x * skewScale, -lookCurrent.current.y * yBoost * skewScale);
+        material.uniforms.uSkew.value.set(skew.x, skew.y);
+        material.uniforms.uTilt.value = tiltCurrent.current * tiltScale;
+        material.uniforms.uYaw.value = THREE.MathUtils.clamp(yawCurrent.current * yawScale, -0.6, 0.6);
+      } else {
+        material.uniforms.uSkew.value.set(0, 0);
+        material.uniforms.uTilt.value = 0;
+        material.uniforms.uYaw.value = 0;
+      }
 
       material.uniforms.iTime.value = now / 1000;
       renderer.clear(true, true, true);
@@ -685,7 +699,8 @@ export const GridScan: React.FC<GridScanProps> = ({
     skewScale,
     yBoost,
     tiltScale,
-    yawScale
+    yawScale,
+    mouseInteraction
   ]);
 
   return <div ref={containerRef} className={`gridscan ${className}`.trim()} style={style} />;

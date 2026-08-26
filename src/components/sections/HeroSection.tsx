@@ -44,7 +44,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       const bpm = 124;
       const beatSec = 60 / bpm; // ~0.484s
 
-      // Master output with soft, comfortable volume (0.22 max)
+      // Master output with soft, comfortable volume (0.24 max)
       const masterGain = ctx.createGain();
       masterGain.gain.setValueAtTime(0.001, now);
       masterGain.gain.linearRampToValueAtTime(0.24, now + 0.12);
@@ -103,7 +103,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       }
 
       // 2. Rolling Melodic Progressive Bassline (F minor)
-      const bassNotes = [43.65, 51.91, 58.27, 43.65]; // F1, G#1, A#1, F1
+      const bassNotes = [43.65, 51.91, 58.27, 43.65];
       const stepSec = beatSec / 2;
       const totalSteps = Math.floor(durationSec / stepSec);
 
@@ -180,11 +180,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       ref={containerRef}
       className="relative w-full h-screen min-h-[720px] max-h-[1250px] overflow-hidden bg-[#050505] flex flex-col justify-between select-none"
     >
-      {/* Background 3D WebGL GridScan Atmosphere Layer (Pure Cybernetic Laser Effect) */}
+      {/* Background 3D WebGL GridScan Atmosphere Layer (Centered, static perspective without mouse tracking) */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
         <div className="absolute inset-0 w-full h-full">
           <GridScan
-            sensitivity={0.65}
+            mouseInteraction={false}
+            sensitivity={0}
             lineThickness={1.2}
             linesColor="#2D154B"
             gridScale={0.09}
@@ -201,7 +202,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           />
         </div>
 
-        {/* Ambient Dark Gradients */}
+        {/* Ambient Dark Vignette Gradients */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/60 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
       </motion.div>
