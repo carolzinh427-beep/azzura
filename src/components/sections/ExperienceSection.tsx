@@ -1,0 +1,146 @@
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Compass, Eye, Disc3 } from 'lucide-react';
+
+export const ExperienceSection: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const yParallax = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
+  const yParallaxFast = useTransform(scrollYProgress, [0, 1], ['-15%', '15%']);
+
+  const PILLARS = [
+    {
+      num: '01',
+      title: 'THE ATMOSPHERE IS EVERYTHING',
+      desc: 'We do not sell standard club nights. Every Azzura production is a sensory sanctuary where sound design, architectural lighting, and curated crowds converge in rare London spaces.',
+      icon: Disc3,
+    },
+    {
+      num: '02',
+      title: 'SKYLINE & SUBTERRANEAN',
+      desc: 'From golden hour panoramic rooftop terraces overlooking St. Paul’s Cathedral to historic subterranean vaulted warehouses with bone-conducting acoustic arrays.',
+      icon: Compass,
+    },
+    {
+      num: '03',
+      title: 'UNCOMPROMISING SONIC CURATION',
+      desc: 'Rooted in forward-thinking Melodic Techno, Minimal Tech, and Deep Afro House, inviting world-class underground selectors alongside our boundary-pushing residents.',
+      icon: Eye,
+    },
+  ];
+
+  return (
+    <section
+      id="experience"
+      ref={containerRef}
+      className="relative py-28 sm:py-36 bg-[#000000] overflow-hidden border-t border-white/10"
+    >
+      {/* Background Decorative Large Text Watermark */}
+      <div className="absolute -top-12 left-0 right-0 overflow-hidden pointer-events-none select-none opacity-5">
+        <span className="font-display font-black text-[18vw] tracking-tighter uppercase whitespace-nowrap text-white">
+          THE ATMOSPHERE IS EVERYTHING
+        </span>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-24">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-3">
+              <span className="w-2 h-2 rounded-none bg-[#2563EB]" />
+              <span>EDITORIAL MANIFESTO</span>
+            </div>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
+              THE AZZURA <br />
+              <span className="text-stroke-white text-white/30">EXPERIENCE</span>
+            </h2>
+          </div>
+
+          <p className="text-sm font-mono text-zinc-400 max-w-sm leading-relaxed">
+            Elevating electronic music culture into an intimate cinematic discipline across London’s most guarded architectural spaces.
+          </p>
+        </div>
+
+        {/* Asymmetric Editorial Collage & Narratives */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+          {/* Left Column: Asymmetric Images with Scroll Parallax */}
+          <div className="lg:col-span-6 space-y-8">
+            <motion.div
+              style={{ y: yParallax }}
+              className="relative aspect-[4/5] sm:aspect-[3/4] border border-white/15 overflow-hidden group bg-[#0D0D0D]"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop"
+                alt="Azzura Night Atmosphere"
+                className="w-full h-full object-cover filter contrast-110 brightness-90 group-hover:scale-105 transition-transform duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+              
+              <div className="absolute bottom-6 left-6 right-6">
+                <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block mb-1">
+                  ATMOSPHERE 01
+                </span>
+                <p className="text-white font-display text-2xl font-bold uppercase">
+                  LIGHT ARCHITECTURE & DEEP FREQUENCIES
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Secondary Floating Overlapping Card */}
+            <motion.div
+              style={{ y: yParallaxFast }}
+              className="hidden sm:block ml-auto -mt-24 w-2/3 p-6 bg-[#0E0E0E]/90 border border-white/15 backdrop-blur-xl shadow-2xl relative z-20"
+            >
+              <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block mb-2">
+                CURATED AUDIENCE
+              </span>
+              <p className="text-xs text-zinc-300 font-mono leading-relaxed">
+                Strict door policy prioritizing music aficionados, fashion visionaries, and electronic purists.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Right Column: 3 Pillars with Editorial Numbering */}
+          <div className="lg:col-span-6 space-y-12">
+            {PILLARS.map((pillar) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={pillar.num}
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="group relative border-b border-white/10 pb-8 hover:border-[#2563EB]/60 transition-colors"
+                >
+                  <div className="flex items-start gap-6">
+                    <span className="font-display font-black text-4xl sm:text-5xl text-[#2563EB] tracking-tighter opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all">
+                      {pillar.num}
+                    </span>
+
+                    <div className="space-y-3 flex-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-display font-bold text-xl sm:text-2xl text-white uppercase tracking-tight group-hover:text-[#3B82F6] transition-colors">
+                          {pillar.title}
+                        </h3>
+                        <Icon className="w-5 h-5 text-zinc-500 group-hover:text-[#2563EB] transition-colors" />
+                      </div>
+
+                      <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+                        {pillar.desc}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

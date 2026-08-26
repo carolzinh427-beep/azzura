@@ -1,0 +1,178 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Clock, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
+import { EventItem } from '../../types';
+import { CountdownTimer } from '../common/CountdownTimer';
+
+interface NextEventSectionProps {
+  event: EventItem;
+  countdownTarget: string;
+  onOpenTickets: () => void;
+}
+
+export const NextEventSection: React.FC<NextEventSectionProps> = ({
+  event,
+  countdownTarget,
+  onOpenTickets,
+}) => {
+  return (
+    <section id="next-event" className="relative py-24 sm:py-32 bg-[#080808] border-t border-white/10">
+      {/* Subtle Background Glow Accent */}
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-[#2563EB]/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 border-b border-white/10 pb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>FLAGSHIP EXPERIENCE</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white uppercase tracking-tight">
+              NEXT EVENT
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-mono text-zinc-400">
+            <span className="px-3 py-1 bg-white/5 border border-white/10 uppercase tracking-widest text-white">
+              {event.status}
+            </span>
+            <span className="text-[#3B82F6]">{event.city}</span>
+          </div>
+        </div>
+
+        {/* Main Grid: Image + Details + Countdown */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+          {/* Left Column: Large Editorial Image Showcase */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7 flex flex-col"
+          >
+            <div className="relative group overflow-hidden border border-white/15 aspect-[4/3] sm:aspect-[16/10] bg-[#111111]">
+              <img
+                src={event.image}
+                alt={event.title}
+                className="w-full h-full object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80" />
+
+              {/* Floating Overlay Badge */}
+              <div className="absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1.5 bg-black/80 border border-white/20 backdrop-blur-md text-[11px] font-mono text-white tracking-widest uppercase flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
+                <span>360° SKYLINE & UNDERGROUND SESSIONS</span>
+              </div>
+
+              {/* Bottom Image Caption */}
+              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex items-end justify-between">
+                <div>
+                  <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block">
+                    VENUE ARCHITECTURE
+                  </span>
+                  <p className="text-white font-display text-lg sm:text-xl font-bold">
+                    {event.venue}
+                  </p>
+                  <p className="text-xs font-mono text-zinc-400">
+                    {event.address}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Meta Strip */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 text-xs font-mono">
+              <div className="p-3 bg-[#0E0E0E] border border-white/10 flex flex-col justify-center">
+                <span className="text-zinc-500 text-[10px]">TIME</span>
+                <span className="text-white font-semibold">{event.time}</span>
+              </div>
+              <div className="p-3 bg-[#0E0E0E] border border-white/10 flex flex-col justify-center">
+                <span className="text-zinc-500 text-[10px]">RESTRICTION</span>
+                <span className="text-white font-semibold">{event.ageRestriction || '21+ STRICT'}</span>
+              </div>
+              <div className="p-3 bg-[#0E0E0E] border border-white/10 flex flex-col justify-center">
+                <span className="text-zinc-500 text-[10px]">SOUND</span>
+                <span className="text-[#3B82F6] font-semibold">VOID ACOUSTICS</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Event Narrative, Countdown & Lineup */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="lg:col-span-5 flex flex-col justify-between space-y-6"
+          >
+            <div className="space-y-6">
+              {/* Event Title */}
+              <div>
+                <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block mb-1">
+                  1 YEAR ANNIVERSARY SPECIAL
+                </span>
+                <h3 className="text-3xl sm:text-4xl font-display font-black text-white uppercase tracking-tight">
+                  {event.title}
+                </h3>
+                <p className="text-xs font-mono text-zinc-400 mt-2 flex items-center gap-2">
+                  <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                  <span>{event.displayDate}</span>
+                  <span>•</span>
+                  <Clock className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>{event.time}</span>
+                </p>
+              </div>
+
+              {/* Narrative Description */}
+              <p className="text-sm text-zinc-300 leading-relaxed font-sans">
+                {event.description}
+              </p>
+
+              {/* Functional Live Countdown */}
+              <div className="space-y-2 pt-2">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="text-zinc-400 uppercase tracking-widest">COUNTDOWN TO OPENING</span>
+                  <span className="text-[#2563EB]">LONDON BST (UTC+1)</span>
+                </div>
+                <CountdownTimer targetDate={countdownTarget || event.date} />
+              </div>
+
+              {/* Curated Lineup */}
+              <div className="space-y-3 pt-2">
+                <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block">
+                  FEATURED LINEUP
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {event.lineup.map((artist, idx) => (
+                    <span
+                      key={artist}
+                      className={`px-3 py-1.5 text-xs font-mono border transition-colors ${
+                        idx === 0
+                          ? 'bg-[#2563EB]/15 border-[#2563EB] text-white font-bold'
+                          : 'bg-white/[0.03] border-white/10 text-zinc-300 hover:border-white/30'
+                      }`}
+                    >
+                      {artist}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Primary Action Button */}
+            <div className="pt-6 border-t border-white/10">
+              <button
+                onClick={onOpenTickets}
+                className="w-full py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-3 group shadow-xl shadow-[#2563EB]/20"
+              >
+                <span>GET TICKETS FOR {event.title}</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};

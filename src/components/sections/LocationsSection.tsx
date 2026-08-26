@@ -1,0 +1,112 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, Volume2, Users, Building2 } from 'lucide-react';
+import { LocationItem } from '../../types';
+
+interface LocationsSectionProps {
+  locations: LocationItem[];
+}
+
+export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations }) => {
+  return (
+    <section id="locations" className="relative py-28 sm:py-36 bg-[#080808] border-t border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
+              <Building2 className="w-3.5 h-3.5" />
+              <span>SPATIAL CURATION</span>
+            </div>
+            <h2 className="text-4xl sm:text-6xl font-display font-black text-white uppercase tracking-tight">
+              LONDON VENUES
+            </h2>
+          </div>
+
+          <p className="text-xs font-mono text-zinc-400 max-w-xs leading-relaxed">
+            Securing architectural anomalies across the capital — from sky vaults to deep industrial vaults.
+          </p>
+        </div>
+
+        {/* Locations List */}
+        <div className="space-y-12">
+          {locations.map((loc, index) => (
+            <motion.div
+              key={loc.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: index * 0.1 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0C0C0C] border border-white/10 hover:border-[#2563EB]/40 transition-colors p-6 sm:p-8"
+            >
+              {/* Left Column: Image */}
+              <div className="lg:col-span-6 relative aspect-[16/10] overflow-hidden bg-[#151515] border border-white/10">
+                <img
+                  src={loc.image}
+                  alt={loc.name}
+                  className="w-full h-full object-cover filter brightness-90 contrast-105 hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 bg-black/80 border border-white/20 text-[10px] font-mono text-[#3B82F6] uppercase tracking-widest">
+                    {loc.type}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: Venue Details */}
+              <div className="lg:col-span-6 space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] uppercase mb-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>{loc.area}</span>
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-white uppercase tracking-tight">
+                    {loc.name}
+                  </h3>
+                  <p className="text-xs font-mono text-zinc-500 mt-1">
+                    {loc.address}
+                  </p>
+                </div>
+
+                <p className="text-sm text-zinc-300 font-sans leading-relaxed">
+                  {loc.description}
+                </p>
+
+                {/* Specs Box */}
+                <div className="grid grid-cols-2 gap-4 py-4 border-y border-white/10 text-xs font-mono">
+                  <div>
+                    <span className="text-zinc-500 text-[10px] uppercase block">CAPACITY</span>
+                    <span className="text-white font-semibold flex items-center gap-1.5 mt-0.5">
+                      <Users className="w-3.5 h-3.5 text-[#2563EB]" />
+                      {loc.capacity}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-zinc-500 text-[10px] uppercase block">SOUND SPECS</span>
+                    <span className="text-white font-semibold flex items-center gap-1.5 mt-0.5">
+                      <Volume2 className="w-3.5 h-3.5 text-[#3B82F6]" />
+                      {loc.soundSystem}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Architectural Highlights */}
+                <div className="flex flex-wrap gap-2">
+                  {loc.highlights.map((h, i) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 text-[11px] font-mono bg-white/[0.03] border border-white/10 text-zinc-300"
+                    >
+                      • {h}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
