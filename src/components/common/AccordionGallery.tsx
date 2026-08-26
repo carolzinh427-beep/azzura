@@ -7,7 +7,6 @@ export interface AccordionGalleryItem {
   label?: string;
   link?: string;
   alt?: string;
-  category?: string;
 }
 
 export interface AccordionGalleryProps {
@@ -34,22 +33,22 @@ export interface AccordionGalleryProps {
 }
 
 const DEFAULT_ITEMS: AccordionGalleryItem[] = [
-  { image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000', label: 'Skyline Opening', link: '#' },
-  { image: 'https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?q=80&w=1000', label: 'Subterranean Vaults', link: '#' },
-  { image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1000', label: 'Sunset St. Paul’s', link: '#' },
-  { image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000', label: 'Nocturnal Frequency', link: '#' },
-  { image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1000', label: 'Midnight Ritual', link: '#' }
+  { image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1600&auto=format&fit=crop', label: 'Golden Hour Skyline', link: '#' },
+  { image: 'https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?q=80&w=1200&auto=format&fit=crop', label: 'Laser Architecture', link: '#' },
+  { image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1400&auto=format&fit=crop', label: 'Midnight Frequency', link: '#' },
+  { image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1400&auto=format&fit=crop', label: 'Crowd Sanctuary', link: '#' },
+  { image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1400&auto=format&fit=crop', label: 'Resident Sessions', link: '#' }
 ];
 
 export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
   items = DEFAULT_ITEMS,
   defaultIndex = 2,
-  accentColor = '#9333EA',
+  accentColor = '#A855F7',
   overlayColor = '#080808',
   textColor = '#ffffff',
   height = 460,
   gap = 10,
-  radius = 8,
+  radius = 16,
   expandRatio = 0.52,
   orientation = 'horizontal',
   duration = 0.6,
@@ -61,13 +60,13 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
   showLabels = true,
   grayscale = true,
   className = '',
-  onItemClick
+  onItemClick,
 }) => {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const panelRefs = useRef<(HTMLElement | null)[]>([]);
-  const mediaRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const mediaRefs = useRef<(HTMLElement | null)[]>([]);
+  const barRefs = useRef<(HTMLElement | null)[]>([]);
+  const textRefs = useRef<(HTMLElement | null)[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const firstRunRef = useRef(true);
   const mediaSizeRef = useRef(320);
@@ -85,6 +84,42 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
     (animate: boolean) => {
       const panels = panelRefs.current;
       if (!panels.length) return;
+
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+
+      if (isMobile) {
+        // Mobile layout handling
+        panels.forEach((panel, i) => {
+          if (!panel) return;
+          const isActive = i === active;
+          const media = mediaRefs.current[i];
+          const bar = barRefs.current[i];
+          const text = textRefs.current[i];
+
+          gsap.to(panel, {
+            height: isActive ? 240 : 90,
+            duration: animate ? 0.4 : 0,
+            ease: 'power2.out',
+          });
+
+          if (media) {
+            gsap.to(media, {
+              '--ag-gray': isActive ? 0 : (grayscale ? 1 : 0),
+              '--ag-dim': isActive ? 0 : 0.35,
+              duration: animate ? 0.4 : 0,
+            });
+          }
+
+          if (showLabels && bar && text) {
+            if (isActive) {
+              gsap.to([bar, text], { opacity: 1, x: 0, duration: 0.3 });
+            } else {
+              gsap.to([bar, text], { opacity: 0, x: -10, duration: 0.2 });
+            }
+          }
+        });
+        return;
+      }
 
       const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
       const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
@@ -178,12 +213,11 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
     firstRunRef.current = false;
   }, [applyLayout]);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    return () => {
       tlRef.current?.kill();
-    },
-    []
-  );
+    };
+  }, []);
 
   const handleEnter = (i: number) => {
     if (trigger === 'hover') setActive(i);
@@ -193,9 +227,8 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
     if (i !== active) {
       e.preventDefault();
       setActive(i);
-    } else if (onItemClick) {
-      onItemClick(i);
     }
+    onItemClick?.(i);
   };
 
   const handleKeyDown = (i: number, e: React.KeyboardEvent) => {
@@ -205,8 +238,6 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       e.preventDefault();
       setActive((i - 1 + count) % count);
-    } else if (e.key === 'Enter' && onItemClick) {
-      onItemClick(i);
     }
   };
 
@@ -215,14 +246,13 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
       ref={rootRef}
       className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
       style={{
-        // @ts-expect-error CSS custom properties
-        '--ag-accent': accentColor,
-        '--ag-overlay': overlayColor,
-        '--ag-text': textColor,
-        '--ag-gap': `${gap}px`,
-        '--ag-radius': `${radius}px`,
+        ['--ag-accent' as any]: accentColor,
+        ['--ag-overlay' as any]: overlayColor,
+        ['--ag-text' as any]: textColor,
+        ['--ag-gap' as any]: `${gap}px`,
+        ['--ag-radius' as any]: `${radius}px`,
         height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`
-      }}
+      } as React.CSSProperties}
       role="list"
       aria-label="Image accordion gallery"
     >
@@ -232,46 +262,29 @@ export const AccordionGallery: React.FC<AccordionGalleryProps> = ({
         return (
           <Tag
             key={i}
-            ref={(el: HTMLElement | null) => {
-              panelRefs.current[i] = el;
-            }}
+            ref={(el: any) => { panelRefs.current[i] = el; }}
             className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
             style={{ borderRadius: `${radius}px` }}
             href={item.link && item.link !== '#' ? item.link : undefined}
-            onClick={(e: React.MouseEvent) => handleClick(i, e)}
+            onClick={e => handleClick(i, e)}
             onMouseEnter={() => handleEnter(i)}
             onFocus={() => setActive(i)}
-            onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(i, e)}
+            onKeyDown={e => handleKeyDown(i, e)}
             role="listitem"
             tabIndex={0}
             aria-current={isActive ? 'true' : undefined}
             aria-label={item.label}
           >
             <span className="ag-panel__frame">
-              <span
-                className="ag-panel__media"
-                ref={(el: HTMLSpanElement | null) => {
-                  mediaRefs.current[i] = el;
-                }}
-              >
-                <img src={item.image} alt={item.alt || item.label || ''} draggable="false" />
+              <span className="ag-panel__media" ref={(el: any) => { mediaRefs.current[i] = el; }}>
+                <img src={item.image} alt={item.alt || item.label || ''} draggable="false" loading="lazy" />
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
             {showLabels && (
               <span className="ag-panel__label" aria-hidden="true">
-                <span
-                  className="ag-panel__bar"
-                  ref={(el: HTMLSpanElement | null) => {
-                    barRefs.current[i] = el;
-                  }}
-                />
-                <span
-                  className="ag-panel__text"
-                  ref={(el: HTMLSpanElement | null) => {
-                    textRefs.current[i] = el;
-                  }}
-                >
+                <span className="ag-panel__bar" ref={(el: any) => { barRefs.current[i] = el; }} />
+                <span className="ag-panel__text" ref={(el: any) => { textRefs.current[i] = el; }}>
                   {item.label}
                 </span>
               </span>

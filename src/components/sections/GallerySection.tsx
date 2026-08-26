@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Calendar } from 'lucide-react';
 import { GalleryItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
+import AccordionGallery from '../common/AccordionGallery';
 
 interface GallerySectionProps {
   items: GalleryItem[];
@@ -18,6 +17,13 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
     if (activeCategory === 'ALL') return true;
     return item.category.toLowerCase() === activeCategory.toLowerCase();
   });
+
+  const accordionItems = filteredItems.map((item) => ({
+    image: item.image,
+    label: `${item.title} // ${item.category}`,
+    link: '#',
+    alt: item.title,
+  }));
 
   return (
     <section id="gallery" className="relative py-20 sm:py-32 bg-[#080808] border-t border-white/10 select-none overflow-hidden w-full max-w-full">
@@ -54,61 +60,29 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
           </div>
         </div>
 
-        {/* Equal Grid Gallery (Equal Proportions on Mobile & Desktop) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
-          {filteredItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.06 }}
-              className="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#111111] border border-white/10 hover:border-[#9333EA]/50 aspect-[4/3] sm:aspect-[16/11] transition-all duration-500 shadow-xl"
-            >
-              {/* Image with Smooth Zoom */}
-              <img
-                src={item.image}
-                alt={item.title}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
+        {/* 3D GSAP Accordion Gallery */}
+        <div>
+          <AccordionGallery
+            key={activeCategory}
+            items={accordionItems}
+            defaultIndex={Math.min(2, Math.max(0, accordionItems.length - 1))}
+            expandRatio={0.52}
+            accentColor="#A855F7"
+            overlayColor="#080808"
+            textColor="#ffffff"
+            height={480}
+            gap={12}
+            radius={20}
+            trigger="hover"
+            grayscale={true}
+            tilt={8}
+            showLabels={true}
+          />
 
-              {/* Gradient Overlay for Readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-
-              {/* Top Category Badge */}
-              <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 z-10">
-                <span className="px-3 py-1 bg-black/75 backdrop-blur-md rounded-full border border-white/15 text-[9px] sm:text-[10px] font-mono text-[#C084FC] uppercase tracking-wider font-semibold">
-                  {item.category}
-                </span>
-              </div>
-
-              {/* Bottom In-Place Caption */}
-              <div className="absolute bottom-3.5 left-3.5 right-3.5 sm:bottom-5 sm:left-5 sm:right-5 z-10 space-y-1">
-                <h3 className="font-display text-base sm:text-xl font-bold text-white group-hover:text-[#C084FC] transition-colors leading-snug break-words">
-                  {item.title}
-                </h3>
-
-                {(item.location || item.eventDate) && (
-                  <div className="flex items-center gap-3 text-[10px] sm:text-[11px] font-mono text-zinc-400">
-                    {item.location && (
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-[#A855F7]" />
-                        {item.location}
-                      </span>
-                    )}
-                    {item.eventDate && (
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-[#9333EA]" />
-                        {item.eventDate}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
+          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[10px] sm:text-[11px] font-mono text-zinc-500">
+            <span>PASSE O CURSOR OU TOQUE PARA EXPANDIR // INTERAÇÃO PERSPECTIVA</span>
+            <span className="text-[#C084FC]">GSAP 3D ACCORDION</span>
+          </div>
         </div>
       </div>
     </section>
