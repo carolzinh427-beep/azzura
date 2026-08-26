@@ -27,20 +27,20 @@
   --sunpillar-clr-4: var(--sunpillar-4);
   --sunpillar-clr-5: var(--sunpillar-5);
   --sunpillar-clr-6: var(--sunpillar-6);
-  --card-radius: 20px;
+  --card-radius: 24px;
 }
 
 .pc-card-wrapper {
   perspective: 600px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  touch-action: pan-y !important;
   width: 100%;
 }
 
 .pc-behind {
   position: absolute;
-  inset: -10px;
+  inset: -8px;
   z-index: 0;
   pointer-events: none;
   background: radial-gradient(
@@ -48,8 +48,8 @@
     var(--behind-glow-color) 0%,
     transparent var(--behind-glow-size)
   );
-  filter: blur(35px) saturate(1.2);
-  opacity: calc(0.85 * var(--card-opacity));
+  filter: blur(25px) saturate(1.2);
+  opacity: calc(0.8 * var(--card-opacity));
   transition: opacity 200ms ease;
 }
 
@@ -59,26 +59,25 @@
 }
 
 .pc-card {
-  height: 420px;
-  max-height: 440px;
+  height: 400px;
+  max-height: 420px;
   display: grid;
-  aspect-ratio: 0.72;
+  aspect-ratio: 0.75;
   border-radius: var(--card-radius);
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px)
-    calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease;
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
   background: #0A0A0A;
   backface-visibility: hidden;
   overflow: hidden;
+  touch-action: pan-y !important;
 }
 
 .pc-card:hover,
 .pc-card.active {
   border-color: rgba(147, 51, 234, 0.7);
-  transition: none;
   transform: translateZ(0) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
 }
 
@@ -90,6 +89,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
+  touch-action: pan-y !important;
 }
 
 .pc-card * {
@@ -100,131 +100,72 @@
 }
 
 .pc-inside {
-  inset: 0;
-  position: absolute;
-  background-image: var(--inner-gradient);
-  background-color: #0A0A0A;
-  transform: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--inner-gradient);
 }
 
 .pc-shine {
-  mask-image: var(--icon);
-  mask-mode: luminance;
-  mask-repeat: repeat;
-  mask-size: 150%;
-  mask-position: top calc(200% - (var(--background-y) * 5)) left calc(100% - var(--background-x));
-  transition: filter 0.8s ease;
-  filter: brightness(0.6) contrast(1.3) saturate(0.4) opacity(0.35);
-  animation: holo-bg 18s linear infinite;
-  mix-blend-mode: color-dodge;
-}
-
-.pc-shine,
-.pc-shine::after {
-  --space: 5%;
-  --angle: -45deg;
-  transform: translate3d(0, 0, 1px);
-  overflow: hidden;
-  z-index: 3;
-  background: transparent;
-  background-size: cover;
-  background-position: center;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      var(--sunpillar-clr-1) calc(var(--space) * 1),
-      var(--sunpillar-clr-2) calc(var(--space) * 2),
-      var(--sunpillar-clr-3) calc(var(--space) * 3),
-      var(--sunpillar-clr-4) calc(var(--space) * 4),
-      var(--sunpillar-clr-5) calc(var(--space) * 5),
-      var(--sunpillar-clr-6) calc(var(--space) * 6),
-      var(--sunpillar-clr-1) calc(var(--space) * 7)
-    ),
-    repeating-linear-gradient(
-      var(--angle),
-      #080808 0%,
-      hsl(270, 40%, 60%) 3.8%,
-      hsl(270, 70%, 66%) 4.5%,
-      hsl(270, 40%, 60%) 5.2%,
-      #080808 10%,
-      #080808 12%
-    ),
-    radial-gradient(
-      farthest-corner circle at var(--pointer-x) var(--pointer-y),
-      hsla(0, 0%, 0%, 0.1) 12%,
-      hsla(0, 0%, 0%, 0.15) 20%,
-      hsla(0, 0%, 0%, 0.25) 120%
-    );
-  background-position:
-    0 var(--background-y),
-    var(--background-x) var(--background-y),
-    center;
-  background-blend-mode: color, hard-light;
-  background-size:
-    500% 500%,
-    300% 300%,
-    200% 200%;
-  background-repeat: repeat;
-}
-
-.pc-shine::before,
-.pc-shine::after {
-  content: '';
-  background-position: center;
-  background-size: cover;
-  grid-area: 1/1;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-.pc-card:hover .pc-shine,
-.pc-card.active .pc-shine {
-  filter: brightness(0.8) contrast(1.4) saturate(0.7);
-  animation-play-state: paused;
-}
-
-.pc-card:hover .pc-shine::before,
-.pc-card.active .pc-shine::before,
-.pc-card:hover .pc-shine::after,
-.pc-card.active .pc-shine::after {
-  opacity: 1;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: var(--card-opacity);
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(192, 132, 252, 0.22) 0%,
+    transparent 60%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: opacity 250ms ease;
 }
 
 .pc-glare {
-  transform: translate3d(0, 0, 1.1px);
-  overflow: hidden;
-  background-image: radial-gradient(
-    farthest-corner circle at var(--pointer-x) var(--pointer-y),
-    hsla(270, 80%, 75%, 0.6) 10%,
-    hsla(270, 50%, 20%, 0.8) 90%
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: var(--card-opacity);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 50%,
+    rgba(147, 51, 234, 0.15) 100%
   );
-  mix-blend-mode: overlay;
-  filter: brightness(0.9) contrast(1.2);
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.pc-content {
+  position: relative;
   z-index: 4;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .pc-avatar-content {
-  overflow: hidden;
-  transform: translateZ(2);
-  backface-visibility: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .pc-avatar-content .avatar {
-  width: 100%;
-  height: 100%;
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  filter: grayscale(0.85) contrast(1.15) brightness(0.85);
-  transform-origin: 50% 50%;
-  transform: translateX(calc((var(--pointer-from-left) - 0.5) * 8px)) scale(1.04);
-  will-change: transform, filter;
-  transition: transform 140ms ease-out, filter 0.4s ease;
+  filter: brightness(0.92) contrast(1.05);
+  transition: transform 0.6s ease;
+  pointer-events: auto;
 }
 
-.pc-card:hover .avatar,
-.pc-card.active .avatar {
-  filter: grayscale(0) contrast(1.1) brightness(0.95);
+.pc-card:hover .avatar {
+  transform: scale(1.04);
 }
 
 .pc-user-info {
@@ -232,17 +173,17 @@
   bottom: 12px;
   left: 12px;
   right: 12px;
-  z-index: 6;
+  z-index: 5;
+  padding: 10px 14px;
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(8, 8, 8, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 10px 12px;
   pointer-events: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
 }
 
 .pc-user-details {
@@ -270,7 +211,7 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  gap: 2px;
+  gap: 1.5px;
 }
 
 .pc-handle {
@@ -294,7 +235,7 @@
 
 .pc-contact-btn {
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 999px;
   padding: 6px 12px;
   font-family: monospace;
   font-size: 10px;
@@ -302,9 +243,10 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #ffffff;
-  background: rgba(147, 51, 234, 0.25);
+  background: rgba(147, 51, 234, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
+  pointer-events: auto;
 }
 
 .pc-contact-btn:hover {
@@ -325,25 +267,10 @@
   pointer-events: auto;
 }
 
-@keyframes holo-bg {
-  0% {
-    background-position:
-      0 var(--background-y),
-      0 0,
-      center;
-  }
-  100% {
-    background-position:
-      0 var(--background-y),
-      90% 90%,
-      center;
-  }
-}
-
 @media (max-width: 640px) {
   .pc-card {
-    height: 340px;
-    max-height: 360px;
+    height: 330px;
+    max-height: 350px;
   }
   .pc-user-info {
     bottom: 8px;
@@ -364,5 +291,8 @@
   .pc-contact-btn {
     padding: 5px 10px;
     font-size: 9px;
+  }
+  .pc-behind {
+    display: none;
   }
 }

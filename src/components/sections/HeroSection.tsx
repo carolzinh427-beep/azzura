@@ -200,26 +200,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
     <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full bg-[#050505] text-white pt-20 pb-14 sm:pt-28 sm:pb-20 select-none">
-      {/* 3D WebGL Background: Centered Laser Grid */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-45 z-0 overflow-hidden">
+      {/* 3D WebGL Background: Vivid Centered Laser Grid */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-85 z-0 overflow-hidden">
         <GridScan
           sensitivity={0.55}
-          lineThickness={1}
-          linesColor="#2F293A"
-          gridScale={0.1}
-          scanColor="#A855F7"
-          scanOpacity={0.4}
+          lineThickness={1.2}
+          linesColor="#4E3D73"
+          gridScale={0.09}
+          scanColor="#D8B4FE"
+          scanOpacity={0.75}
           enablePost
-          bloomIntensity={0.5}
+          bloomIntensity={0.8}
           chromaticAberration={0.002}
           noiseIntensity={0.015}
           mouseInteraction={false}
         />
       </div>
 
-      {/* Atmospheric Vignette & Gradients (Strictly Contained) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/80 pointer-events-none z-[1]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-[#9333EA]/12 rounded-full blur-[120px] pointer-events-none z-[1]" />
+      {/* Atmospheric Vignette (Soft Edges, Clear Center) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/40 pointer-events-none z-[1]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-[#9333EA]/18 rounded-full blur-[120px] pointer-events-none z-[1]" />
 
       {/* Main Hero Container */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
@@ -234,7 +234,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           title="Passe o cursor para tocar o áudio"
         >
           {/* Subtle Ambient Backlight Glow */}
-          <div className="absolute inset-2 sm:inset-4 rounded-full bg-[#A855F7]/25 blur-xl pointer-events-none group-hover:bg-[#A855F7]/45 transition-all duration-700" />
+          <div className="absolute inset-2 sm:inset-4 rounded-full bg-[#A855F7]/30 blur-xl pointer-events-none group-hover:bg-[#A855F7]/50 transition-all duration-700" />
           
           <MetallicPaint
             imageSrc="/azzura-emblem.svg"
@@ -267,7 +267,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display font-black text-4xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-white leading-none mb-2 sm:mb-3 break-words"
+          className="font-display font-black text-4xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-white leading-none mb-2 sm:mb-3 break-words drop-shadow-2xl"
         >
           AZZURA
         </motion.h1>
@@ -277,7 +277,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[11px] sm:text-sm md:text-base font-mono font-semibold tracking-[0.18em] sm:tracking-[0.25em] text-[#C084FC] uppercase mb-3 sm:mb-4 px-2"
+          className="text-[11px] sm:text-sm md:text-base font-mono font-semibold tracking-[0.18em] sm:tracking-[0.25em] text-[#C084FC] uppercase mb-3 sm:mb-4 px-2 drop-shadow"
         >
           {t.hero.tagline}
         </motion.p>
