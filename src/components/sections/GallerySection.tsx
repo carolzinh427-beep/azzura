@@ -49,20 +49,20 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
             items={accordionItems}
             defaultIndex={2}
             expandRatio={0.48}
-            accentColor="#2563EB"
+            accentColor="#9333EA"
             overlayColor="#080808"
             textColor="#ffffff"
             height={500}
             gap={12}
-            radius={8}
+            radius={20}
             trigger="hover"
             grayscale={true}
             tilt={8}
             onItemClick={(idx) => handleOpenLightbox(idx)}
           />
-          <div className="mt-4 flex items-center justify-between text-[11px] font-mono text-zinc-500">
-            <span>HOVER TO EXPAND // CLICK TO OPEN FULLSCREEN LIGHTBOX</span>
-            <span className="text-[#3B82F6]">GSAP 3D PERSPECTIVE</span>
+          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[10px] sm:text-[11px] font-mono text-zinc-500">
+            <span>TAP OR HOVER TO EXPAND // TAP TO OPEN LIGHTBOX</span>
+            <span className="text-[#C084FC]">GSAP 3D PERSPECTIVE</span>
           </div>
         </div>
       </div>

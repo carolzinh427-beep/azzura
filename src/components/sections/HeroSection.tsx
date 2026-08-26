@@ -26,7 +26,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
   const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   const opacityText = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // Melodic Techno / Rooftop Party Atmosphere Synth (Warm, low volume, musical party groove)
+  // Melodic Techno / Rooftop Party Atmosphere Synth (Warm, soft volume party groove)
   const playPartySound = (durationSec = 3.6) => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
@@ -42,9 +42,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
 
       const now = ctx.currentTime;
       const bpm = 124;
-      const beatSec = 60 / bpm; // ~0.484s
+      const beatSec = 60 / bpm;
 
-      // Master output with soft, comfortable volume (0.24 max)
       const masterGain = ctx.createGain();
       masterGain.gain.setValueAtTime(0.001, now);
       masterGain.gain.linearRampToValueAtTime(0.24, now + 0.12);
@@ -52,7 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       masterGain.gain.linearRampToValueAtTime(0.001, now + durationSec);
       masterGain.connect(ctx.destination);
 
-      // 1. Deep 4-on-the-Floor Club Kick
+      // 1. Deep Club Kick
       const totalBeats = Math.floor(durationSec / beatSec);
       for (let i = 0; i < totalBeats; i++) {
         const beatTime = now + i * beatSec;
@@ -178,7 +177,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen min-h-[720px] max-h-[1250px] overflow-hidden bg-[#050505] flex flex-col justify-between select-none"
+      className="relative w-full min-h-[100svh] max-h-[1250px] overflow-hidden bg-[#050505] flex flex-col justify-between select-none"
     >
       {/* Background 3D WebGL GridScan Atmosphere Layer (Centered, static perspective without mouse tracking) */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
@@ -208,24 +207,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       </motion.div>
 
       {/* Top spacing */}
-      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-end">
+      <div className="relative z-10 pt-24 sm:pt-32 px-4 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-end">
         <button
           onClick={() => playPartySound(4.0)}
-          className="flex items-center gap-2 px-3.5 py-1.5 bg-black/50 hover:bg-[#9333EA]/20 border border-white/15 hover:border-[#9333EA]/50 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg"
+          className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-black/60 hover:bg-[#9333EA]/20 border border-white/15 hover:border-[#9333EA]/50 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg"
           title="Play Party Preview Groove"
           aria-label="Play Party Sound Groove"
         >
-          <Music className="w-3.5 h-3.5 text-[#C084FC] animate-pulse" />
-          <span className="text-[10px] tracking-widest uppercase">ATMOSPHERE PREVIEW</span>
+          <Music className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C084FC] animate-pulse" />
+          <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold">PREVIEW</span>
         </button>
       </div>
 
-      {/* Main Hero Center Content - Perfectly Centered */}
+      {/* Main Hero Center Content - Responsive and Centered */}
       <motion.div
         style={{ opacity: opacityText }}
-        className="relative z-10 px-4 sm:px-8 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4"
+        className="relative z-10 px-3 sm:px-8 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center text-center space-y-2.5 sm:space-y-4"
       >
-        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA with Party Groove Sound on Hover & Click */}
+        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -233,7 +232,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           onMouseEnter={() => playPartySound(3.0)}
           onClick={() => playPartySound(4.0)}
           title="Azzura Atmosphere - Click or Hover for Party Groove"
-          className="relative w-40 sm:w-56 md:w-64 h-24 sm:h-32 flex items-center justify-center pointer-events-auto cursor-pointer group"
+          className="relative w-36 sm:w-52 md:w-64 h-20 sm:h-28 md:h-32 flex items-center justify-center pointer-events-auto cursor-pointer group"
         >
           <MetallicPaint
             imageSrc="/azzura-emblem.svg"
@@ -259,7 +258,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             tintColor="#A855F7"
           />
 
-          <div className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-mono text-[#C084FC] flex items-center gap-1 bg-black/80 px-2.5 py-0.5 rounded-full border border-[#9333EA]/30 pointer-events-none shadow-lg">
+          <div className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[8px] sm:text-[9px] font-mono text-[#C084FC] flex items-center gap-1 bg-black/80 px-2.5 py-0.5 rounded-full border border-[#9333EA]/30 pointer-events-none shadow-lg">
             <Music className="w-2.5 h-2.5 text-[#A855F7]" />
             <span>AZZURA PARTY BEAT</span>
           </div>
@@ -270,13 +269,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex items-center justify-center gap-2.5"
+          className="flex items-center justify-center gap-2 sm:gap-2.5"
         >
-          <span className="w-2 h-2 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
-          <p className="text-xs sm:text-sm font-mono tracking-ultra-wide text-zinc-300 uppercase font-medium">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
+          <p className="text-[11px] sm:text-sm font-mono tracking-wider sm:tracking-ultra-wide text-zinc-300 uppercase font-medium">
             {t.hero.tagline}
           </p>
-          <span className="w-2 h-2 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
         </motion.div>
 
         {/* 3. Centered Kinetic Echo Typography: AZZURA */}
@@ -288,9 +287,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         >
           <EchoText
             text="AZZURA"
-            echoes={10}
+            echoes={8}
             lag={0.22}
-            offset={30}
+            offset={24}
             direction="right"
             fade={0.72}
             blur={2.5}
@@ -299,7 +298,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             cursorRadius={320}
             duration={900}
             ease="ease-out"
-            fontSize="clamp(3.8rem, 12vw, 9rem)"
+            fontSize="clamp(2.8rem, 11vw, 8.5rem)"
             fontWeight={900}
             color="#FFFFFF"
             className="font-display font-black tracking-tighter text-white leading-none uppercase text-center mx-auto"
@@ -311,26 +310,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="pt-2 sm:pt-4 flex flex-col sm:flex-row sm:items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-mono text-zinc-300 border-t border-white/10 max-w-xl mx-auto w-full"
+          className="pt-2 sm:pt-4 flex flex-col sm:flex-row sm:items-center justify-center gap-1.5 sm:gap-6 text-xs sm:text-sm font-mono text-zinc-300 border-t border-white/10 max-w-xl mx-auto w-full px-2"
         >
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2">
             <span className="text-[#A855F7] font-bold">{t.hero.nextEvent}</span>
-            <span className="text-white font-semibold">{featuredEvent.title}</span>
+            <span className="text-white font-semibold truncate">{featuredEvent.title}</span>
           </div>
           <div className="hidden sm:block text-zinc-600">//</div>
-          <div className="flex items-center justify-center gap-4 text-zinc-400">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 text-zinc-400">
             <span>{t.hero.date}</span>
             <span>•</span>
             <span className="text-[#C084FC]">LONDON (£35 — £45)</span>
           </div>
         </motion.div>
 
-        {/* 5. Purple Specular Buttons (Centered) */}
+        {/* 5. Purple Specular Buttons (Centered & Stackable on mobile) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-wrap items-center justify-center gap-4 pt-4 sm:pt-6"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-3 sm:pt-6 w-full max-w-xs sm:max-w-none"
         >
           <SpecularButton
             size="lg"
@@ -344,7 +343,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             shineSize={18}
             shineFade={35}
             onClick={onOpenTickets}
-            className="font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#9333EA]/35"
+            className="w-full sm:w-auto font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#9333EA]/35 justify-center"
           >
             <span>{t.hero.getTickets}</span>
             <ArrowUpRight className="w-4 h-4" />
@@ -361,7 +360,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             intensity={1.0}
             thickness={1}
             onClick={handleExploreClick}
-            className="font-mono text-xs font-bold tracking-widest uppercase"
+            className="w-full sm:w-auto font-mono text-xs font-bold tracking-widest uppercase justify-center"
           >
             {t.hero.explore}
           </SpecularButton>
@@ -369,7 +368,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       </motion.div>
 
       {/* Bottom Footer Bar with Scroll Cue */}
-      <div className="relative z-10 pb-8 sm:pb-10 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-end justify-between border-t border-white/5 pt-4">
+      <div className="relative z-10 pb-6 sm:pb-10 px-4 sm:px-12 max-w-7xl mx-auto w-full flex items-end justify-between border-t border-white/5 pt-3 sm:pt-4">
         <div className="hidden md:flex items-center gap-6 text-xs font-mono text-zinc-500">
           <span>51°30'26"N 0°07'39"W</span>
           <span>•</span>
@@ -378,12 +377,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
 
         <button
           onClick={handleExploreClick}
-          className="flex items-center gap-3 text-xs font-mono tracking-widest text-zinc-400 hover:text-white transition-colors group cursor-pointer ml-auto md:ml-0"
+          className="flex items-center gap-3 text-xs font-mono tracking-widest text-zinc-400 hover:text-white transition-colors group cursor-pointer mx-auto md:mx-0 md:ml-auto"
           aria-label="Scroll to explore"
         >
-          <span className="text-[11px] uppercase">{t.hero.scroll}</span>
-          <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#A855F7] group-hover:bg-[#9333EA]/10 transition-all">
-            <ArrowDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-y-0.5 transition-transform" />
+          <span className="text-[10px] sm:text-[11px] uppercase">{t.hero.scroll}</span>
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#A855F7] group-hover:bg-[#9333EA]/10 transition-all">
+            <ArrowDown className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-y-0.5 transition-transform" />
           </div>
         </button>
       </div>

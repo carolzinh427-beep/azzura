@@ -12,22 +12,22 @@
   --grain: none;
   --icon: none;
   --behind-gradient: none;
-  --behind-glow-color: rgba(37, 99, 235, 0.6);
+  --behind-glow-color: rgba(147, 51, 234, 0.6);
   --behind-glow-size: 35%;
-  --inner-gradient: linear-gradient(145deg, rgba(15, 15, 15, 0.95) 0%, rgba(37, 99, 235, 0.3) 100%);
-  --sunpillar-1: hsl(217, 91%, 60%);
-  --sunpillar-2: hsl(224, 76%, 48%);
-  --sunpillar-3: hsl(210, 100%, 70%);
-  --sunpillar-4: hsl(190, 90%, 65%);
-  --sunpillar-5: hsl(230, 85%, 65%);
-  --sunpillar-6: hsl(260, 80%, 70%);
+  --inner-gradient: linear-gradient(145deg, rgba(15, 15, 15, 0.95) 0%, rgba(147, 51, 234, 0.3) 100%);
+  --sunpillar-1: hsl(270, 91%, 60%);
+  --sunpillar-2: hsl(280, 76%, 48%);
+  --sunpillar-3: hsl(265, 100%, 70%);
+  --sunpillar-4: hsl(250, 90%, 65%);
+  --sunpillar-5: hsl(290, 85%, 65%);
+  --sunpillar-6: hsl(310, 80%, 70%);
   --sunpillar-clr-1: var(--sunpillar-1);
   --sunpillar-clr-2: var(--sunpillar-2);
   --sunpillar-clr-3: var(--sunpillar-3);
   --sunpillar-clr-4: var(--sunpillar-4);
   --sunpillar-clr-5: var(--sunpillar-5);
   --sunpillar-clr-6: var(--sunpillar-6);
-  --card-radius: 12px;
+  --card-radius: 20px;
 }
 
 .pc-card-wrapper {
@@ -77,7 +77,7 @@
 
 .pc-card:hover,
 .pc-card.active {
-  border-color: rgba(37, 99, 235, 0.7);
+  border-color: rgba(147, 51, 234, 0.7);
   transition: none;
   transform: translateZ(0) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
 }
@@ -143,9 +143,9 @@
     repeating-linear-gradient(
       var(--angle),
       #080808 0%,
-      hsl(217, 40%, 60%) 3.8%,
-      hsl(217, 70%, 66%) 4.5%,
-      hsl(217, 40%, 60%) 5.2%,
+      hsl(270, 40%, 60%) 3.8%,
+      hsl(270, 70%, 66%) 4.5%,
+      hsl(270, 40%, 60%) 5.2%,
       #080808 10%,
       #080808 12%
     ),
@@ -195,8 +195,8 @@
   overflow: hidden;
   background-image: radial-gradient(
     farthest-corner circle at var(--pointer-x) var(--pointer-y),
-    hsla(217, 80%, 75%, 0.6) 10%,
-    hsla(217, 50%, 20%, 0.8) 90%
+    hsla(270, 80%, 75%, 0.6) 10%,
+    hsla(270, 50%, 20%, 0.8) 90%
   );
   mix-blend-mode: overlay;
   filter: brightness(0.9) contrast(1.2);
@@ -240,7 +240,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 10px 12px;
   pointer-events: auto;
 }
@@ -286,7 +286,7 @@
 .pc-status {
   font-family: monospace;
   font-size: 9px;
-  color: #3B82F6;
+  color: #C084FC;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   line-height: 1;
@@ -294,22 +294,22 @@
 
 .pc-contact-btn {
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  padding: 6px 10px;
+  border-radius: 8px;
+  padding: 6px 12px;
   font-family: monospace;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #ffffff;
-  background: rgba(37, 99, 235, 0.2);
+  background: rgba(147, 51, 234, 0.25);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pc-contact-btn:hover {
-  background: #2563EB;
-  border-color: #2563EB;
+  background: #9333EA;
+  border-color: #9333EA;
   transform: translateY(-1px);
 }
 
@@ -342,8 +342,8 @@
 
 @media (max-width: 640px) {
   .pc-card {
-    height: 320px;
-    max-height: 340px;
+    height: 340px;
+    max-height: 360px;
   }
   .pc-user-info {
     bottom: 8px;
@@ -352,8 +352,8 @@
     padding: 8px 10px;
   }
   .pc-mini-avatar {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
   }
   .pc-handle {
     font-size: 10px;
@@ -362,7 +362,7 @@
     font-size: 8px;
   }
   .pc-contact-btn {
-    padding: 4px 8px;
+    padding: 5px 10px;
     font-size: 9px;
   }
 }

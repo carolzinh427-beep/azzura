@@ -1,9 +1,9 @@
 .accordion-gallery {
-  --ag-accent: #2563EB;
+  --ag-accent: #9333EA;
   --ag-overlay: #080808;
   --ag-text: #ffffff;
-  --ag-gap: 10px;
-  --ag-radius: 8px;
+  --ag-gap: 12px;
+  --ag-radius: 20px;
   --ag-media-size: 320px;
 
   display: flex;
@@ -33,7 +33,7 @@
   transform-style: preserve-3d;
   transform-origin: center center;
   background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8);
   will-change: flex-grow, transform;
   -webkit-tap-highlight-color: transparent;
@@ -41,7 +41,8 @@
 }
 
 .ag-panel--active {
-  border-color: rgba(37, 99, 235, 0.6);
+  border-color: rgba(147, 51, 234, 0.7);
+  box-shadow: 0 16px 40px -12px rgba(147, 51, 234, 0.25);
 }
 
 .ag-panel:focus-visible {
@@ -88,7 +89,7 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--ag-overlay) 78%, transparent) 100%),
+    linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--ag-overlay) 85%, transparent) 100%),
     color-mix(in srgb, var(--ag-overlay) calc(var(--ag-dim, 0.35) * 100%), transparent);
 }
 
@@ -128,25 +129,25 @@
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .accordion-gallery {
     flex-direction: column;
     perspective: none;
     height: auto !important;
-    gap: 8px;
+    gap: 10px;
   }
   .ag-panel {
-    min-height: 80px;
-    height: 90px;
+    min-height: 84px;
+    height: 94px;
     transform: none !important;
   }
   .ag-panel--active {
-    min-height: 240px;
-    height: 240px;
+    min-height: 260px;
+    height: 260px;
   }
   .accordion-gallery .ag-panel__media {
     width: 100%;
-    height: var(--ag-media-size);
+    height: 100%;
   }
 }
 

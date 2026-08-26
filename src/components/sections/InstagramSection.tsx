@@ -52,17 +52,17 @@ export const InstagramSection: React.FC = () => {
             href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-5 py-3 bg-white/5 hover:bg-[#2563EB] border border-white/15 text-white transition-all duration-300 group"
+            className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 hover:bg-[#9333EA] border border-white/15 rounded-full text-white transition-all duration-300 group shadow-lg shadow-black/40"
           >
             <div className="flex items-center gap-1.5 font-mono text-xs font-bold tracking-wider">
               <span>{t.instagram.handle}</span>
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#3B82F6] group-hover:text-white" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#C084FC] group-hover:text-white" />
             </div>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
           {INSTA_POSTS.map((post, idx) => (
             <motion.a
               key={post.id}
@@ -73,7 +73,7 @@ export const InstagramSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="group relative aspect-square bg-[#111111] border border-white/10 overflow-hidden block"
+              className="group relative aspect-square bg-[#111111] rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden block shadow-xl"
             >
               <img
                 src={post.image}
@@ -81,9 +81,9 @@ export const InstagramSection: React.FC = () => {
                 loading="lazy"
                 className="w-full h-full object-cover filter contrast-105 group-hover:scale-105 transition-transform duration-700 ease-out"
               />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3.5" />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4" />
 
-              <div className="absolute inset-0 p-3.5 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white">
+              <div className="absolute inset-0 p-4 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white">
                 <div className="flex justify-end">
                   <Instagram className="w-4 h-4 text-zinc-300" />
                 </div>
@@ -94,8 +94,8 @@ export const InstagramSection: React.FC = () => {
                   </p>
 
                   <div className="flex items-center gap-3 text-xs font-mono text-white/90">
-                    <span className="flex items-center gap-1">
-                      <Heart className="w-3.5 h-3.5 fill-[#2563EB] text-[#2563EB]" />
+                    <span className="flex items-center gap-1 text-[#C084FC]">
+                      <Heart className="w-3.5 h-3.5 fill-[#9333EA] text-[#9333EA]" />
                       {post.likes}
                     </span>
                     <span className="flex items-center gap-1">

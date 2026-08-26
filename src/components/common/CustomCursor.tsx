@@ -72,14 +72,14 @@ export const CustomCursor: React.FC = () => {
 
       {/* Atmospheric Glow Ring */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9998] rounded-full border border-[#2563EB]/60 bg-[#2563EB]/10"
+        className="pointer-events-none fixed top-0 left-0 z-[9998] rounded-full border border-[#9333EA]/60 bg-[#9333EA]/10"
         animate={{
           x: mousePosition.x - (isHovered ? 28 : 16),
           y: mousePosition.y - (isHovered ? 28 : 16),
           width: isHovered ? 56 : 32,
           height: isHovered ? 56 : 32,
-          borderColor: isHovered ? '#2563EB' : 'rgba(255, 255, 255, 0.25)',
-          backgroundColor: isHovered ? 'rgba(37, 99, 235, 0.15)' : 'rgba(37, 99, 235, 0.03)',
+          borderColor: isHovered ? '#A855F7' : 'rgba(255, 255, 255, 0.25)',
+          backgroundColor: isHovered ? 'rgba(147, 51, 234, 0.2)' : 'rgba(147, 51, 234, 0.05)',
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 280, mass: 0.2 }}
       />

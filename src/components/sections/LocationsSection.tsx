@@ -35,7 +35,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0C0C0C] rounded-3xl border border-white/10 hover:border-[#2563EB]/50 transition-all p-6 sm:p-8 shadow-2xl"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0C0C0C] rounded-3xl border border-white/10 hover:border-[#9333EA]/50 transition-all p-6 sm:p-8 shadow-2xl"
             >
               <div className="lg:col-span-6 relative aspect-[16/10] overflow-hidden bg-[#151515] rounded-2xl border border-white/10">
                 <img
@@ -45,7 +45,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
                   className="w-full h-full object-cover filter brightness-90 contrast-105 hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="px-3.5 py-1 bg-black/80 backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono text-[#3B82F6] uppercase tracking-widest font-semibold">
+                  <span className="px-3.5 py-1 bg-black/80 backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono text-[#C084FC] uppercase tracking-widest font-semibold">
                     {loc.type}
                   </span>
                 </div>
@@ -53,7 +53,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
 
               <div className="lg:col-span-6 space-y-6">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] uppercase mb-1">
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#A855F7] uppercase mb-1">
                     <MapPin className="w-3.5 h-3.5" />
                     <span>{loc.area}</span>
                   </div>
@@ -69,11 +69,11 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
                   {loc.description}
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 py-4 border-y border-white/10 text-xs font-mono">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 border-y border-white/10 text-xs font-mono">
                   <div>
                     <span className="text-zinc-500 text-[10px] uppercase block">{t.locations.capacity}</span>
                     <span className="text-white font-semibold flex items-center gap-1.5 mt-0.5">
-                      <Users className="w-3.5 h-3.5 text-[#2563EB]" />
+                      <Users className="w-3.5 h-3.5 text-[#A855F7]" />
                       {loc.capacity}
                     </span>
                   </div>
@@ -81,7 +81,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
                   <div>
                     <span className="text-zinc-500 text-[10px] uppercase block">{t.locations.soundSpecs}</span>
                     <span className="text-white font-semibold flex items-center gap-1.5 mt-0.5">
-                      <Volume2 className="w-3.5 h-3.5 text-[#3B82F6]" />
+                      <Volume2 className="w-3.5 h-3.5 text-[#C084FC]" />
                       {loc.soundSystem}
                     </span>
                   </div>

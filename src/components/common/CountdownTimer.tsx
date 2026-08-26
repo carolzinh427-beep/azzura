@@ -34,9 +34,9 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   if (variant === 'minimal') {
     return (
-      <div className={`flex items-center gap-4 text-xs font-mono tracking-widest text-zinc-400 ${className}`}>
+      <div className={`flex items-center gap-3 sm:gap-4 text-xs font-mono tracking-widest text-zinc-400 ${className}`}>
         {units.map((unit, index) => (
-          <div key={unit.label} className="flex items-center gap-2">
+          <div key={unit.label} className="flex items-center gap-1.5 sm:gap-2">
             <span className="text-white font-bold">{String(unit.value).padStart(2, '0')}</span>
             <span className="text-[10px] text-zinc-500">{unit.label[0]}</span>
             {index < units.length - 1 && <span className="text-zinc-600">:</span>}
@@ -47,18 +47,14 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   }
 
   return (
-    <div className={`grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 ${className}`}>
+    <div className={`grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 ${className}`}>
       {units.map((unit) => (
         <div
           key={unit.label}
-          className="group relative flex flex-col items-center justify-center p-3 sm:p-5 md:p-6 rounded-none bg-[#0D0D0D]/80 border border-white/10 backdrop-blur-md transition-all duration-300 hover:border-[#2563EB]/50"
+          className="group relative flex flex-col items-center justify-center p-2.5 sm:p-4 md:p-5 rounded-2xl bg-[#0D0D0D]/90 border border-white/10 backdrop-blur-md transition-all duration-300 hover:border-[#9333EA]/50 shadow-lg shadow-black/40"
         >
-          {/* Subtle Corner Accent */}
-          <div className="absolute top-0 left-0 w-1.5 h-1.5 bg-white/20 group-hover:bg-[#2563EB] transition-colors" />
-          <div className="absolute bottom-0 right-0 w-1.5 h-1.5 bg-white/20 group-hover:bg-[#2563EB] transition-colors" />
-
           {/* Number with flip/stagger effect */}
-          <div className="relative overflow-hidden font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white group-hover:text-white transition-colors">
+          <div className="relative overflow-hidden font-display text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white group-hover:text-white transition-colors leading-none">
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={unit.value}
@@ -74,7 +70,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
           </div>
 
           {/* Unit Label */}
-          <span className="mt-1 sm:mt-2 text-[9px] sm:text-[10px] md:text-xs font-mono tracking-widest text-zinc-400 group-hover:text-[#3B82F6] transition-colors uppercase">
+          <span className="mt-1 sm:mt-1.5 text-[8px] sm:text-[10px] md:text-xs font-mono tracking-widest text-zinc-400 group-hover:text-[#C084FC] transition-colors uppercase">
             {unit.label}
           </span>
         </div>
