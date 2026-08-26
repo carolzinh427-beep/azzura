@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, Sparkles } from 'lucide-react';
 import { GalleryItem } from '../../types';
 import { Lightbox } from '../common/Lightbox';
 import { useLanguage } from '../../lib/LanguageContext';
@@ -32,22 +31,17 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ items }) => {
   return (
     <section id="gallery" className="relative py-20 sm:py-32 bg-[#080808] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Clean Editorial Section Header without overhead tag */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-14 border-b border-white/10 pb-6 sm:pb-8">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
-              <Camera className="w-3.5 h-3.5" />
-              <span>{t.gallery.badge}</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white uppercase tracking-tight">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
               {t.gallery.title}
             </h2>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-            <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
-            <span>INTERACTIVE KINETIC ARCHIVE</span>
-          </div>
+          <p className="text-xs font-mono text-zinc-400 max-w-xs leading-relaxed">
+            {t.gallery.subtitle}
+          </p>
         </div>
 
         {/* --- 1. ACCORDION GALLERY SHOWCASE (React Bits GSAP 3D Expandable Carousel) --- */}

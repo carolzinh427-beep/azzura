@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Check, Sparkles, Shield } from 'lucide-react';
+import { ArrowRight, Check, Shield } from 'lucide-react';
 import { store } from '../../lib/store';
 import { useToast } from '../common/Toast';
 import { useLanguage } from '../../lib/LanguageContext';
@@ -41,12 +41,7 @@ export const NewsletterSection: React.FC = () => {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-xs font-mono text-[#2563EB] tracking-widest uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{t.newsletter.badge}</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white uppercase tracking-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-white uppercase tracking-tight">
             {t.newsletter.title}
           </h2>
 

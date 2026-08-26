@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Music2, Disc, Play, Pause, Sparkles } from 'lucide-react';
+import { Instagram, Music2, Disc, Play, Pause } from 'lucide-react';
 import { Artist } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 
@@ -19,14 +19,10 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
   return (
     <section id="lineup" className="relative py-28 sm:py-36 bg-[#000000] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Clean Editorial Section Header without overhead tag */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{t.lineup.badge}</span>
-            </div>
-            <h2 className="text-4xl sm:text-6xl font-display font-black text-white uppercase tracking-tight">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
               {t.lineup.title}
             </h2>
           </div>

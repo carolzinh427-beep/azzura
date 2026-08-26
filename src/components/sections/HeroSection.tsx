@@ -65,21 +65,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
       </motion.div>
 
-      {/* Top Floating Brand Metadata */}
-      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex items-center gap-3"
-        >
-          <span className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-          <span className="text-xs font-mono tracking-widest text-zinc-300 uppercase">
-            {t.hero.brandTag}
-          </span>
-        </motion.div>
-
-        {/* Ambient Video Sound Control */}
+      {/* Top Floating Sound Control */}
+      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-end">
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -99,17 +86,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         className="relative z-10 px-6 sm:px-12 max-w-7xl mx-auto w-full my-auto flex flex-col justify-center"
       >
         <div className="max-w-4xl space-y-4 sm:space-y-6">
-          {/* Slogan Pill */}
+          {/* Pure Clean Manifesto Line (No generic pill badge box) */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="inline-flex items-center gap-2.5 px-3.5 py-1 bg-white/5 border border-white/10 backdrop-blur-sm"
+            className="flex items-center gap-3"
           >
-            <span className="w-1.5 h-1.5 bg-[#2563EB]" />
-            <span className="text-[10px] sm:text-xs font-mono tracking-ultra-wide text-zinc-200 uppercase">
+            <span className="w-2 h-2 bg-[#2563EB]" />
+            <p className="text-xs sm:text-sm font-mono tracking-ultra-wide text-zinc-300 uppercase font-medium">
               {t.hero.tagline}
-            </span>
+            </p>
           </motion.div>
 
           {/* Main Kinetic Echo Typography */}
@@ -139,7 +126,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             />
           </motion.div>
 
-          {/* Next Event Teaser Bar */}
+          {/* Next Event Bar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

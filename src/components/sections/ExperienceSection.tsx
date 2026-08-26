@@ -50,13 +50,9 @@ export const ExperienceSection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
+        {/* Clean Editorial Section Header without overhead tag */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-24">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-3">
-              <span className="w-2 h-2 rounded-none bg-[#2563EB]" />
-              <span>{t.experience.badge}</span>
-            </div>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
               {t.experience.title1} <br />
               <span className="text-stroke-white text-white/30">{t.experience.title2}</span>

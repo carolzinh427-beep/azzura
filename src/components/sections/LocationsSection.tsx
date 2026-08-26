@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Volume2, Users, Building2 } from 'lucide-react';
+import { MapPin, Volume2, Users } from 'lucide-react';
 import { LocationItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 
@@ -14,13 +14,10 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
   return (
     <section id="locations" className="relative py-28 sm:py-36 bg-[#080808] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Clean Editorial Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
-              <Building2 className="w-3.5 h-3.5" />
-              <span>{t.locations.badge}</span>
-            </div>
-            <h2 className="text-4xl sm:text-6xl font-display font-black text-white uppercase tracking-tight">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
               {t.locations.title}
             </h2>
           </div>
