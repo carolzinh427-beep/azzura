@@ -1,151 +1,196 @@
 import React from 'react';
 import { ArrowUp, Instagram, Music2, Disc, Shield } from 'lucide-react';
 import { useLanguage } from '../../lib/LanguageContext';
+import LightTunnel from '../common/LightTunnel';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenTickets?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
   const { t } = useLanguage();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const navLinks = [
-    { label: t.nav.events, href: '#events' },
-    { label: t.nav.experience, href: '#experience' },
-    { label: t.nav.lineup, href: '#lineup' },
-    { label: t.nav.gallery, href: '#gallery' },
-    { label: t.nav.locations, href: '#locations' },
-    { label: t.nav.contact, href: '#contact' },
-  ];
-
   return (
-    <footer className="bg-[#000000] border-t border-white/10 text-white pt-20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 border-b border-white/10 pb-16">
-          <div className="space-y-4 max-w-2xl">
-            <div className="flex items-center gap-2">
-              <span className="font-display font-black text-4xl sm:text-5xl tracking-tighter text-white">
+    <footer className="relative bg-[#020202] text-white border-t border-white/10 overflow-hidden select-none">
+      {/* Background WebGL LightTunnel Effect */}
+      <div className="absolute inset-0 w-full h-full opacity-40 pointer-events-none">
+        <LightTunnel
+          cableColor="#2563EB"
+          pulseColor="#60A5FA"
+          tunnelColor="#1D4ED8"
+          tunnelOpacity={0.08}
+          speed={0.12}
+          flowDirection="outward"
+          pulseSpeed={2.2}
+          pulseLength={0.32}
+          pulseBlend={1}
+          pulseWidth={1}
+          cableCount={24}
+          thickness={0.38}
+          rimWidth={0.18}
+          waviness={0.25}
+          sway={0.45}
+          size={1.1}
+          centerX={0.0}
+          centerY={0.0}
+          glow={1.2}
+          fadeNear={0.3}
+          fadeFar={2.2}
+          brightness={1.1}
+          colorVariance={true}
+          grain={true}
+          grainIntensity={0.04}
+          opacity={0.9}
+          mouseInteraction={true}
+          mouseStrength={0.12}
+        />
+      </div>
+
+      {/* Gradient Overlays for Readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/70 to-[#020202]/90 pointer-events-none" />
+
+      {/* Main Footer Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-white/10">
+          {/* Brand Column */}
+          <div className="md:col-span-5 space-y-6">
+            <div className="space-y-2">
+              <h3 className="font-display font-black text-3xl sm:text-4xl uppercase tracking-tighter text-white">
                 AZZURA
-              </span>
-              <span className="text-sm font-mono text-[#2563EB]">®</span>
+              </h3>
+              <p className="text-xs font-mono text-[#2563EB] tracking-widest uppercase">
+                {t.hero.tagline}
+              </p>
             </div>
 
-            <p className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-tight text-white/90 leading-none">
-              {t.footer.slogan}
+            <p className="text-xs sm:text-sm text-zinc-400 font-sans leading-relaxed max-w-md">
+              {t.footer.originDesc}
             </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#2563EB] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
+                aria-label="Azzura Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://spotify.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#2563EB] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
+                aria-label="Azzura Spotify"
+              >
+                <Music2 className="w-4 h-4" />
+              </a>
+              <a
+                href="https://soundcloud.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#2563EB] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
+                aria-label="Azzura SoundCloud"
+              >
+                <Disc className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="md:col-span-3 space-y-4">
+            <span className="text-xs font-mono text-white tracking-widest uppercase block font-semibold">
+              {t.footer.navTitle}
+            </span>
+            <ul className="space-y-2.5 text-xs font-mono text-zinc-400">
+              <li>
+                <a href="#events" className="hover:text-white transition-colors">
+                  {t.nav.events}
+                </a>
+              </li>
+              <li>
+                <a href="#experience" className="hover:text-white transition-colors">
+                  {t.nav.experience}
+                </a>
+              </li>
+              <li>
+                <a href="#lineup" className="hover:text-white transition-colors">
+                  {t.nav.lineup}
+                </a>
+              </li>
+              <li>
+                <a href="#gallery" className="hover:text-white transition-colors">
+                  {t.nav.gallery}
+                </a>
+              </li>
+              <li>
+                <a href="#locations" className="hover:text-white transition-colors">
+                  {t.nav.locations}
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="hover:text-white transition-colors">
+                  {t.nav.contact}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal / Access */}
+          <div className="md:col-span-4 space-y-4">
+            <span className="text-xs font-mono text-white tracking-widest uppercase block font-semibold">
+              {t.footer.originTitle}
+            </span>
+            <p className="text-xs font-mono text-zinc-400 leading-relaxed">
+              {t.footer.location} <br />
+              Direct: contact@azzura.events <br />
+              VIP Tables: vip@azzura.events
+            </p>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              {onOpenTickets && (
+                <button
+                  onClick={onOpenTickets}
+                  className="px-5 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-lg shadow-[#2563EB]/25"
+                >
+                  {t.nav.getTickets}
+                </button>
+              )}
+
+              <a
+                href="/admin"
+                className="px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white font-mono text-xs flex items-center gap-1.5 transition-all"
+                title="Azzura Admin Portal"
+              >
+                <Shield className="w-3.5 h-3.5" />
+                <span>{t.footer.adminBtn}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Strip */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
+            <span>{t.footer.copyright}</span>
+            <span>{t.footer.soundHealth}</span>
           </div>
 
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-3 p-4 bg-[#0C0C0C] border border-white/10 hover:border-[#2563EB] hover:bg-[#2563EB]/10 transition-all text-xs font-mono tracking-widest uppercase group"
-            aria-label="Back to top of page"
+            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors group cursor-pointer"
+            aria-label="Scroll to top of page"
           >
-            <span>{t.footer.backToTop}</span>
-            <ArrowUp className="w-4 h-4 text-[#2563EB] group-hover:-translate-y-1 transition-transform" />
+            <span className="text-[11px] uppercase">{t.footer.backToTop}</span>
+            <div className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#2563EB] group-hover:bg-[#2563EB]/10 transition-all">
+              <ArrowUp className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:-translate-y-0.5 transition-transform" />
+            </div>
           </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 sm:gap-12">
-          <div className="space-y-4">
-            <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block">
-              {t.footer.originTitle}
-            </span>
-            <p className="text-sm font-sans text-zinc-400 leading-relaxed">
-              {t.footer.originDesc}
-            </p>
-            <p className="text-xs font-mono text-zinc-300">
-              {t.footer.location}
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase block">
-              {t.footer.navTitle}
-            </span>
-            <ul className="space-y-2.5 text-xs font-mono">
-              {navLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-zinc-400 hover:text-white transition-colors uppercase block"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase block">
-              {t.footer.channelsTitle}
-            </span>
-            <ul className="space-y-2.5 text-xs font-mono">
-              <li>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
-                >
-                  <Instagram className="w-3.5 h-3.5 text-[#2563EB]" />
-                  <span>INSTAGRAM (@AZZR.LDN)</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://spotify.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
-                >
-                  <Music2 className="w-3.5 h-3.5 text-[#2563EB]" />
-                  <span>SPOTIFY</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://soundcloud.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
-                >
-                  <Disc className="w-3.5 h-3.5 text-[#2563EB]" />
-                  <span>SOUNDCLOUD</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase block">
-              {t.footer.adminTitle}
-            </span>
-            <p className="text-xs text-zinc-400 font-mono leading-relaxed">
-              {t.footer.adminDesc}
-            </p>
-            <a
-              href="/admin"
-              className="inline-flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-zinc-300 hover:text-white transition-colors"
-            >
-              <Shield className="w-3.5 h-3.5 text-[#2563EB]" />
-              <span>{t.footer.adminBtn}</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="pt-12 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-400">
-          <div>
-            {t.footer.copyright}
-          </div>
-
-          <div className="flex items-center gap-6">
-            <span className="hover:text-zinc-300 cursor-pointer">{t.footer.privacyPolicy}</span>
-            <span>•</span>
-            <span className="hover:text-zinc-300 cursor-pointer">{t.footer.terms}</span>
-            <span>•</span>
-            <span className="hover:text-zinc-300 cursor-pointer">{t.footer.soundHealth}</span>
-          </div>
         </div>
       </div>
     </footer>
