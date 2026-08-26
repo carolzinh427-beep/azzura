@@ -202,16 +202,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full bg-[#050505] text-white pt-20 pb-14 sm:pt-28 sm:pb-20 select-none">
       {/* 3D WebGL Background: Vivid Centered Laser Grid */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-85 z-0 overflow-hidden">
+      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-90 z-0 overflow-hidden">
         <GridScan
           sensitivity={0.55}
-          lineThickness={1.2}
+          lineThickness={1.4}
           linesColor="#4E3D73"
           gridScale={0.09}
-          scanColor="#D8B4FE"
-          scanOpacity={0.75}
-          enablePost
-          bloomIntensity={0.8}
+          scanColor="#C084FC"
+          scanOpacity={0.85}
+          scanDirection="pingpong"
+          scanDuration={2.4}
+          scanDelay={0.5}
+          enablePost={true}
+          bloomIntensity={0.9}
           chromaticAberration={0.002}
           noiseIntensity={0.015}
           mouseInteraction={false}
@@ -219,8 +222,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Atmospheric Vignette (Soft Edges, Clear Center) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/40 pointer-events-none z-[1]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-[#9333EA]/18 rounded-full blur-[120px] pointer-events-none z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/30 pointer-events-none z-[1]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] sm:w-[680px] h-[380px] sm:h-[680px] bg-[#9333EA]/22 rounded-full blur-[130px] pointer-events-none z-[1]" />
 
       {/* Main Hero Container */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
