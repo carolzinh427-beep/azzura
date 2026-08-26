@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Music } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 import EchoText from '../common/EchoText';
@@ -16,6 +16,7 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenTickets }) => {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -25,87 +26,145 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
   const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   const opacityText = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // High-Volume Resonant Electronic Metallic Sound Engine for the Emblem
-  const playEmblemSound = (boost: boolean = true) => {
+  // Melodic Techno / Rooftop Party Atmosphere Synth (Warm, low volume, musical party groove)
+  const playPartySound = (durationSec = 3.6) => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
-      const ctx = new AudioCtx();
+      
+      if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+        audioCtxRef.current = new AudioCtx();
+      }
+      const ctx = audioCtxRef.current;
       if (ctx.state === 'suspended') {
         ctx.resume();
       }
 
       const now = ctx.currentTime;
+      const bpm = 124;
+      const beatSec = 60 / bpm; // ~0.484s
+
+      // Master output with soft, comfortable volume (0.22 max)
       const masterGain = ctx.createGain();
       masterGain.gain.setValueAtTime(0.001, now);
-      masterGain.gain.exponentialRampToValueAtTime(boost ? 0.95 : 0.75, now + 0.06);
-      masterGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+      masterGain.gain.linearRampToValueAtTime(0.24, now + 0.12);
+      masterGain.gain.setValueAtTime(0.24, now + durationSec - 0.6);
+      masterGain.gain.linearRampToValueAtTime(0.001, now + durationSec);
       masterGain.connect(ctx.destination);
 
-      // 1. Deep Sub-Bass Impact (60Hz -> 120Hz -> 40Hz)
-      const subOsc = ctx.createOscillator();
-      subOsc.type = 'sine';
-      subOsc.frequency.setValueAtTime(60, now);
-      subOsc.frequency.exponentialRampToValueAtTime(120, now + 0.25);
-      subOsc.frequency.exponentialRampToValueAtTime(40, now + 1.2);
+      // 1. Deep 4-on-the-Floor Club Kick
+      const totalBeats = Math.floor(durationSec / beatSec);
+      for (let i = 0; i < totalBeats; i++) {
+        const beatTime = now + i * beatSec;
+        if (beatTime + 0.25 > now + durationSec) break;
 
-      const subGain = ctx.createGain();
-      subGain.gain.setValueAtTime(0.9, now);
-      subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
-      subOsc.connect(subGain);
-      subGain.connect(masterGain);
+        const kickOsc = ctx.createOscillator();
+        const kickGain = ctx.createGain();
+        kickOsc.type = 'sine';
+        kickOsc.frequency.setValueAtTime(110, beatTime);
+        kickOsc.frequency.exponentialRampToValueAtTime(45, beatTime + 0.12);
 
-      // 2. Resonant Metallic FM Modulator
-      const carrier = ctx.createOscillator();
-      const modulator = ctx.createOscillator();
-      const modGain = ctx.createGain();
+        kickGain.gain.setValueAtTime(0.45, beatTime);
+        kickGain.gain.exponentialRampToValueAtTime(0.001, beatTime + 0.22);
 
-      carrier.type = 'sawtooth';
-      carrier.frequency.setValueAtTime(220, now);
-      carrier.frequency.exponentialRampToValueAtTime(520, now + 0.35);
+        kickOsc.connect(kickGain);
+        kickGain.connect(masterGain);
 
-      modulator.type = 'triangle';
-      modulator.frequency.setValueAtTime(329.63, now);
+        kickOsc.start(beatTime);
+        kickOsc.stop(beatTime + 0.25);
 
-      modGain.gain.setValueAtTime(450, now);
-      modGain.gain.exponentialRampToValueAtTime(15, now + 0.9);
+        // Offbeat Shaker / Hi-Hat
+        const hatTime = beatTime + beatSec * 0.5;
+        if (hatTime + 0.1 < now + durationSec) {
+          const hatBufferSize = Math.floor(ctx.sampleRate * 0.05);
+          const hatBuffer = ctx.createBuffer(1, hatBufferSize, ctx.sampleRate);
+          const hatData = hatBuffer.getChannelData(0);
+          for (let j = 0; j < hatBufferSize; j++) {
+            hatData[j] = (Math.random() * 2 - 1) * Math.exp(-j / (hatBufferSize * 0.35));
+          }
+          const hatSource = ctx.createBufferSource();
+          hatSource.buffer = hatBuffer;
 
-      modulator.connect(carrier.frequency);
+          const hatFilter = ctx.createBiquadFilter();
+          hatFilter.type = 'highpass';
+          hatFilter.frequency.setValueAtTime(6500, hatTime);
 
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(900, now);
-      filter.frequency.exponentialRampToValueAtTime(3200, now + 0.2);
-      filter.frequency.exponentialRampToValueAtTime(500, now + 1.2);
-      filter.Q.setValueAtTime(7.5, now);
+          const hatGain = ctx.createGain();
+          hatGain.gain.setValueAtTime(0.12, hatTime);
+          hatGain.gain.exponentialRampToValueAtTime(0.001, hatTime + 0.06);
 
-      carrier.connect(filter);
-      filter.connect(masterGain);
+          hatSource.connect(hatFilter);
+          hatFilter.connect(hatGain);
+          hatGain.connect(masterGain);
 
-      // 3. Shimmering High Overtone
-      const shimmer = ctx.createOscillator();
-      shimmer.type = 'sine';
-      shimmer.frequency.setValueAtTime(1046.5, now);
-      shimmer.frequency.exponentialRampToValueAtTime(2093, now + 0.28);
+          hatSource.start(hatTime);
+          hatSource.stop(hatTime + 0.07);
+        }
+      }
 
-      const shimmerGain = ctx.createGain();
-      shimmerGain.gain.setValueAtTime(0.45, now);
-      shimmerGain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+      // 2. Rolling Melodic Progressive Bassline (F minor)
+      const bassNotes = [43.65, 51.91, 58.27, 43.65]; // F1, G#1, A#1, F1
+      const stepSec = beatSec / 2;
+      const totalSteps = Math.floor(durationSec / stepSec);
 
-      shimmer.connect(shimmerGain);
-      shimmerGain.connect(masterGain);
+      for (let s = 0; s < totalSteps; s++) {
+        const stepTime = now + s * stepSec;
+        if (stepTime + 0.2 > now + durationSec) break;
 
-      subOsc.start(now);
-      carrier.start(now);
-      modulator.start(now);
-      shimmer.start(now);
+        const noteFreq = bassNotes[s % bassNotes.length];
+        const bassOsc = ctx.createOscillator();
+        const bassFilter = ctx.createBiquadFilter();
+        const bassGain = ctx.createGain();
 
-      subOsc.stop(now + 1.4);
-      carrier.stop(now + 1.4);
-      modulator.stop(now + 1.4);
-      shimmer.stop(now + 1.4);
+        bassOsc.type = 'sawtooth';
+        bassOsc.frequency.setValueAtTime(noteFreq, stepTime);
+
+        bassFilter.type = 'lowpass';
+        bassFilter.frequency.setValueAtTime(220, stepTime);
+        bassFilter.frequency.exponentialRampToValueAtTime(480, stepTime + 0.04);
+        bassFilter.frequency.exponentialRampToValueAtTime(160, stepTime + stepSec * 0.8);
+        bassFilter.Q.setValueAtTime(3.0, stepTime);
+
+        bassGain.gain.setValueAtTime(0.22, stepTime);
+        bassGain.gain.exponentialRampToValueAtTime(0.001, stepTime + stepSec * 0.85);
+
+        bassOsc.connect(bassFilter);
+        bassFilter.connect(bassGain);
+        bassGain.connect(masterGain);
+
+        bassOsc.start(stepTime);
+        bassOsc.stop(stepTime + stepSec);
+      }
+
+      // 3. Lush Melodic Rooftop Party Synth Chords (Fm9)
+      const chordFreqs = [174.61, 207.65, 261.63, 311.13, 392.00];
+      chordFreqs.forEach((freq, idx) => {
+        const padOsc = ctx.createOscillator();
+        const padFilter = ctx.createBiquadFilter();
+        const padGain = ctx.createGain();
+
+        padOsc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+        padOsc.frequency.setValueAtTime(freq, now);
+
+        padFilter.type = 'lowpass';
+        padFilter.frequency.setValueAtTime(550, now);
+        padFilter.frequency.linearRampToValueAtTime(1100, now + durationSec * 0.4);
+        padFilter.frequency.linearRampToValueAtTime(450, now + durationSec);
+
+        padGain.gain.setValueAtTime(0.001, now);
+        padGain.gain.linearRampToValueAtTime(0.08, now + 0.3);
+        padGain.gain.setValueAtTime(0.08, now + durationSec - 0.5);
+        padGain.gain.linearRampToValueAtTime(0.001, now + durationSec);
+
+        padOsc.connect(padFilter);
+        padFilter.connect(padGain);
+        padGain.connect(masterGain);
+
+        padOsc.start(now);
+        padOsc.stop(now + durationSec);
+      });
     } catch {
-      // AudioContext fallback
+      // audio fallback
     }
   };
 
@@ -121,7 +180,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       ref={containerRef}
       className="relative w-full h-screen min-h-[720px] max-h-[1250px] overflow-hidden bg-[#050505] flex flex-col justify-between select-none"
     >
-      {/* Background 3D WebGL GridScan Atmosphere Layer (No video/image - pure effect) */}
+      {/* Background 3D WebGL GridScan Atmosphere Layer (Pure Cybernetic Laser Effect) */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
         <div className="absolute inset-0 w-full h-full">
           <GridScan
@@ -147,22 +206,32 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
       </motion.div>
 
-      {/* Spacing top */}
-      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full" />
+      {/* Top spacing */}
+      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-end">
+        <button
+          onClick={() => playPartySound(4.0)}
+          className="flex items-center gap-2 px-3.5 py-1.5 bg-black/50 hover:bg-[#9333EA]/20 border border-white/15 hover:border-[#9333EA]/50 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg"
+          title="Play Party Preview Groove"
+          aria-label="Play Party Sound Groove"
+        >
+          <Music className="w-3.5 h-3.5 text-[#C084FC] animate-pulse" />
+          <span className="text-[10px] tracking-widest uppercase">ATMOSPHERE PREVIEW</span>
+        </button>
+      </div>
 
       {/* Main Hero Center Content - Perfectly Centered */}
       <motion.div
         style={{ opacity: opacityText }}
         className="relative z-10 px-4 sm:px-8 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4"
       >
-        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA with Sound Trigger on Hover & Click */}
+        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA with Party Groove Sound on Hover & Click */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          onMouseEnter={() => playEmblemSound(true)}
-          onClick={() => playEmblemSound(true)}
-          title="Interactive Sonic Liquid Chrome Emblem - Click or Hover for Audio"
+          onMouseEnter={() => playPartySound(3.0)}
+          onClick={() => playPartySound(4.0)}
+          title="Azzura Atmosphere - Click or Hover for Party Groove"
           className="relative w-40 sm:w-56 md:w-64 h-24 sm:h-32 flex items-center justify-center pointer-events-auto cursor-pointer group"
         >
           <MetallicPaint
@@ -189,9 +258,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             tintColor="#A855F7"
           />
 
-          <div className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-mono text-[#C084FC] flex items-center gap-1 bg-black/80 px-2 py-0.5 rounded-full border border-[#9333EA]/30 pointer-events-none">
-            <Sparkles className="w-2.5 h-2.5" />
-            <span>SONIC CHROMIUM</span>
+          <div className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[9px] font-mono text-[#C084FC] flex items-center gap-1 bg-black/80 px-2.5 py-0.5 rounded-full border border-[#9333EA]/30 pointer-events-none shadow-lg">
+            <Music className="w-2.5 h-2.5 text-[#A855F7]" />
+            <span>AZZURA PARTY BEAT</span>
           </div>
         </motion.div>
 
