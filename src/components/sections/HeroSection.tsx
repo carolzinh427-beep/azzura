@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
+import EchoText from '../common/EchoText';
 
 interface HeroSectionProps {
   featuredEvent: EventItem;
@@ -111,15 +112,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             </span>
           </motion.div>
 
-          {/* Main Giant Brand Typography */}
+          {/* Main Kinetic Echo Typography */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-visible py-2"
           >
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-black tracking-tighter text-white leading-none uppercase">
-              AZZURA
-            </h1>
+            <EchoText
+              text="AZZURA"
+              echoes={10}
+              lag={0.22}
+              offset={30}
+              direction="right"
+              fade={0.72}
+              blur={2.5}
+              tint="#2563EB"
+              mode="both"
+              cursorRadius={320}
+              duration={900}
+              ease="ease-out"
+              fontSize="clamp(3.8rem, 11vw, 8.5rem)"
+              fontWeight={900}
+              color="#FFFFFF"
+              className="font-display font-black tracking-tighter text-white leading-none uppercase"
+            />
           </motion.div>
 
           {/* Next Event Teaser Bar */}
