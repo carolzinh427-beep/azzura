@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 import EchoText from '../common/EchoText';
@@ -16,18 +16,16 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenTickets }) => {
   const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
   const opacityText = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // High-Volume Resonant Electronic Metallic Sound Engine
+  // High-Volume Resonant Electronic Metallic Sound Engine for the Emblem
   const playEmblemSound = (boost: boolean = true) => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
@@ -39,13 +37,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
 
       const now = ctx.currentTime;
       const masterGain = ctx.createGain();
-      // Louder master gain (up to 0.95)
       masterGain.gain.setValueAtTime(0.001, now);
       masterGain.gain.exponentialRampToValueAtTime(boost ? 0.95 : 0.75, now + 0.06);
       masterGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
       masterGain.connect(ctx.destination);
 
-      // 1. Deep Sub-Bass Impact (50Hz -> 100Hz -> 38Hz)
+      // 1. Deep Sub-Bass Impact (60Hz -> 120Hz -> 40Hz)
       const subOsc = ctx.createOscillator();
       subOsc.type = 'sine';
       subOsc.frequency.setValueAtTime(60, now);
@@ -58,7 +55,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       subOsc.connect(subGain);
       subGain.connect(masterGain);
 
-      // 2. Resonant Metallic FM Modulator for Chrome Sheen
+      // 2. Resonant Metallic FM Modulator
       const carrier = ctx.createOscillator();
       const modulator = ctx.createOscillator();
       const modGain = ctx.createGain();
@@ -68,7 +65,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       carrier.frequency.exponentialRampToValueAtTime(520, now + 0.35);
 
       modulator.type = 'triangle';
-      modulator.frequency.setValueAtTime(329.63, now); // E4 harmonic
+      modulator.frequency.setValueAtTime(329.63, now);
 
       modGain.gain.setValueAtTime(450, now);
       modGain.gain.exponentialRampToValueAtTime(15, now + 0.9);
@@ -85,10 +82,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
       carrier.connect(filter);
       filter.connect(masterGain);
 
-      // 3. Shimmering High Overtone (Chime Texture)
+      // 3. Shimmering High Overtone
       const shimmer = ctx.createOscillator();
       shimmer.type = 'sine';
-      shimmer.frequency.setValueAtTime(1046.5, now); // C6
+      shimmer.frequency.setValueAtTime(1046.5, now);
       shimmer.frequency.exponentialRampToValueAtTime(2093, now + 0.28);
 
       const shimmerGain = ctx.createGain();
@@ -112,17 +109,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
     }
   };
 
-  const toggleSound = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      videoRef.current.volume = 1.0;
-      setIsMuted(!isMuted);
-      if (isMuted) {
-        playEmblemSound(true);
-      }
-    }
-  };
-
   const handleExploreClick = () => {
     const nextSection = document.querySelector('#next-event') || document.querySelector('#experience');
     if (nextSection) {
@@ -133,64 +119,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen min-h-[720px] max-h-[1250px] overflow-hidden bg-black flex flex-col justify-between select-none"
+      className="relative w-full h-screen min-h-[720px] max-h-[1250px] overflow-hidden bg-[#050505] flex flex-col justify-between select-none"
     >
-      {/* Background Video Layer with Parallax & WebGL GridScan Overlay */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-[120%] -top-[10%]">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted={isMuted}
-          playsInline
-          poster="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1920&auto=format&fit=crop"
-          className="w-full h-full object-cover opacity-45 filter contrast-[1.15] brightness-[0.7]"
-        >
-          <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-crowd-dancing-in-a-party-with-lights-42861-large.mp4"
-            type="video/mp4"
-          />
-        </video>
-
-        {/* 3D WebGL GridScan Background Layer */}
-        <div className="absolute inset-0 w-full h-full mix-blend-screen opacity-85 pointer-events-none">
+      {/* Background 3D WebGL GridScan Atmosphere Layer (No video/image - pure effect) */}
+      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
+        <div className="absolute inset-0 w-full h-full">
           <GridScan
-            sensitivity={0.6}
-            lineThickness={1}
-            linesColor="#2B1A4A"
-            gridScale={0.1}
+            sensitivity={0.65}
+            lineThickness={1.2}
+            linesColor="#2D154B"
+            gridScale={0.09}
             scanColor="#A855F7"
-            scanOpacity={0.55}
+            scanOpacity={0.65}
             enablePost={true}
-            bloomIntensity={0.7}
+            bloomIntensity={0.85}
             chromaticAberration={0.002}
             noiseIntensity={0.015}
             scanDirection="pingpong"
-            scanDuration={2.2}
-            scanDelay={1.2}
+            scanDuration={2.4}
+            scanDelay={1.0}
             scanOnClick={false}
           />
         </div>
 
-        {/* Cinematic Vignette Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-transparent to-black/85 pointer-events-none" />
+        {/* Ambient Dark Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
       </motion.div>
 
-      {/* Top Floating Sound Control */}
-      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-end">
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          onClick={toggleSound}
-          className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-black/50 hover:bg-black/80 border border-white/15 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-colors cursor-pointer"
-          aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
-        >
-          {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-[#A855F7]" />}
-          <span className="text-[10px] tracking-widest uppercase">{isMuted ? t.hero.soundOff : t.hero.soundOn}</span>
-        </motion.button>
-      </div>
+      {/* Spacing top */}
+      <div className="relative z-10 pt-28 sm:pt-32 px-6 sm:px-12 max-w-7xl mx-auto w-full" />
 
       {/* Main Hero Center Content - Perfectly Centered */}
       <motion.div
