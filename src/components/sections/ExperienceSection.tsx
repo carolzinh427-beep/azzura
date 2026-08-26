@@ -48,26 +48,61 @@ export const ExperienceSection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Editorial Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-24 border-b border-white/10 pb-8">
+        {/* Editorial Section Header with Cinematic Fade Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-24 border-b border-white/10 pb-8"
+        >
           <div className="max-w-2xl">
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
-              {t.experience.title1} <br />
-              <span className="text-stroke-white text-white/30">{t.experience.title2}</span>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight overflow-hidden">
+              {/* Fade + Soft Blur In for Title Line 1 (A EXPERIÊNCIA / THE AZZURA) */}
+              <motion.span
+                initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="block"
+              >
+                {t.experience.title1}
+              </motion.span>
+
+              {/* Fade + Soft Blur In for Title Line 2 (AZZURA / EXPERIENCE) */}
+              <motion.span
+                initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="text-stroke-white text-white/30 block"
+              >
+                {t.experience.title2}
+              </motion.span>
             </h2>
           </div>
 
-          <p className="text-sm font-mono text-zinc-400 max-w-sm leading-relaxed">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.45, ease: 'easeOut' }}
+            className="text-sm font-mono text-zinc-400 max-w-sm leading-relaxed"
+          >
             {t.experience.subtitle}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Asymmetric Editorial Collage & Narratives */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Left Column: Smooth Rounded Images */}
+          {/* Left Column: Smooth Rounded Images with Fade */}
           <div className="lg:col-span-6 space-y-6">
             <motion.div
               style={{ y: yParallax }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
               className="relative aspect-[4/5] sm:aspect-[4/4] rounded-3xl border border-white/15 overflow-hidden group bg-[#0D0D0D] shadow-2xl"
             >
               <img
@@ -88,17 +123,17 @@ export const ExperienceSection: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Column: 3 Pillars with Rounded Floating Cards */}
+          {/* Right Column: 3 Pillars with Staggered Fade In */}
           <div className="lg:col-span-6 space-y-6">
-            {PILLARS.map((pillar) => {
+            {PILLARS.map((pillar, idx) => {
               const Icon = pillar.icon;
               return (
                 <motion.div
                   key={pillar.num}
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, x: 30, filter: 'blur(6px)' }}
+                  whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
                   className="group relative p-6 sm:p-8 rounded-3xl bg-[#090909]/70 backdrop-blur-md border border-white/10 hover:border-[#9333EA]/60 hover:bg-[#0E0E0E] transition-all duration-300 shadow-xl"
                 >
                   <div className="flex items-start gap-6">
