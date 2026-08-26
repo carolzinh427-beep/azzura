@@ -56,26 +56,26 @@ export const ExperienceSection: React.FC = () => {
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-24 border-b border-white/10 pb-8"
         >
-          <div className="max-w-2xl">
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight overflow-hidden">
+          <div className="max-w-3xl w-full">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black text-white uppercase tracking-tight leading-[1.05] overflow-visible">
               {/* Fade + Soft Blur In for Title Line 1 (A EXPERIÊNCIA / THE AZZURA) */}
               <motion.span
-                initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className="block"
+                transition={{ duration: 1.0, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="block whitespace-normal break-words"
               >
                 {t.experience.title1}
               </motion.span>
 
               {/* Fade + Soft Blur In for Title Line 2 (AZZURA / EXPERIENCE) */}
               <motion.span
-                initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                initial={{ opacity: 0, y: 25, filter: 'blur(8px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="text-stroke-white text-white/30 block"
+                transition={{ duration: 1.0, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="text-stroke-white text-white/40 block mt-1"
               >
                 {t.experience.title2}
               </motion.span>
