@@ -3,6 +3,7 @@ import { CheckCircle2, Send } from 'lucide-react';
 import { store } from '../../lib/store';
 import { useToast } from '../common/Toast';
 import { useLanguage } from '../../lib/LanguageContext';
+import SpecularButton from '../common/SpecularButton';
 
 export const ContactSection: React.FC = () => {
   const { t } = useLanguage();
@@ -61,7 +62,7 @@ export const ContactSection: React.FC = () => {
   return (
     <section id="contact" className="relative py-28 sm:py-36 bg-[#000000] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Clean Editorial Header */}
+        {/* Editorial Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
           <div>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
@@ -74,11 +75,11 @@ export const ContactSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left Column: Direct Info */}
-          <div className="lg:col-span-4 space-y-8">
-            <div className="p-8 bg-[#0C0C0C] border border-white/10 space-y-6">
-              <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block">
+          <div className="lg:col-span-4 space-y-6">
+            <div className="p-8 bg-[#0C0C0C] rounded-3xl border border-white/10 space-y-6 shadow-2xl">
+              <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block font-semibold">
                 HEADQUARTERS
               </span>
               <div>
@@ -110,27 +111,27 @@ export const ContactSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-6 bg-white/[0.02] border border-white/5 text-xs font-mono text-zinc-400 leading-relaxed">
+            <div className="p-6 bg-white/[0.02] rounded-2xl border border-white/5 text-xs font-mono text-zinc-400 leading-relaxed">
               {t.contact.notice}
             </div>
           </div>
 
-          {/* Right Column: Form */}
+          {/* Right Column: Rounded Form */}
           <div className="lg:col-span-8">
-            <form onSubmit={handleSubmit} className="bg-[#0C0C0C] border border-white/10 p-6 sm:p-10 space-y-8">
+            <form onSubmit={handleSubmit} className="bg-[#0C0C0C] rounded-3xl border border-white/10 p-6 sm:p-10 space-y-8 shadow-2xl">
               <div className="space-y-3">
-                <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase">
+                <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase font-semibold">
                   {t.contact.selectCat}
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
                       type="button"
                       onClick={() => setSelectedCategory(cat.id)}
-                      className={`p-3.5 text-xs font-mono tracking-wider uppercase text-left border transition-all ${
+                      className={`p-4 rounded-2xl text-xs font-mono tracking-wider uppercase text-left border transition-all ${
                         selectedCategory === cat.id
-                          ? 'bg-[#2563EB]/15 border-[#2563EB] text-white font-bold'
+                          ? 'bg-[#2563EB]/20 border-[#2563EB] text-white font-bold shadow-lg shadow-[#2563EB]/15'
                           : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white hover:border-white/20'
                       }`}
                     >
@@ -152,7 +153,7 @@ export const ContactSection: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder={t.contact.namePlaceholder}
-                    className="w-full px-4 py-3.5 bg-black/60 border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
+                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
                   />
                 </div>
 
@@ -167,7 +168,7 @@ export const ContactSection: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder={t.contact.emailPlaceholder}
-                    className="w-full px-4 py-3.5 bg-black/60 border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
+                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
                   />
                 </div>
               </div>
@@ -182,7 +183,7 @@ export const ContactSection: React.FC = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder={t.contact.subjectPlaceholder}
-                  className="w-full px-4 py-3.5 bg-black/60 border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
+                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
                 />
               </div>
 
@@ -197,14 +198,21 @@ export const ContactSection: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder={t.contact.messagePlaceholder}
-                  className="w-full px-4 py-3.5 bg-black/60 border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors resize-none"
+                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors resize-none"
                 />
               </div>
 
-              <button
+              <SpecularButton
                 type="submit"
+                size="lg"
+                radius={14}
+                tint="#2563EB"
+                tintOpacity={0.95}
+                lineColor="#93C5FD"
+                baseColor="#1E40AF"
+                intensity={1.3}
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50"
+                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#2563EB]/25"
               >
                 {isSubmitting ? (
                   <span>{t.contact.sending}</span>
@@ -216,10 +224,10 @@ export const ContactSection: React.FC = () => {
                 ) : (
                   <>
                     <span>{t.contact.send}</span>
-                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <Send className="w-4 h-4" />
                   </>
                 )}
-              </button>
+              </SpecularButton>
             </form>
           </div>
         </div>

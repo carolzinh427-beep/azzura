@@ -12,8 +12,8 @@ export const ExperienceSection: React.FC = () => {
     offset: ['start end', 'end start'],
   });
 
-  const yParallax = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
-  const yParallaxFast = useTransform(scrollYProgress, [0, 1], ['-15%', '15%']);
+  const yParallax = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
+  const yParallaxFast = useTransform(scrollYProgress, [0, 1], ['-12%', '12%']);
 
   const PILLARS = [
     {
@@ -50,7 +50,7 @@ export const ExperienceSection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Clean Editorial Section Header without overhead tag */}
+        {/* Editorial Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-24">
           <div className="max-w-2xl">
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
@@ -66,11 +66,11 @@ export const ExperienceSection: React.FC = () => {
 
         {/* Asymmetric Editorial Collage & Narratives */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Left Column: Asymmetric Images + Liquid Chrome Metal Emblem */}
+          {/* Left Column: Smooth Rounded Images + Liquid Chrome Metal Emblem */}
           <div className="lg:col-span-6 space-y-8">
             <motion.div
               style={{ y: yParallax }}
-              className="relative aspect-[4/5] sm:aspect-[3/4] border border-white/15 overflow-hidden group bg-[#0D0D0D]"
+              className="relative aspect-[4/5] sm:aspect-[3/4] rounded-3xl border border-white/15 overflow-hidden group bg-[#0D0D0D] shadow-2xl"
             >
               <img
                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200&auto=format&fit=crop"
@@ -79,11 +79,11 @@ export const ExperienceSection: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               
-              <div className="absolute bottom-6 left-6 right-6">
+              <div className="absolute bottom-8 left-8 right-8">
                 <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block mb-1">
                   {t.experience.atmosphere01}
                 </span>
-                <p className="text-white font-display text-2xl font-bold uppercase">
+                <p className="text-white font-display text-2xl sm:text-3xl font-bold uppercase">
                   {t.experience.atmosphere01Title}
                 </p>
               </div>
@@ -92,22 +92,22 @@ export const ExperienceSection: React.FC = () => {
             {/* Liquid Metal Insignia Box (MetallicPaint Integration) */}
             <motion.div
               style={{ y: yParallaxFast }}
-              className="relative p-6 sm:p-8 bg-[#090909] border border-white/15 shadow-2xl overflow-hidden group"
+              className="relative p-6 sm:p-8 bg-[#090909] rounded-3xl border border-white/15 shadow-2xl overflow-hidden group"
             >
               <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
-                  <span className="text-[10px] font-mono text-zinc-300 tracking-widest uppercase">
+                  <span className="text-[10px] font-mono text-zinc-300 tracking-widest uppercase font-semibold">
                     LIQUID CHROME EMBLEM
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-[#3B82F6]">
+                <span className="text-[10px] font-mono text-[#3B82F6] bg-[#2563EB]/10 px-2.5 py-0.5 rounded-full border border-[#2563EB]/30">
                   INTERACTIVE
                 </span>
               </div>
 
               {/* WebGL Metallic Paint Canvas Container */}
-              <div className="relative w-full aspect-[16/9] sm:h-48 overflow-hidden rounded-none bg-black/40 border border-white/10 flex items-center justify-center">
+              <div className="relative w-full aspect-[16/9] sm:h-48 overflow-hidden rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center">
                 <MetallicPaint
                   imageSrc="/azzura-emblem.svg"
                   seed={42}
@@ -140,8 +140,8 @@ export const ExperienceSection: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Column: 3 Pillars */}
-          <div className="lg:col-span-6 space-y-12">
+          {/* Right Column: 3 Pillars with Rounded Floating Cards */}
+          <div className="lg:col-span-6 space-y-6">
             {PILLARS.map((pillar) => {
               const Icon = pillar.icon;
               return (
@@ -151,7 +151,7 @@ export const ExperienceSection: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
-                  className="group relative border-b border-white/10 pb-8 hover:border-[#2563EB]/60 transition-colors"
+                  className="group relative p-6 sm:p-8 rounded-3xl bg-[#090909]/70 backdrop-blur-md border border-white/10 hover:border-[#2563EB]/60 hover:bg-[#0E0E0E] transition-all duration-300 shadow-xl"
                 >
                   <div className="flex items-start gap-6">
                     <span className="font-display font-black text-4xl sm:text-5xl text-[#2563EB] tracking-tighter opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all">
@@ -163,7 +163,9 @@ export const ExperienceSection: React.FC = () => {
                         <h3 className="font-display font-bold text-xl sm:text-2xl text-white uppercase tracking-tight group-hover:text-[#3B82F6] transition-colors">
                           {pillar.title}
                         </h3>
-                        <Icon className="w-5 h-5 text-zinc-500 group-hover:text-[#2563EB] transition-colors" />
+                        <div className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 group-hover:text-[#2563EB] group-hover:border-[#2563EB]/40 transition-colors">
+                          <Icon className="w-4 h-4" />
+                        </div>
                       </div>
 
                       <p className="text-sm text-zinc-400 font-sans leading-relaxed">

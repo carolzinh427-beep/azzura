@@ -14,7 +14,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
   return (
     <section id="locations" className="relative py-28 sm:py-36 bg-[#080808] border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Clean Editorial Header */}
+        {/* Editorial Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
           <div>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
@@ -27,7 +27,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
           </p>
         </div>
 
-        <div className="space-y-12">
+        <div className="space-y-10">
           {locations.map((loc, index) => (
             <motion.div
               key={loc.id}
@@ -35,9 +35,9 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0C0C0C] border border-white/10 hover:border-[#2563EB]/40 transition-colors p-6 sm:p-8"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#0C0C0C] rounded-3xl border border-white/10 hover:border-[#2563EB]/50 transition-all p-6 sm:p-8 shadow-2xl"
             >
-              <div className="lg:col-span-6 relative aspect-[16/10] overflow-hidden bg-[#151515] border border-white/10">
+              <div className="lg:col-span-6 relative aspect-[16/10] overflow-hidden bg-[#151515] rounded-2xl border border-white/10">
                 <img
                   src={loc.image}
                   alt={loc.name}
@@ -45,7 +45,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
                   className="w-full h-full object-cover filter brightness-90 contrast-105 hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-black/80 border border-white/20 text-[10px] font-mono text-[#3B82F6] uppercase tracking-widest">
+                  <span className="px-3.5 py-1 bg-black/80 backdrop-blur-md rounded-full border border-white/20 text-[10px] font-mono text-[#3B82F6] uppercase tracking-widest font-semibold">
                     {loc.type}
                   </span>
                 </div>
@@ -91,7 +91,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({ locations })
                   {loc.highlights.map((h, i) => (
                     <span
                       key={i}
-                      className="px-2.5 py-1 text-[11px] font-mono bg-white/[0.03] border border-white/10 text-zinc-300"
+                      className="px-3 py-1 text-[11px] font-mono bg-white/[0.03] border border-white/10 rounded-full text-zinc-300"
                     >
                       • {h}
                     </span>
