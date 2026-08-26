@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { calculateTimeLeft, TimeLeft } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../../lib/LanguageContext';
 
 interface CountdownTimerProps {
   targetDate: string;
@@ -13,24 +14,22 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   className = '',
   variant = 'hero',
 }) => {
+  const { t } = useLanguage();
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() => calculateTimeLeft(targetDate));
 
   useEffect(() => {
-    // Initial calculation
     setTimeLeft(calculateTimeLeft(targetDate));
-
     const interval = setInterval(() => {
       setTimeLeft(calculateTimeLeft(targetDate));
     }, 1000);
-
     return () => clearInterval(interval);
   }, [targetDate]);
 
   const units = [
-    { label: 'DAYS', value: timeLeft.days },
-    { label: 'HOURS', value: timeLeft.hours },
-    { label: 'MINUTES', value: timeLeft.minutes },
-    { label: 'SECONDS', value: timeLeft.seconds },
+    { label: t.nextEvent.days, value: timeLeft.days },
+    { label: t.nextEvent.hours, value: timeLeft.hours },
+    { label: t.nextEvent.minutes, value: timeLeft.minutes },
+    { label: t.nextEvent.seconds, value: timeLeft.seconds },
   ];
 
   if (variant === 'minimal') {

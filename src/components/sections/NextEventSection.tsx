@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Clock, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
 import { EventItem } from '../../types';
 import { CountdownTimer } from '../common/CountdownTimer';
+import { useLanguage } from '../../lib/LanguageContext';
 
 interface NextEventSectionProps {
   event: EventItem;
@@ -15,6 +16,8 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
   countdownTarget,
   onOpenTickets,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <section id="next-event" className="relative py-24 sm:py-32 bg-[#080808] border-t border-white/10">
       {/* Subtle Background Glow Accent */}
@@ -26,10 +29,10 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
           <div>
             <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>FLAGSHIP EXPERIENCE</span>
+              <span>{t.nextEvent.badge}</span>
             </div>
             <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white uppercase tracking-tight">
-              NEXT EVENT
+              {t.nextEvent.sectionTitle}
             </h2>
           </div>
 
@@ -41,9 +44,9 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
           </div>
         </div>
 
-        {/* Main Grid: Image + Details + Countdown */}
+        {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-          {/* Left Column: Large Editorial Image Showcase */}
+          {/* Left Column: Image Showcase */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -62,14 +65,14 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               {/* Floating Overlay Badge */}
               <div className="absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1.5 bg-black/80 border border-white/20 backdrop-blur-md text-[11px] font-mono text-white tracking-widest uppercase flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
-                <span>360° SKYLINE & UNDERGROUND SESSIONS</span>
+                <span>{t.nextEvent.subtitle}</span>
               </div>
 
               {/* Bottom Image Caption */}
               <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex items-end justify-between">
                 <div>
                   <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block">
-                    VENUE ARCHITECTURE
+                    {t.nextEvent.venueArchitecture}
                   </span>
                   <p className="text-white font-display text-lg sm:text-xl font-bold">
                     {event.venue}
@@ -84,21 +87,21 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
             {/* Quick Meta Strip */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 text-xs font-mono">
               <div className="p-3 bg-[#0E0E0E] border border-white/10 flex flex-col justify-center">
-                <span className="text-zinc-500 text-[10px]">TIME</span>
+                <span className="text-zinc-500 text-[10px]">{t.nextEvent.time}</span>
                 <span className="text-white font-semibold">{event.time}</span>
               </div>
               <div className="p-3 bg-[#0E0E0E] border border-white/10 flex flex-col justify-center">
-                <span className="text-zinc-500 text-[10px]">RESTRICTION</span>
+                <span className="text-zinc-500 text-[10px]">{t.nextEvent.restriction}</span>
                 <span className="text-white font-semibold">{event.ageRestriction || '21+ STRICT'}</span>
               </div>
               <div className="p-3 bg-[#0E0E0E] border border-white/10 flex flex-col justify-center">
-                <span className="text-zinc-500 text-[10px]">SOUND</span>
+                <span className="text-zinc-500 text-[10px]">{t.nextEvent.sound}</span>
                 <span className="text-[#3B82F6] font-semibold">VOID ACOUSTICS</span>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: Event Narrative, Countdown & Lineup */}
+          {/* Right Column: Narrative, Countdown & Lineup */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +110,6 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
             className="lg:col-span-5 flex flex-col justify-between space-y-6"
           >
             <div className="space-y-6">
-              {/* Event Title */}
               <div>
                 <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block mb-1">
                   1 YEAR ANNIVERSARY SPECIAL
@@ -124,7 +126,6 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
                 </p>
               </div>
 
-              {/* Narrative Description */}
               <p className="text-sm text-zinc-300 leading-relaxed font-sans">
                 {event.description}
               </p>
@@ -132,16 +133,16 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               {/* Functional Live Countdown */}
               <div className="space-y-2 pt-2">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-zinc-400 uppercase tracking-widest">COUNTDOWN TO OPENING</span>
-                  <span className="text-[#2563EB]">LONDON BST (UTC+1)</span>
+                  <span className="text-zinc-400 uppercase tracking-widest">{t.nextEvent.countdownTitle}</span>
+                  <span className="text-[#2563EB]">{t.nextEvent.countdownTz}</span>
                 </div>
                 <CountdownTimer targetDate={countdownTarget || event.date} />
               </div>
 
-              {/* Curated Lineup */}
+              {/* Lineup */}
               <div className="space-y-3 pt-2">
                 <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block">
-                  FEATURED LINEUP
+                  {t.nextEvent.lineupTitle}
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {event.lineup.map((artist, idx) => (
@@ -160,13 +161,13 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               </div>
             </div>
 
-            {/* Primary Action Button */}
+            {/* Action */}
             <div className="pt-6 border-t border-white/10">
               <button
                 onClick={onOpenTickets}
                 className="w-full py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-3 group shadow-xl shadow-[#2563EB]/20"
               >
-                <span>GET TICKETS FOR {event.title}</span>
+                <span>{t.nextEvent.getTicketsFor} {event.title}</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </div>

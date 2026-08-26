@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Music2, Disc, Play, Pause, Sparkles } from 'lucide-react';
 import { Artist } from '../../types';
+import { useLanguage } from '../../lib/LanguageContext';
 
 interface LineupSectionProps {
   artists: Artist[];
 }
 
 export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
+  const { t } = useLanguage();
   const [playingArtistId, setPlayingArtistId] = useState<string | null>(null);
 
   const toggleArtistAudio = (id: string) => {
@@ -22,15 +24,15 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
           <div>
             <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-2">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>SONIC CURATORS & GUEST SELECTIONS</span>
+              <span>{t.lineup.badge}</span>
             </div>
             <h2 className="text-4xl sm:text-6xl font-display font-black text-white uppercase tracking-tight">
-              LINEUP ARCHIVE
+              {t.lineup.title}
             </h2>
           </div>
 
           <p className="text-xs font-mono text-zinc-400 max-w-xs leading-relaxed">
-            Resident innovators and internationally revered guest artists defining the soundscape of London.
+            {t.lineup.subtitle}
           </p>
         </div>
 
@@ -48,11 +50,12 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 className="group relative bg-[#0C0C0C] border border-white/10 hover:border-[#2563EB]/60 transition-all duration-500 flex flex-col justify-between"
               >
-                {/* Large Editorial Portrait */}
+                {/* Large Portrait */}
                 <div className="relative aspect-[4/5] overflow-hidden bg-[#151515]">
                   <img
                     src={artist.image}
                     alt={artist.name}
+                    loading="lazy"
                     className="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0C] via-transparent to-black/30" />
@@ -85,7 +88,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                       <span className="w-1 h-3 bg-[#2563EB] animate-pulse" />
                       <span className="w-1 h-4 bg-[#3B82F6] animate-bounce" />
                       <span className="w-1 h-2 bg-white animate-pulse" />
-                      <span className="text-[9px] font-mono text-white ml-1">AUDIO STREAMING</span>
+                      <span className="text-[9px] font-mono text-white ml-1">{t.lineup.audioStreaming}</span>
                     </div>
                   )}
                 </div>
@@ -105,10 +108,10 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                     {artist.bio}
                   </p>
 
-                  {/* Social Channel Links */}
+                  {/* Channels */}
                   <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                     <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
-                      CHANNELS
+                      {t.lineup.channels}
                     </span>
 
                     <div className="flex items-center gap-3">

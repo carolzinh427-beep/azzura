@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '../components/common/Navbar';
 import { HeroSection } from '../components/sections/HeroSection';
+import { MarqueeRibbon } from '../components/common/MarqueeRibbon';
 import { NextEventSection } from '../components/sections/NextEventSection';
 import { ExperienceSection } from '../components/sections/ExperienceSection';
 import { UpcomingEventsSection } from '../components/sections/UpcomingEventsSection';
@@ -20,7 +21,6 @@ export const HomePage: React.FC = () => {
   const [selectedEventForTickets, setSelectedEventForTickets] = useState<EventItem | null>(null);
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
 
-  // Subscribe to store updates (e.g. if edited in Admin)
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
       setTick((t) => t + 1);
@@ -47,15 +47,15 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-[#080808] text-white">
-      {/* Dynamic Navigation Header */}
       <Navbar onOpenTickets={handleOpenFeaturedTickets} />
 
-      {/* Main Sections Hierarchy */}
       <main id="main-content">
         <HeroSection
           featuredEvent={featuredEvent}
           onOpenTickets={handleOpenFeaturedTickets}
         />
+
+        <MarqueeRibbon />
 
         <NextEventSection
           event={featuredEvent}
@@ -83,10 +83,8 @@ export const HomePage: React.FC = () => {
         <NewsletterSection />
       </main>
 
-      {/* Footer */}
       <Footer />
 
-      {/* Global Ticket Purchasing / Reservation Modal */}
       <TicketModal
         event={selectedEventForTickets}
         isOpen={isTicketModalOpen}

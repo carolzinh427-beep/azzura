@@ -5,6 +5,7 @@ import { EventItem, TicketTier } from '../../types';
 import { formatCurrency } from '../../lib/utils';
 import { useToast } from './Toast';
 import confetti from 'canvas-confetti';
+import { useLanguage } from '../../lib/LanguageContext';
 
 interface TicketModalProps {
   event: EventItem | null;
@@ -13,13 +14,13 @@ interface TicketModalProps {
 }
 
 export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose }) => {
+  const { t } = useLanguage();
   const { success } = useToast();
   const [selectedTierId, setSelectedTierId] = useState<string>('tier-first');
   const [quantity, setQuantity] = useState<number>(2);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
-  // Fallback tiers if event doesn't specify
   const tiers: TicketTier[] = event?.ticketTiers || [
     {
       id: 'tier-first',
@@ -43,7 +44,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
     }
   ];
 
-  const selectedTier = tiers.find((t) => t.id === selectedTierId) || tiers[0];
+  const selectedTier = tiers.find((tier) => tier.id === selectedTierId) || tiers[0];
   const totalPrice = (selectedTier?.price || 0) * quantity;
 
   const handleCheckout = (e: React.FormEvent) => {
@@ -54,7 +55,6 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
       setIsProcessing(false);
       setIsComplete(true);
 
-      // Trigger Celebration Confetti with Azzura colors (blue, silver, white)
       try {
         confetti({
           particleCount: 80,
@@ -63,12 +63,12 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
           colors: ['#2563EB', '#3B82F6', '#FFFFFF', '#151515'],
         });
       } catch {
-        // Confetti fallback
+        // Fallback
       }
 
       success(
-        'RESERVATION CONFIRMED',
-        `Your reservation for ${quantity}x ${selectedTier.name} has been processed.`
+        t.ticketModal.accessGranted,
+        `${quantity}x ${selectedTier.name}`
       );
 
       setTimeout(() => {
@@ -83,7 +83,6 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[1001] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-        {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -92,7 +91,6 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
           className="fixed inset-0 bg-black/85 backdrop-blur-xl"
         />
 
-        {/* Modal Window */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -105,7 +103,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
             <div>
               <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-[#2563EB] uppercase mb-1">
                 <Ticket className="w-3.5 h-3.5" />
-                <span>OFFICIAL TICKET RESERVATION</span>
+                <span>{t.ticketModal.title}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
                 {event.title}
@@ -129,20 +127,19 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
               <div className="w-16 h-16 rounded-full bg-[#2563EB]/20 border border-[#2563EB] flex items-center justify-center text-[#2563EB]">
                 <Sparkles className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-display font-bold">ACCESS GRANTED</h3>
+              <h3 className="text-2xl font-display font-bold">{t.ticketModal.accessGranted}</h3>
               <p className="text-sm text-zinc-400 max-w-md">
-                Your entry passes for <span className="text-white font-medium">{event.title}</span> have been sent to your email. The atmosphere is everything.
+                {t.ticketModal.successMessage}
               </p>
               <div className="pt-4 font-mono text-xs text-[#3B82F6]">
-                QR PASSES READY IN DIGITAL WALLET
+                {t.ticketModal.walletReady}
               </div>
             </div>
           ) : (
             <form onSubmit={handleCheckout} className="p-6 space-y-6">
-              {/* Ticket Tier Selection */}
               <div className="space-y-3">
                 <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase">
-                  SELECT TICKET CATEGORY
+                  {t.ticketModal.selectCategory}
                 </label>
                 <div className="space-y-2.5">
                   {tiers.map((tier) => {
@@ -186,40 +183,19 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                             <span className="text-base sm:text-lg font-bold font-mono text-white">
                               {formatCurrency(tier.price, tier.currency)}
                             </span>
-                            {tier.status === 'FEW_LEFT' && (
-                              <span className="block text-[10px] font-mono text-amber-400">
-                                FINAL ALLOCATION
-                              </span>
-                            )}
-                            {tier.status === 'SOLD_OUT' && (
-                              <span className="block text-[10px] font-mono text-red-400">
-                                SOLD OUT
-                              </span>
-                            )}
                           </div>
                         </div>
-
-                        {isSelected && tier.perks && (
-                          <div className="mt-3 pt-3 border-t border-[#2563EB]/20 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-zinc-300">
-                            {tier.perks.map((perk, i) => (
-                              <div key={i} className="flex items-center gap-1.5 font-mono text-[11px]">
-                                <span className="text-[#2563EB]">•</span>
-                                <span>{perk}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
                       </div>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Quantity Selector */}
+              {/* Quantity */}
               <div className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/10">
                 <div>
-                  <span className="text-xs font-mono text-zinc-400 block uppercase">QUANTITY</span>
-                  <span className="text-xs text-zinc-500">Max 6 tickets per guest</span>
+                  <span className="text-xs font-mono text-zinc-400 block uppercase">{t.ticketModal.quantity}</span>
+                  <span className="text-xs text-zinc-500">{t.ticketModal.maxTickets}</span>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -241,10 +217,10 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                 </div>
               </div>
 
-              {/* Summary & Guarantee */}
+              {/* Summary */}
               <div className="space-y-3 pt-2">
                 <div className="flex items-center justify-between text-sm font-mono border-t border-white/10 pt-4">
-                  <span className="text-zinc-400">TOTAL DUE</span>
+                  <span className="text-zinc-400">{t.ticketModal.totalDue}</span>
                   <span className="text-xl sm:text-2xl font-bold text-white">
                     {formatCurrency(totalPrice, selectedTier.currency)}
                   </span>
@@ -252,7 +228,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
 
                 <div className="flex items-center gap-2 text-[11px] text-zinc-500 font-mono">
                   <ShieldCheck className="w-4 h-4 text-[#2563EB]" />
-                  <span>Secure 256-Bit Encrypted Checkout // Instant Digital Pass Delivery</span>
+                  <span>{t.ticketModal.security}</span>
                 </div>
               </div>
 
@@ -263,10 +239,10 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                 className="w-full py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50"
               >
                 {isProcessing ? (
-                  <span>AUTHENTICATING RESERVATION...</span>
+                  <span>{t.ticketModal.authenticating}</span>
                 ) : (
                   <>
-                    <span>CONFIRM & GET TICKETS ({formatCurrency(totalPrice, selectedTier.currency)})</span>
+                    <span>{t.ticketModal.confirmBtn} ({formatCurrency(totalPrice, selectedTier.currency)})</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </>
                 )}

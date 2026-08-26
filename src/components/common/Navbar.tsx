@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, ArrowUpRight, Shield } from 'lucide-react';
 import { MobileMenu } from './MobileMenu';
+import { useLanguage } from '../../lib/LanguageContext';
 
 interface NavbarProps {
   onOpenTickets: () => void;
 }
 
-const NAV_ITEMS = [
-  { label: 'EVENTS', href: '#events' },
-  { label: 'EXPERIENCE', href: '#experience' },
-  { label: 'LINEUP', href: '#lineup' },
-  { label: 'GALLERY', href: '#gallery' },
-  { label: 'LOCATIONS', href: '#locations' },
-  { label: 'CONTACT', href: '#contact' },
-];
-
 export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
+  const { language, setLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -32,6 +25,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navItems = [
+    { label: t.nav.events, href: '#events' },
+    { label: t.nav.experience, href: '#experience' },
+    { label: t.nav.lineup, href: '#lineup' },
+    { label: t.nav.gallery, href: '#gallery' },
+    { label: t.nav.locations, href: '#locations' },
+    { label: t.nav.contact, href: '#contact' },
+  ];
+
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('#')) {
       e.preventDefault();
@@ -47,8 +49,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-[#080808]/90 backdrop-blur-md py-3.5 border-b border-white/10 shadow-lg shadow-black/40'
-            : 'bg-gradient-to-b from-black/80 via-black/30 to-transparent py-5 sm:py-6 border-b border-transparent'
+            ? 'bg-[#080808]/92 backdrop-blur-md py-3 border-b border-white/10 shadow-lg shadow-black/50'
+            : 'bg-gradient-to-b from-black/80 via-black/30 to-transparent py-4 sm:py-5 border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -59,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2.5 group"
           >
             <div className="w-8 h-8 rounded-none bg-white text-black flex items-center justify-center font-display font-black text-sm tracking-tighter group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
               AZ
@@ -76,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
@@ -89,8 +91,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
             ))}
           </nav>
 
-          {/* Desktop CTA & Admin Link */}
+          {/* Desktop Controls (Language Switcher, Admin, CTA) */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Language Toggle */}
+            <div className="flex items-center bg-white/5 border border-white/10 p-0.5 text-[11px] font-mono">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-0.5 transition-colors ${
+                  language === 'en' ? 'bg-[#2563EB] text-white font-bold' : 'text-zinc-400 hover:text-white'
+                }`}
+                title="English"
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLanguage('pt')}
+                className={`px-2 py-0.5 transition-colors ${
+                  language === 'pt' ? 'bg-[#2563EB] text-white font-bold' : 'text-zinc-400 hover:text-white'
+                }`}
+                title="Português"
+              >
+                PT
+              </button>
+            </div>
+
             <a
               href="/admin"
               className="p-2 text-zinc-400 hover:text-white hover:bg-white/5 transition-colors rounded-none border border-transparent hover:border-white/10"
@@ -104,23 +128,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTickets }) => {
               onClick={onOpenTickets}
               className="relative px-5 py-2.5 bg-white hover:bg-[#2563EB] text-black hover:text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 group flex items-center gap-1.5"
             >
-              <span>GET TICKETS</span>
+              <span>{t.nav.getTickets}</span>
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Right Controls */}
           <div className="flex items-center gap-2 md:hidden">
+            {/* Language Switcher Mobile Quick Toggle */}
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'pt' : 'en')}
+              className="px-2 py-1 bg-white/5 border border-white/10 text-white font-mono text-[10px] font-bold tracking-wider"
+              title="Toggle Language"
+            >
+              {language.toUpperCase()}
+            </button>
+
             <button
               onClick={onOpenTickets}
-              className="px-3 py-1.5 bg-[#2563EB] text-white font-mono text-[11px] font-bold tracking-wider uppercase"
+              className="px-3 py-1 bg-[#2563EB] text-white font-mono text-[11px] font-bold tracking-wider uppercase"
             >
-              TICKETS
+              {t.nav.getTickets}
             </button>
 
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
               aria-label="Open Navigation Menu"
             >
               <Menu className="w-5 h-5" />

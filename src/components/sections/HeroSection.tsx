@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
 import { EventItem } from '../../types';
+import { useLanguage } from '../../lib/LanguageContext';
 
 interface HeroSectionProps {
   featuredEvent: EventItem;
@@ -9,6 +10,7 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenTickets }) => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -72,7 +74,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         >
           <span className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
           <span className="text-xs font-mono tracking-widest text-zinc-300 uppercase">
-            LONDON NIGHTLIFE & SOUND ARCHITECTURE
+            {t.hero.brandTag}
           </span>
         </motion.div>
 
@@ -83,10 +85,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           transition={{ duration: 0.8, delay: 0.4 }}
           onClick={toggleSound}
           className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-black/40 hover:bg-black/80 border border-white/15 backdrop-blur-md text-xs font-mono text-zinc-300 hover:text-white transition-colors"
-          aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+          aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
         >
           {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-[#2563EB]" />}
-          <span className="text-[10px] tracking-widest uppercase">{isMuted ? 'SOUND OFF' : 'SOUND ON'}</span>
+          <span className="text-[10px] tracking-widest uppercase">{isMuted ? t.hero.soundOff : t.hero.soundOn}</span>
         </motion.button>
       </div>
 
@@ -105,7 +107,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           >
             <span className="w-1.5 h-1.5 bg-[#2563EB]" />
             <span className="text-[10px] sm:text-xs font-mono tracking-ultra-wide text-zinc-200 uppercase">
-              THE ATMOSPHERE IS EVERYTHING.
+              {t.hero.tagline}
             </span>
           </motion.div>
 
@@ -128,12 +130,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             className="pt-2 sm:pt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-xs sm:text-sm font-mono text-zinc-300 border-t border-white/10"
           >
             <div className="flex items-center gap-2">
-              <span className="text-[#2563EB] font-bold">NEXT EVENT:</span>
+              <span className="text-[#2563EB] font-bold">{t.hero.nextEvent}</span>
               <span className="text-white font-semibold">{featuredEvent.title}</span>
             </div>
             <div className="hidden sm:block text-zinc-600">//</div>
             <div className="flex items-center gap-4 text-zinc-400">
-              <span>{featuredEvent.displayDate}</span>
+              <span>{t.hero.date}</span>
               <span>•</span>
               <span className="text-[#3B82F6]">{featuredEvent.city}</span>
             </div>
@@ -150,7 +152,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
               onClick={onOpenTickets}
               className="px-8 py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center gap-2 group shadow-xl shadow-[#2563EB]/25"
             >
-              <span>GET TICKETS</span>
+              <span>{t.hero.getTickets}</span>
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>
 
@@ -158,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
               onClick={handleExploreClick}
               className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/15 text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 backdrop-blur-md hover:border-white/30"
             >
-              EXPLORE AZZURA
+              {t.hero.explore}
             </button>
           </motion.div>
         </div>
@@ -177,7 +179,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           className="flex items-center gap-3 text-xs font-mono tracking-widest text-zinc-400 hover:text-white transition-colors group cursor-pointer"
           aria-label="Scroll to explore"
         >
-          <span className="text-[11px] uppercase">SCROLL TO EXPLORE</span>
+          <span className="text-[11px] uppercase">{t.hero.scroll}</span>
           <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#2563EB] group-hover:bg-[#2563EB]/10 transition-all">
             <ArrowDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-y-0.5 transition-transform" />
           </div>

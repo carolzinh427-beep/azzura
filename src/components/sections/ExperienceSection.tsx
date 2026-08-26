@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Compass, Eye, Disc3 } from 'lucide-react';
+import { useLanguage } from '../../lib/LanguageContext';
 
 export const ExperienceSection: React.FC = () => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -14,21 +16,21 @@ export const ExperienceSection: React.FC = () => {
 
   const PILLARS = [
     {
-      num: '01',
-      title: 'THE ATMOSPHERE IS EVERYTHING',
-      desc: 'We do not sell standard club nights. Every Azzura production is a sensory sanctuary where sound design, architectural lighting, and curated crowds converge in rare London spaces.',
+      num: t.experience.pillar1Num,
+      title: t.experience.pillar1Title,
+      desc: t.experience.pillar1Desc,
       icon: Disc3,
     },
     {
-      num: '02',
-      title: 'SKYLINE & SUBTERRANEAN',
-      desc: 'From golden hour panoramic rooftop terraces overlooking St. Paul’s Cathedral to historic subterranean vaulted warehouses with bone-conducting acoustic arrays.',
+      num: t.experience.pillar2Num,
+      title: t.experience.pillar2Title,
+      desc: t.experience.pillar2Desc,
       icon: Compass,
     },
     {
-      num: '03',
-      title: 'UNCOMPROMISING SONIC CURATION',
-      desc: 'Rooted in forward-thinking Melodic Techno, Minimal Tech, and Deep Afro House, inviting world-class underground selectors alongside our boundary-pushing residents.',
+      num: t.experience.pillar3Num,
+      title: t.experience.pillar3Title,
+      desc: t.experience.pillar3Desc,
       icon: Eye,
     },
   ];
@@ -42,7 +44,7 @@ export const ExperienceSection: React.FC = () => {
       {/* Background Decorative Large Text Watermark */}
       <div className="absolute -top-12 left-0 right-0 overflow-hidden pointer-events-none select-none opacity-5">
         <span className="font-display font-black text-[18vw] tracking-tighter uppercase whitespace-nowrap text-white">
-          THE ATMOSPHERE IS EVERYTHING
+          {t.hero.tagline}
         </span>
       </div>
 
@@ -52,16 +54,16 @@ export const ExperienceSection: React.FC = () => {
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB] tracking-widest uppercase mb-3">
               <span className="w-2 h-2 rounded-none bg-[#2563EB]" />
-              <span>EDITORIAL MANIFESTO</span>
+              <span>{t.experience.badge}</span>
             </div>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
-              THE AZZURA <br />
-              <span className="text-stroke-white text-white/30">EXPERIENCE</span>
+              {t.experience.title1} <br />
+              <span className="text-stroke-white text-white/30">{t.experience.title2}</span>
             </h2>
           </div>
 
           <p className="text-sm font-mono text-zinc-400 max-w-sm leading-relaxed">
-            Elevating electronic music culture into an intimate cinematic discipline across London’s most guarded architectural spaces.
+            {t.experience.subtitle}
           </p>
         </div>
 
@@ -82,10 +84,10 @@ export const ExperienceSection: React.FC = () => {
               
               <div className="absolute bottom-6 left-6 right-6">
                 <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block mb-1">
-                  ATMOSPHERE 01
+                  {t.experience.atmosphere01}
                 </span>
                 <p className="text-white font-display text-2xl font-bold uppercase">
-                  LIGHT ARCHITECTURE & DEEP FREQUENCIES
+                  {t.experience.atmosphere01Title}
                 </p>
               </div>
             </motion.div>
@@ -96,15 +98,15 @@ export const ExperienceSection: React.FC = () => {
               className="hidden sm:block ml-auto -mt-24 w-2/3 p-6 bg-[#0E0E0E]/90 border border-white/15 backdrop-blur-xl shadow-2xl relative z-20"
             >
               <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block mb-2">
-                CURATED AUDIENCE
+                {t.experience.curatedTitle}
               </span>
               <p className="text-xs text-zinc-300 font-mono leading-relaxed">
-                Strict door policy prioritizing music aficionados, fashion visionaries, and electronic purists.
+                {t.experience.curatedDesc}
               </p>
             </motion.div>
           </div>
 
-          {/* Right Column: 3 Pillars with Editorial Numbering */}
+          {/* Right Column: 3 Pillars */}
           <div className="lg:col-span-6 space-y-12">
             {PILLARS.map((pillar) => {
               const Icon = pillar.icon;
