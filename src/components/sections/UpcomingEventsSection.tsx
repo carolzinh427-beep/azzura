@@ -45,7 +45,7 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
                 onClick={() => setFilter(tab.id as any)}
                 className={`px-4 py-2 text-xs font-mono tracking-widest uppercase rounded-full transition-all ${
                   filter === tab.id
-                    ? 'bg-[#2563EB] text-white font-bold shadow-lg shadow-[#2563EB]/30'
+                    ? 'bg-[#9333EA] text-white font-bold shadow-lg shadow-[#9333EA]/35'
                     : 'text-zinc-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -64,7 +64,7 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative flex flex-col justify-between bg-[#0E0E0E] rounded-3xl border border-white/10 hover:border-[#2563EB]/60 hover:shadow-2xl hover:shadow-[#2563EB]/10 transition-all duration-500 overflow-hidden"
+              className="group relative flex flex-col justify-between bg-[#0E0E0E] rounded-3xl border border-white/10 hover:border-[#9333EA]/60 hover:shadow-2xl hover:shadow-[#9333EA]/15 transition-all duration-500 overflow-hidden"
             >
               {/* Top Image Container */}
               <div className="relative aspect-[16/11] overflow-hidden bg-[#151515] m-3 rounded-2xl">
@@ -100,7 +100,7 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
                 <div className="space-y-3">
                   {/* Date & Time */}
                   <div className="flex items-center gap-3 text-xs font-mono text-zinc-400">
-                    <span className="text-[#3B82F6] font-semibold">{event.displayDate}</span>
+                    <span className="text-[#C084FC] font-semibold">{event.displayDate}</span>
                     <span>•</span>
                     <span>{event.time}</span>
                   </div>
@@ -112,7 +112,7 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
 
                   {/* Venue */}
                   <p className="text-xs font-mono text-zinc-400 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#2563EB]" />
+                    <MapPin className="w-3.5 h-3.5 text-[#9333EA]" />
                     <span>{event.venue}</span>
                   </p>
 
@@ -141,14 +141,14 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
 
                 {/* Card Bottom CTA & Pricing */}
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs font-mono text-[#3B82F6] font-bold">
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-[#C084FC] font-bold">
                     <Ticket className="w-3.5 h-3.5" />
                     <span>£35 — £45</span>
                   </div>
 
                   <button
                     onClick={() => onSelectEvent(event)}
-                    className="px-4 py-2.5 bg-white group-hover:bg-[#2563EB] text-black group-hover:text-white rounded-full font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg shadow-black/40"
+                    className="px-4 py-2 bg-[#9333EA] hover:bg-[#7E22CE] text-white rounded-full font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg shadow-[#9333EA]/30"
                   >
                     <span>{t.events.getTickets}</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />

@@ -73,10 +73,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           onClick={toggleSound}
-          className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-black/40 hover:bg-black/80 border border-white/15 backdrop-blur-md text-xs font-mono text-zinc-300 hover:text-white transition-colors"
+          className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-black/40 hover:bg-black/80 border border-white/15 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-colors"
           aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
         >
-          {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-[#2563EB]" />}
+          {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-[#A855F7]" />}
           <span className="text-[10px] tracking-widest uppercase">{isMuted ? t.hero.soundOff : t.hero.soundOn}</span>
         </motion.button>
       </div>
@@ -87,14 +87,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         className="relative z-10 px-6 sm:px-12 max-w-7xl mx-auto w-full my-auto flex flex-col justify-center"
       >
         <div className="max-w-4xl space-y-4 sm:space-y-6">
-          {/* Pure Clean Manifesto Line */}
+          {/* Manifesto Line */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="flex items-center gap-3"
           >
-            <span className="w-2 h-2 bg-[#2563EB]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
             <p className="text-xs sm:text-sm font-mono tracking-ultra-wide text-zinc-300 uppercase font-medium">
               {t.hero.tagline}
             </p>
@@ -115,7 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
               direction="right"
               fade={0.72}
               blur={2.5}
-              tint="#2563EB"
+              tint="#A855F7"
               mode="both"
               cursorRadius={320}
               duration={900}
@@ -135,18 +135,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             className="pt-2 sm:pt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-xs sm:text-sm font-mono text-zinc-300 border-t border-white/10"
           >
             <div className="flex items-center gap-2">
-              <span className="text-[#2563EB] font-bold">{t.hero.nextEvent}</span>
+              <span className="text-[#A855F7] font-bold">{t.hero.nextEvent}</span>
               <span className="text-white font-semibold">{featuredEvent.title}</span>
             </div>
             <div className="hidden sm:block text-zinc-600">//</div>
             <div className="flex items-center gap-4 text-zinc-400">
               <span>{t.hero.date}</span>
               <span>•</span>
-              <span className="text-[#3B82F6]">{featuredEvent.city}</span>
+              <span className="text-[#C084FC]">LONDON (£35 — £45)</span>
             </div>
           </motion.div>
 
-          {/* Specular Buttons CTAs */}
+          {/* Purple Specular Buttons CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -155,17 +155,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           >
             <SpecularButton
               size="lg"
-              radius={8}
-              tint="#2563EB"
+              radius={24}
+              tint="#9333EA"
               tintOpacity={0.95}
-              lineColor="#93C5FD"
-              baseColor="#1E40AF"
+              lineColor="#E9D5FF"
+              baseColor="#7E22CE"
               intensity={1.4}
               thickness={1.5}
               shineSize={18}
               shineFade={35}
               onClick={onOpenTickets}
-              className="font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#2563EB]/30"
+              className="font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#9333EA]/35"
             >
               <span>{t.hero.getTickets}</span>
               <ArrowUpRight className="w-4 h-4" />
@@ -173,7 +173,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
 
             <SpecularButton
               size="lg"
-              radius={8}
+              radius={24}
               tint="#ffffff"
               tintOpacity={0.06}
               blur={12}
@@ -204,7 +204,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           aria-label="Scroll to explore"
         >
           <span className="text-[11px] uppercase">{t.hero.scroll}</span>
-          <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#2563EB] group-hover:bg-[#2563EB]/10 transition-all">
+          <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#A855F7] group-hover:bg-[#9333EA]/10 transition-all">
             <ArrowDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-y-0.5 transition-transform" />
           </div>
         </button>

@@ -17,11 +17,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
   return (
     <footer className="relative bg-[#020202] text-white border-t border-white/10 overflow-hidden select-none">
       {/* Background WebGL LightTunnel Effect */}
-      <div className="absolute inset-0 w-full h-full opacity-40 pointer-events-none">
+      <div className="absolute inset-0 w-full h-full opacity-45 pointer-events-none">
         <LightTunnel
-          cableColor="#2563EB"
-          pulseColor="#60A5FA"
-          tunnelColor="#1D4ED8"
+          cableColor="#9333EA"
+          pulseColor="#C084FC"
+          tunnelColor="#7E22CE"
           tunnelOpacity={0.08}
           speed={0.12}
           flowDirection="outward"
@@ -62,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
               <h3 className="font-display font-black text-3xl sm:text-4xl uppercase tracking-tighter text-white">
                 AZZURA
               </h3>
-              <p className="text-xs font-mono text-[#2563EB] tracking-widest uppercase">
+              <p className="text-xs font-mono text-[#A855F7] tracking-widest uppercase">
                 {t.hero.tagline}
               </p>
             </div>
@@ -76,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#2563EB] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#9333EA] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
                 aria-label="Azzura Instagram"
               >
                 <Instagram className="w-4 h-4" />
@@ -85,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
                 href="https://spotify.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#2563EB] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#9333EA] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
                 aria-label="Azzura Spotify"
               >
                 <Music2 className="w-4 h-4" />
@@ -94,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
                 href="https://soundcloud.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#2563EB] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-[#9333EA] border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white transition-all"
                 aria-label="Azzura SoundCloud"
               >
                 <Disc className="w-4 h-4" />
@@ -156,15 +156,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
               {onOpenTickets && (
                 <button
                   onClick={onOpenTickets}
-                  className="px-5 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-lg shadow-[#2563EB]/25"
+                  className="px-5 py-2.5 bg-[#9333EA] hover:bg-[#7E22CE] text-white rounded-full font-mono text-xs font-bold tracking-widest uppercase transition-all shadow-lg shadow-[#9333EA]/35"
                 >
-                  {t.nav.getTickets}
+                  {t.nav.getTickets} (£35 — £45)
                 </button>
               )}
 
               <a
                 href="/admin"
-                className="px-3.5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white font-mono text-xs flex items-center gap-1.5 transition-all"
+                className="px-3.5 py-2.5 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 text-zinc-300 hover:text-white font-mono text-xs flex items-center gap-1.5 transition-all"
                 title="Azzura Admin Portal"
               >
                 <Shield className="w-3.5 h-3.5" />
@@ -187,7 +187,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
             aria-label="Scroll to top of page"
           >
             <span className="text-[11px] uppercase">{t.footer.backToTop}</span>
-            <div className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#2563EB] group-hover:bg-[#2563EB]/10 transition-all">
+            <div className="w-7 h-7 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#9333EA] group-hover:bg-[#9333EA]/10 transition-all">
               <ArrowUp className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:-translate-y-0.5 transition-transform" />
             </div>
           </button>

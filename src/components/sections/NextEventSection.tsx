@@ -22,7 +22,7 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
   return (
     <section id="next-event" className="relative py-24 sm:py-32 bg-[#080808] border-t border-white/10">
       {/* Soft Radial Atmosphere Glow */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#2563EB]/15 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#9333EA]/15 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Editorial Section Header */}
@@ -34,10 +34,10 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
           </div>
 
           <div className="flex items-center gap-3 text-xs font-mono text-zinc-400">
-            <span className="px-3 py-1 bg-[#2563EB]/20 border border-[#2563EB]/40 rounded-full text-white uppercase font-bold tracking-widest">
+            <span className="px-3.5 py-1.5 bg-[#9333EA]/20 border border-[#9333EA]/40 rounded-full text-white uppercase font-bold tracking-widest">
               {event.status}
             </span>
-            <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[#3B82F6] font-semibold">
+            <span className="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full text-[#C084FC] font-semibold">
               TIERS £35 — £45
             </span>
           </div>
@@ -64,7 +64,7 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               {/* Bottom Image Caption */}
               <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
                 <div>
-                  <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block mb-1">
+                  <span className="text-[10px] font-mono text-[#C084FC] tracking-widest uppercase block mb-1">
                     {t.nextEvent.venueArchitecture}
                   </span>
                   <p className="text-white font-display text-xl sm:text-2xl font-bold">
@@ -89,7 +89,7 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               </div>
               <div className="p-4 bg-[#0E0E0E] rounded-2xl border border-white/10 flex flex-col justify-center">
                 <span className="text-zinc-500 text-[10px] uppercase">OFFICIAL TICKETS</span>
-                <span className="text-[#3B82F6] font-bold mt-0.5">£35.00 — £45.00</span>
+                <span className="text-[#C084FC] font-bold mt-0.5">£35.00 — £45.00</span>
               </div>
             </div>
           </motion.div>
@@ -108,7 +108,7 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
                   {event.title}
                 </h3>
                 <p className="text-xs font-mono text-zinc-400 mt-2 flex items-center gap-2">
-                  <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                  <Calendar className="w-3.5 h-3.5 text-[#A855F7]" />
                   <span>{event.displayDate}</span>
                   <span>•</span>
                   <Clock className="w-3.5 h-3.5 text-zinc-500" />
@@ -124,7 +124,7 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               <div className="space-y-2 pt-2">
                 <div className="flex items-center justify-between text-xs font-mono">
                   <span className="text-zinc-400 uppercase tracking-widest">{t.nextEvent.countdownTitle}</span>
-                  <span className="text-[#2563EB]">{t.nextEvent.countdownTz}</span>
+                  <span className="text-[#A855F7]">{t.nextEvent.countdownTz}</span>
                 </div>
                 <CountdownTimer targetDate={countdownTarget || event.date} />
               </div>
@@ -140,7 +140,7 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
                       key={artist}
                       className={`px-3.5 py-1.5 text-xs font-mono rounded-full border transition-colors ${
                         idx === 0
-                          ? 'bg-[#2563EB]/20 border-[#2563EB] text-white font-bold'
+                          ? 'bg-[#9333EA]/25 border-[#9333EA] text-white font-bold'
                           : 'bg-white/5 border-white/10 text-zinc-300 hover:border-white/30'
                       }`}
                     >
@@ -155,21 +155,21 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
             <div className="pt-6 border-t border-white/10 space-y-2">
               <SpecularButton
                 size="lg"
-                radius={16}
-                tint="#2563EB"
+                radius={24}
+                tint="#9333EA"
                 tintOpacity={0.95}
-                lineColor="#93C5FD"
-                baseColor="#1E40AF"
-                intensity={1.3}
+                lineColor="#E9D5FF"
+                baseColor="#7E22CE"
+                intensity={1.4}
                 thickness={1.5}
                 onClick={onOpenTickets}
-                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#2563EB]/25"
+                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#9333EA]/35"
               >
                 <span>{t.nextEvent.getTicketsFor} {event.title} (£35 — £45)</span>
                 <ArrowUpRight className="w-4 h-4" />
               </SpecularButton>
               <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-400">
-                <Ticket className="w-3 h-3 text-[#2563EB]" />
+                <Ticket className="w-3 h-3 text-[#A855F7]" />
                 <span>ALL GUESTS 21+ // INSTANT DIGITAL WALLET PASS</span>
               </div>
             </div>
