@@ -60,12 +60,15 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="relative py-28 sm:py-36 bg-[#000000] border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="relative py-20 sm:py-32 bg-[#000000] border-t border-white/10 select-none overflow-hidden w-full max-w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Editorial Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-12 sm:mb-16 border-b border-white/10 pb-6 sm:pb-8">
           <div>
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
+            <span className="text-[10px] sm:text-[11px] font-mono text-[#A855F7] tracking-[0.2em] uppercase font-bold block mb-1.5">
+              {t.contact.badge}
+            </span>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold text-white tracking-tight break-words">
               {t.contact.title}
             </h2>
           </div>
@@ -75,64 +78,65 @@ export const ContactSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10">
           {/* Left Column: Direct Info */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="p-8 bg-[#0C0C0C] rounded-3xl border border-white/10 space-y-6 shadow-2xl">
+            <div className="p-6 sm:p-8 bg-[#0C0C0C] rounded-2xl sm:rounded-3xl border border-white/10 space-y-5 sm:space-y-6 shadow-xl">
               <span className="text-xs font-mono text-[#9333EA] tracking-widest uppercase block font-semibold">
                 HEADQUARTERS
               </span>
               <div>
-                <p className="font-display text-xl font-bold text-white uppercase">{t.contact.hqTitle}</p>
-                <p className="text-xs font-mono text-zinc-400 mt-1">{t.contact.hqCity}</p>
+                <p className="font-display text-lg sm:text-xl font-bold text-white uppercase">{t.contact.hqTitle}</p>
+                <p className="text-[11px] sm:text-xs font-mono text-zinc-400 mt-1">{t.contact.hqCity}</p>
               </div>
 
-              <div className="space-y-4 pt-4 border-t border-white/10 text-xs font-mono">
+              <div className="space-y-3 sm:space-y-4 pt-4 border-t border-white/10 text-xs font-mono">
                 <div>
-                  <span className="text-zinc-500 block uppercase">{t.contact.generalDesk}</span>
+                  <span className="text-zinc-500 block uppercase text-[10px] sm:text-xs">{t.contact.generalDesk}</span>
                   <a href="mailto:contact@azzura.events" className="text-white hover:text-[#A855F7] transition-colors">
                     contact@azzura.events
                   </a>
                 </div>
 
                 <div>
-                  <span className="text-zinc-500 block uppercase">{t.contact.vipDesk}</span>
+                  <span className="text-zinc-500 block uppercase text-[10px] sm:text-xs">{t.contact.vipDesk}</span>
                   <a href="mailto:vip@azzura.events" className="text-white hover:text-[#A855F7] transition-colors">
                     vip@azzura.events
                   </a>
                 </div>
 
                 <div>
-                  <span className="text-zinc-500 block uppercase">{t.contact.pressDesk}</span>
+                  <span className="text-zinc-500 block uppercase text-[10px] sm:text-xs">{t.contact.pressDesk}</span>
                   <a href="mailto:press@azzura.events" className="text-white hover:text-[#A855F7] transition-colors">
                     press@azzura.events
                   </a>
                 </div>
               </div>
-            </div>
 
-            <div className="p-6 bg-white/[0.02] rounded-2xl border border-white/5 text-xs font-mono text-zinc-400 leading-relaxed">
-              {t.contact.notice}
+              <p className="text-[10px] font-mono text-zinc-500 pt-3 border-t border-white/5 leading-relaxed">
+                {t.contact.notice}
+              </p>
             </div>
           </div>
 
-          {/* Right Column: Rounded Form */}
+          {/* Right Column: Interactive Form */}
           <div className="lg:col-span-8">
-            <form onSubmit={handleSubmit} className="bg-[#0C0C0C] rounded-3xl border border-white/10 p-6 sm:p-10 space-y-8 shadow-2xl">
-              <div className="space-y-3">
-                <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase font-semibold">
+            <form onSubmit={handleSubmit} className="p-6 sm:p-8 bg-[#0C0C0C] rounded-2xl sm:rounded-3xl border border-white/10 space-y-6 shadow-xl">
+              {/* Category Pills */}
+              <div className="space-y-2">
+                <label className="text-[10px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider block">
                   {t.contact.selectCat}
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {categories.map((cat) => (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {categories.map(cat => (
                     <button
                       key={cat.id}
                       type="button"
                       onClick={() => setSelectedCategory(cat.id)}
-                      className={`p-4 rounded-2xl text-xs font-mono tracking-wider uppercase text-left border transition-all ${
+                      className={`p-2 sm:p-2.5 rounded-xl border text-[10px] sm:text-[11px] font-mono tracking-wider uppercase transition-all cursor-pointer text-center truncate ${
                         selectedCategory === cat.id
-                          ? 'bg-[#9333EA]/20 border-[#9333EA] text-white font-bold shadow-lg shadow-[#9333EA]/15'
-                          : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white hover:border-white/20'
+                          ? 'bg-[#9333EA]/20 border-[#9333EA] text-white font-bold shadow-md'
+                          : 'bg-white/5 border-white/10 text-zinc-400 hover:text-white'
                       }`}
                     >
                       {cat.label}
@@ -141,40 +145,42 @@ export const ContactSection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase">
+              {/* Name & Email Fields */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider block">
                     {t.contact.yourName}
                   </label>
                   <input
                     type="text"
                     name="name"
-                    required
                     value={formData.name}
                     onChange={handleChange}
                     placeholder={t.contact.namePlaceholder}
-                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
+                    required
+                    className="w-full px-3.5 py-3 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider block">
                     {t.contact.email}
                   </label>
                   <input
                     type="email"
                     name="email"
-                    required
                     value={formData.email}
                     onChange={handleChange}
                     placeholder={t.contact.emailPlaceholder}
-                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
+                    required
+                    className="w-full px-3.5 py-3 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase">
+              {/* Subject */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider block">
                   {t.contact.subject}
                 </label>
                 <input
@@ -183,50 +189,51 @@ export const ContactSection: React.FC = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder={t.contact.subjectPlaceholder}
-                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
+                  className="w-full px-3.5 py-3 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase">
+              {/* Message */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider block">
                   {t.contact.message}
                 </label>
                 <textarea
                   name="message"
-                  required
-                  rows={5}
+                  rows={4}
                   value={formData.message}
                   onChange={handleChange}
                   placeholder={t.contact.messagePlaceholder}
-                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors resize-none"
+                  required
+                  className="w-full px-3.5 py-3 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors resize-none"
                 />
               </div>
 
+              {/* Submit CTA */}
               <SpecularButton
                 type="submit"
-                size="lg"
-                radius={14}
-                tint="#9333EA"
-                tintOpacity={0.95}
-                lineColor="#93C5FD"
-                baseColor="#581C87"
-                intensity={1.3}
                 disabled={isSubmitting}
-                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#9333EA]/25"
+                size="lg"
+                tint="#9333EA"
+                lineColor="#C084FC"
+                baseColor="#7E22CE"
+                intensity={1.3}
+                radius={12}
+                className="w-full font-mono text-[11px] sm:text-xs font-bold tracking-widest uppercase shadow-xl"
               >
-                {isSubmitting ? (
-                  <span>{t.contact.sending}</span>
-                ) : isSent ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>{t.contact.sent}</span>
-                  </>
-                ) : (
-                  <>
-                    <span>{t.contact.send}</span>
-                    <Send className="w-4 h-4" />
-                  </>
-                )}
+                <div className="flex items-center justify-center gap-2 py-1">
+                  {isSent ? (
+                    <>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <span>{t.contact.sent}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      <span>{isSubmitting ? t.contact.sending : t.contact.send}</span>
+                    </>
+                  )}
+                </div>
               </SpecularButton>
             </form>
           </div>
@@ -235,3 +242,5 @@ export const ContactSection: React.FC = () => {
     </section>
   );
 };
+
+export default ContactSection;

@@ -18,12 +18,15 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
   };
 
   return (
-    <section id="lineup" className="relative py-24 sm:py-36 bg-[#000000] border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Clean Editorial Section Header without overhead tag */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 border-b border-white/10 pb-6 sm:pb-8">
+    <section id="lineup" className="relative py-20 sm:py-32 bg-[#000000] border-t border-white/10 select-none overflow-hidden w-full max-w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Clean Editorial Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-16 border-b border-white/10 pb-6 sm:pb-8">
           <div>
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
+            <span className="text-[10px] sm:text-[11px] font-mono text-[#A855F7] tracking-[0.2em] uppercase font-bold block mb-1.5">
+              {t.lineup.badge}
+            </span>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold text-white tracking-tight break-words">
               {t.lineup.title}
             </h2>
           </div>
@@ -33,7 +36,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
           </p>
         </div>
 
-        {/* 3D Kinetic Profile Cards Grid (Responsive 1-col mobile, 2-col tablet, 3-col desktop) */}
+        {/* 3D Kinetic Profile Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
           {artists.map((artist, idx) => {
             const isPlaying = playingArtistId === artist.id;
@@ -41,11 +44,11 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
 
             const topBadge = (
               <div className="flex items-center justify-between w-full">
-                <span className="px-3 py-1 text-[9px] font-mono tracking-widest uppercase bg-black/85 border border-white/20 text-white rounded-full">
+                <span className="px-2.5 py-0.5 text-[9px] font-mono tracking-wider uppercase bg-black/85 border border-white/20 text-white rounded-full">
                   {artist.role || 'GUEST SELECTOR'}
                 </span>
 
-                <span className="px-2.5 py-0.5 text-[9px] font-mono text-[#C084FC] bg-black/85 border border-white/15 rounded-full">
+                <span className="px-2 py-0.5 text-[9px] font-mono text-[#C084FC] bg-black/85 border border-white/15 rounded-full">
                   {artist.genre}
                 </span>
               </div>
@@ -54,7 +57,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
             return (
               <motion.div
                 key={artist.id}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.08 }}
@@ -91,10 +94,10 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleArtistAudio(artist.id)}
-                      className="p-1.5 text-zinc-400 hover:text-white bg-white/5 hover:bg-[#9333EA] rounded-full transition-colors"
+                      className="p-1.5 text-zinc-400 hover:text-white bg-white/5 hover:bg-[#9333EA] rounded-full transition-colors cursor-pointer"
                       aria-label="Play audio snippet"
                     >
-                      {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                      {isPlaying ? <Pause className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
                     </button>
 
                     {artist.instagram && (
@@ -105,7 +108,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                         className="p-1.5 text-zinc-400 hover:text-white bg-white/5 hover:bg-[#9333EA] rounded-full transition-colors"
                         aria-label="Instagram"
                       >
-                        <Instagram className="w-3.5 h-3.5" />
+                        <Instagram className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </a>
                     )}
                     {artist.spotify && (
@@ -116,7 +119,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                         className="p-1.5 text-zinc-400 hover:text-white bg-white/5 hover:bg-[#9333EA] rounded-full transition-colors"
                         aria-label="Spotify"
                       >
-                        <Music2 className="w-3.5 h-3.5" />
+                        <Music2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </a>
                     )}
                     {artist.soundcloud && (
@@ -127,7 +130,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
                         className="p-1.5 text-zinc-400 hover:text-white bg-white/5 hover:bg-[#9333EA] rounded-full transition-colors"
                         aria-label="SoundCloud"
                       >
-                        <Disc className="w-3.5 h-3.5" />
+                        <Disc className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </a>
                     )}
                   </div>
@@ -140,3 +143,5 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
     </section>
   );
 };
+
+export default LineupSection;

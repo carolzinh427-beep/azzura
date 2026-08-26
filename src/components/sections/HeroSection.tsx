@@ -199,9 +199,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   }, []);
 
   return (
-    <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] text-white pt-24 pb-16 sm:pt-28 sm:pb-20 select-none">
+    <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full bg-[#050505] text-white pt-20 pb-14 sm:pt-28 sm:pb-20 select-none">
       {/* 3D WebGL Background: Centered Laser Grid */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-50 z-0">
+      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-45 z-0 overflow-hidden">
         <GridScan
           sensitivity={0.55}
           lineThickness={1}
@@ -217,24 +217,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         />
       </div>
 
-      {/* Atmospheric Vignette & Gradients */}
+      {/* Atmospheric Vignette & Gradients (Strictly Contained) */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/80 pointer-events-none z-[1]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#9333EA]/12 rounded-full blur-[160px] pointer-events-none z-[1]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-[#9333EA]/12 rounded-full blur-[120px] pointer-events-none z-[1]" />
 
       {/* Main Hero Container */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         
         {/* 1. Liquid Chrome Metallic Emblem with Single-Instance Hover Audio */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: -20 }}
+          initial={{ opacity: 0, scale: 0.85, y: -15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           onMouseEnter={handleEmblemHover}
-          className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center mb-1 sm:mb-2 pointer-events-auto cursor-pointer group"
+          className="relative w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center mb-2 pointer-events-auto cursor-pointer group"
           title="Passe o cursor para tocar o áudio"
         >
           {/* Subtle Ambient Backlight Glow */}
-          <div className="absolute inset-4 rounded-full bg-[#A855F7]/25 blur-2xl pointer-events-none group-hover:bg-[#A855F7]/45 transition-all duration-700" />
+          <div className="absolute inset-2 sm:inset-4 rounded-full bg-[#A855F7]/25 blur-xl pointer-events-none group-hover:bg-[#A855F7]/45 transition-all duration-700" />
           
           <MetallicPaint
             imageSrc="/azzura-emblem.svg"
@@ -264,40 +264,40 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* 2. Brand Title: AZZURA */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-white leading-none mb-3 sm:mb-4"
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="font-display font-black text-4xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-white leading-none mb-2 sm:mb-3 break-words"
         >
           AZZURA
         </motion.h1>
 
         {/* 3. Main Manifesto / Hook */}
         <motion.p
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xs sm:text-sm md:text-base font-mono font-semibold tracking-[0.25em] text-[#C084FC] uppercase mb-4 sm:mb-5"
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[11px] sm:text-sm md:text-base font-mono font-semibold tracking-[0.18em] sm:tracking-[0.25em] text-[#C084FC] uppercase mb-3 sm:mb-4 px-2"
         >
           {t.hero.tagline}
         </motion.p>
 
         {/* 4. Short Description */}
         <motion.p
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="text-sm sm:text-base text-zinc-300 font-sans max-w-xl mx-auto leading-relaxed mb-8 sm:mb-10"
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="text-xs sm:text-sm md:text-base text-zinc-300 font-sans max-w-lg mx-auto leading-relaxed mb-6 sm:mb-8 px-2"
         >
           {t.hero.subtitle}
         </motion.p>
 
         {/* 5. High-Intent Action Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md sm:max-w-none mb-8 sm:mb-10"
+          transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-xs sm:max-w-none mb-6 sm:mb-8"
         >
           {/* Primary Action Button */}
           <SpecularButton
@@ -307,10 +307,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             baseColor="#7E22CE"
             intensity={1.3}
             radius={999}
-            className="w-full sm:w-auto px-8 py-3.5"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5"
             onClick={onOpenTickets}
           >
-            <span className="font-mono text-xs font-bold tracking-widest uppercase">
+            <span className="font-mono text-[11px] sm:text-xs font-bold tracking-widest uppercase">
               {t.hero.exploreEvents}
             </span>
           </SpecularButton>
@@ -318,7 +318,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Secondary Action Button */}
           <a
             href="#experience"
-            className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white border border-white/15 font-mono text-xs font-semibold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white border border-white/15 font-mono text-[11px] sm:text-xs font-semibold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2"
           >
             <span>{t.hero.discoverExperience}</span>
           </a>
@@ -328,29 +328,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           className="flex items-center gap-3"
         >
           <button
             onClick={toggleAudio}
-            className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#0E0E0E]/90 hover:bg-[#151515] border border-white/15 text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg shadow-black/60 group"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0E0E0E]/90 hover:bg-[#151515] border border-white/15 text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg shadow-black/60 group"
             title="Toggle atmospheric audio"
           >
             {isPlaying ? (
               <>
-                <div className="flex items-center gap-1 h-3.5 w-4.5 justify-center">
-                  <span className="w-1 bg-[#C084FC] rounded-full animate-eq-1" />
-                  <span className="w-1 bg-[#A855F7] rounded-full animate-eq-2" />
-                  <span className="w-1 bg-[#9333EA] rounded-full animate-eq-3" />
+                <div className="flex items-center gap-0.5 h-3 w-4 justify-center">
+                  <span className="w-0.5 bg-[#C084FC] rounded-full animate-eq-1" />
+                  <span className="w-0.5 bg-[#A855F7] rounded-full animate-eq-2" />
+                  <span className="w-0.5 bg-[#9333EA] rounded-full animate-eq-3" />
                 </div>
-                <span className="text-[10px] font-mono font-bold tracking-widest text-[#C084FC] uppercase">
+                <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-widest text-[#C084FC] uppercase">
                   {t.hero.soundOn}
                 </span>
               </>
             ) : (
               <>
-                <VolumeX className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300" />
-                <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
+                <VolumeX className="w-3 h-3 text-zinc-500 group-hover:text-zinc-300" />
+                <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
                   {t.hero.soundOff}
                 </span>
               </>
@@ -364,10 +364,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center gap-1.5 text-zinc-500"
+        transition={{ delay: 0.8, duration: 0.8 }}
+        className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center gap-1 text-zinc-500"
       >
-        <ArrowDown className="w-4 h-4 text-zinc-500 animate-bounce" />
+        <ArrowDown className="w-3.5 h-3.5 text-zinc-500 animate-bounce" />
       </motion.div>
     </section>
   );
