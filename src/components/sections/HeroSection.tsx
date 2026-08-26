@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 import EchoText from '../common/EchoText';
+import SpecularButton from '../common/SpecularButton';
 
 interface HeroSectionProps {
   featuredEvent: EventItem;
@@ -86,7 +87,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
         className="relative z-10 px-6 sm:px-12 max-w-7xl mx-auto w-full my-auto flex flex-col justify-center"
       >
         <div className="max-w-4xl space-y-4 sm:space-y-6">
-          {/* Pure Clean Manifesto Line (No generic pill badge box) */}
+          {/* Pure Clean Manifesto Line */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -145,27 +146,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
             </div>
           </motion.div>
 
-          {/* CTAs */}
+          {/* Specular Buttons CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-wrap items-center gap-4 pt-4 sm:pt-6"
           >
-            <button
+            <SpecularButton
+              size="lg"
+              radius={8}
+              tint="#2563EB"
+              tintOpacity={0.95}
+              lineColor="#93C5FD"
+              baseColor="#1E40AF"
+              intensity={1.4}
+              thickness={1.5}
+              shineSize={18}
+              shineFade={35}
               onClick={onOpenTickets}
-              className="px-8 py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center gap-2 group shadow-xl shadow-[#2563EB]/25"
+              className="font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#2563EB]/30"
             >
               <span>{t.hero.getTickets}</span>
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </button>
+              <ArrowUpRight className="w-4 h-4" />
+            </SpecularButton>
 
-            <button
+            <SpecularButton
+              size="lg"
+              radius={8}
+              tint="#ffffff"
+              tintOpacity={0.06}
+              blur={12}
+              lineColor="#ffffff"
+              baseColor="#27272a"
+              intensity={1.0}
+              thickness={1}
               onClick={handleExploreClick}
-              className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/15 text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 backdrop-blur-md hover:border-white/30"
+              className="font-mono text-xs font-bold tracking-widest uppercase"
             >
               {t.hero.explore}
-            </button>
+            </SpecularButton>
           </motion.div>
         </div>
       </motion.div>

@@ -4,6 +4,7 @@ import { Clock, Calendar, ArrowUpRight } from 'lucide-react';
 import { EventItem } from '../../types';
 import { CountdownTimer } from '../common/CountdownTimer';
 import { useLanguage } from '../../lib/LanguageContext';
+import SpecularButton from '../common/SpecularButton';
 
 interface NextEventSectionProps {
   event: EventItem;
@@ -149,15 +150,23 @@ export const NextEventSection: React.FC<NextEventSectionProps> = ({
               </div>
             </div>
 
-            {/* Action */}
+            {/* Specular Action */}
             <div className="pt-6 border-t border-white/10">
-              <button
+              <SpecularButton
+                size="lg"
+                radius={8}
+                tint="#2563EB"
+                tintOpacity={0.95}
+                lineColor="#93C5FD"
+                baseColor="#1E40AF"
+                intensity={1.3}
+                thickness={1.5}
                 onClick={onOpenTickets}
-                className="w-full py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-3 group shadow-xl shadow-[#2563EB]/20"
+                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#2563EB]/25"
               >
                 <span>{t.nextEvent.getTicketsFor} {event.title}</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </button>
+                <ArrowUpRight className="w-4 h-4" />
+              </SpecularButton>
             </div>
           </motion.div>
         </div>
