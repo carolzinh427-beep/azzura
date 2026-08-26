@@ -63,7 +63,7 @@ export const HomePage: React.FC = () => {
           onOpenTickets={handleOpenFeaturedTickets}
         />
 
-        <ExperienceSection />
+        <ExperienceSection onOpenTickets={handleOpenFeaturedTickets} />
 
         <UpcomingEventsSection
           events={events}

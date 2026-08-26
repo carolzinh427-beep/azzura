@@ -1,108 +1,104 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Layers, Disc3 } from 'lucide-react';
+import { Sparkles, ArrowRight, Disc3 } from 'lucide-react';
 import { useLanguage } from '../../lib/LanguageContext';
+import LightTunnel from '../common/LightTunnel';
+import SpecularButton from '../common/SpecularButton';
 
-export const ExperienceSection: React.FC = () => {
+interface ExperienceSectionProps {
+  onOpenTickets?: () => void;
+}
+
+export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTickets }) => {
   const { t } = useLanguage();
 
-  const pillars = [
-    {
-      num: t.experience.pillar1Num,
-      title: t.experience.pillar1Title,
-      desc: t.experience.pillar1Desc,
-      icon: <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-[#C084FC]" />,
-    },
-    {
-      num: t.experience.pillar2Num,
-      title: t.experience.pillar2Title,
-      desc: t.experience.pillar2Desc,
-      icon: <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-[#A855F7]" />,
-    },
-    {
-      num: t.experience.pillar3Num,
-      title: t.experience.pillar3Title,
-      desc: t.experience.pillar3Desc,
-      icon: <Disc3 className="w-4 h-4 sm:w-5 sm:h-5 text-[#9333EA]" />,
-    },
-  ];
-
   return (
-    <section id="experience" className="relative py-20 sm:py-32 bg-[#050505] border-t border-white/10 select-none overflow-hidden w-full max-w-full">
-      {/* Background Soft Purple Lighting */}
-      <div className="absolute top-1/3 right-5 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[#9333EA]/10 rounded-full blur-[140px] pointer-events-none" />
+    <section id="experience" className="relative min-h-[70vh] sm:min-h-[85vh] flex items-center justify-center bg-[#050505] border-t border-white/10 select-none overflow-hidden w-full max-w-full py-16 sm:py-24">
+      {/* 3D WebGL Light Tunnel Animation */}
+      <div className="absolute inset-0 w-full h-full pointer-events-auto opacity-75 z-0">
+        <LightTunnel
+          cableColor="#381D5E"
+          pulseColor="#C084FC"
+          tunnelColor="#050505"
+          cableCount={18}
+          thickness={0.32}
+          rimWidth={0.15}
+          pulseSpeed={2.2}
+          pulseLength={0.32}
+          speed={0.14}
+          glow={1.2}
+          brightness={1.1}
+          mouseInteraction={true}
+          mouseStrength={0.12}
+          className="w-full h-full"
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        {/* Editorial Section Header */}
-        <div className="max-w-3xl mb-12 sm:mb-20">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[10px] sm:text-[11px] font-mono text-[#A855F7] tracking-[0.2em] uppercase font-bold block mb-2"
-          >
-            {t.experience.badge}
-          </motion.span>
+      {/* Atmospheric Vignette & Gradients */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/80 pointer-events-none z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/60 via-transparent to-[#080808]/60 pointer-events-none z-[1]" />
 
-          {/* Cinematic Fade & Blur Reveal Title */}
-          <motion.h2
-            initial={{ opacity: 0, filter: 'blur(6px)', y: 15 }}
-            whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl sm:text-5xl md:text-6xl font-display font-bold text-white tracking-tight leading-[1.1] mb-4 sm:mb-6 break-words"
-          >
-            <span className="block">{t.experience.title1}</span>
-            <span className="text-[#C084FC] block">{t.experience.title2}</span>
-          </motion.h2>
+      {/* Floating Glassmorphic Center Portal */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 20 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/80 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/90 max-w-2xl mx-auto flex flex-col items-center space-y-5 sm:space-y-6"
+        >
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#9333EA]/20 border border-[#9333EA]/40 text-[#C084FC] text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase">
+            <Sparkles className="w-3.5 h-3.5 text-[#C084FC]" />
+            <span>{t.experience.badge || 'A EXPERIÊNCIA AZZURA'}</span>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-xs sm:text-base text-zinc-300 font-sans leading-relaxed"
-          >
+          {/* Main Statement */}
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-white tracking-tight leading-tight uppercase break-words">
+            THE ATMOSPHERE <br />
+            <span className="text-[#C084FC]">IS EVERYTHING</span>
+          </h2>
+
+          {/* Subtitle */}
+          <p className="text-xs sm:text-sm md:text-base text-zinc-300 font-sans leading-relaxed max-w-lg">
             {t.experience.subtitle}
-          </motion.p>
-        </div>
+          </p>
 
-        {/* 3 Pillars Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
-          {pillars.map((pillar, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="p-6 sm:p-9 rounded-2xl sm:rounded-3xl bg-[#0E0E0E]/90 border border-white/10 hover:border-[#9333EA]/40 transition-all duration-500 flex flex-col justify-between group shadow-xl"
-            >
-              <div className="space-y-4 sm:space-y-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-xl sm:text-2xl font-mono font-bold text-zinc-600 group-hover:text-[#C084FC] transition-colors">
-                    {pillar.num}
-                  </span>
-                  <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 group-hover:bg-[#9333EA]/20 group-hover:border-[#9333EA]/40 transition-all">
-                    {pillar.icon}
-                  </div>
+          {/* Feature Highlights Pills */}
+          <div className="flex flex-wrap justify-center gap-2 pt-2 text-[10px] sm:text-xs font-mono">
+            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-300">
+              ROOFTOP SKYLINE
+            </span>
+            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-300">
+              SUBTERRÂNEO
+            </span>
+            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-300">
+              VOID ACOUSTICS
+            </span>
+          </div>
+
+          {/* Action Button */}
+          {onOpenTickets && (
+            <div className="pt-3 w-full sm:w-auto">
+              <SpecularButton
+                size="md"
+                tint="#9333EA"
+                lineColor="#C084FC"
+                baseColor="#7E22CE"
+                intensity={1.3}
+                radius={999}
+                className="w-full sm:w-auto px-8 py-3 font-mono text-[11px] sm:text-xs font-bold tracking-widest uppercase"
+                onClick={onOpenTickets}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <Disc3 className="w-3.5 h-3.5" />
+                  <span>GARANTIR INGRESSO</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </div>
-
-                <h3 className="text-lg sm:text-2xl font-display font-bold text-white tracking-tight leading-snug break-words">
-                  {pillar.title}
-                </h3>
-
-                <p className="text-xs sm:text-sm text-zinc-400 font-sans leading-relaxed">
-                  {pillar.desc}
-                </p>
-              </div>
-
-              <div className="pt-5 mt-5 border-t border-white/5">
-                <div className="h-0.5 w-8 bg-[#9333EA]/40 group-hover:w-full group-hover:bg-[#C084FC] transition-all duration-500" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </SpecularButton>
+            </div>
+          )}
+        </motion.div>
       </div>
     </section>
   );
