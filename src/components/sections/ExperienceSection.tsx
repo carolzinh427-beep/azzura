@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Disc3 } from 'lucide-react';
 import LightTunnel from '../common/LightTunnel';
+import MaskedHeading from '../common/MaskedHeading';
 
 interface ExperienceSectionProps {
   onOpenTickets?: () => void;
@@ -9,9 +10,9 @@ interface ExperienceSectionProps {
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTickets }) => {
   return (
-    <section id="experience" className="relative min-h-[60vh] sm:min-h-[75vh] flex items-center justify-center bg-[#050505] border-t border-white/10 select-none overflow-hidden w-full max-w-full py-16 sm:py-24">
+    <section id="experience" className="relative min-h-[65vh] sm:min-h-[80vh] flex items-center justify-center bg-[#050505] border-t border-white/10 select-none overflow-hidden w-full max-w-full py-16 sm:py-24">
       {/* 3D WebGL Light Tunnel Animation */}
-      <div className="absolute inset-0 w-full h-full pointer-events-auto opacity-80 z-0">
+      <div className="absolute inset-0 w-full h-full pointer-events-auto opacity-75 z-0">
         <LightTunnel
           cableColor="#381D5E"
           pulseColor="#C084FC"
@@ -35,19 +36,34 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTick
       <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/60 via-transparent to-[#080808]/60 pointer-events-none z-[1]" />
 
       {/* Floating Center Portal */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/85 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/90 max-w-xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
+          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/85 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/90 max-w-2xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
         >
-          {/* Main Statement */}
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white tracking-tight leading-tight uppercase break-words drop-shadow-lg">
-            THE ATMOSPHERE <br />
-            <span className="text-[#C084FC]">IS EVERYTHING</span>
-          </h2>
+          {/* MaskedHeading Component from React Bits */}
+          <div className="w-full">
+            <MaskedHeading
+              text="THE ATMOSPHERE IS EVERYTHING"
+              tag="h2"
+              src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1600&auto=format&fit=crop"
+              fillScale={1.3}
+              parallax={32}
+              drift={16}
+              brightness={1.15}
+              saturation={1.3}
+              reveal="rise"
+              trigger="view"
+              align="center"
+              weight={900}
+              tracking={-0.02}
+              textScale={0.105}
+              className="font-display uppercase drop-shadow-2xl"
+            />
+          </div>
 
           {/* Action Button: Non-overlapping Clean Luxury Action Button */}
           {onOpenTickets && (
