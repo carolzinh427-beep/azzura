@@ -26,21 +26,41 @@ export interface Translations {
   };
   marquee: string[];
   nextEvent: {
-    badge: string;
     sectionTitle: string;
-    subtitle: string;
-    venueArchitecture: string;
+    badge: string;
+    headline: string;
+    dateFormatted: string;
     time: string;
+    venue: string;
+    venueArchitecture: string;
     restriction: string;
-    sound: string;
     countdownTitle: string;
     countdownTz: string;
     lineupTitle: string;
     getTicketsFor: string;
+    locationShort: string;
+    synopsis: string;
+    tier1: string;
+    tier1Price: string;
+    tier2: string;
+    tier2Price: string;
+    tier3: string;
+    tier3Price: string;
+    reserveCta: string;
+    detailsCta: string;
     days: string;
     hours: string;
     minutes: string;
     seconds: string;
+  };
+  events: {
+    title: string;
+    subtitle: string;
+    all: string;
+    rooftop: string;
+    underground: string;
+    getTickets: string;
+    moreLineup: string;
   };
   experience: {
     badge: string;
@@ -61,12 +81,14 @@ export interface Translations {
     pillar3Title: string;
     pillar3Desc: string;
   };
-  events: {
+  upcoming: {
     badge: string;
     title: string;
-    all: string;
-    rooftop: string;
-    underground: string;
+    subtitle: string;
+    allFilter: string;
+    rooftopFilter: string;
+    undergroundFilter: string;
+    warehouseFilter: string;
     getTickets: string;
     moreLineup: string;
   };
@@ -165,6 +187,15 @@ export interface Translations {
     successMessage: string;
     walletReady: string;
   };
+  lgpd: {
+    badge: string;
+    title: string;
+    desc: string;
+    acceptAll: string;
+    essentialOnly: string;
+    privacyPolicy: string;
+    close: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -198,74 +229,96 @@ export const translations: Record<Language, Translations> = {
       'LONDON SKYLINE',
       'ROOFTOP OPEN AIR',
       'SUBTERRANEAN SESSIONS',
-      'VOID ACOUSTICS SOUND',
-      'MELODIC TECHNO & MINIMAL',
-      '30 AUGUST 2026',
+      'ELECTRONIC EXCELLENCE',
+      'VIP CURATION',
+      'IMMERSIVE SOUND',
     ],
     nextEvent: {
-      badge: 'FLAGSHIP EXPERIENCE',
-      sectionTitle: 'NEXT EVENT',
-      subtitle: '360° SKYLINE & UNDERGROUND SESSIONS',
-      venueArchitecture: 'VENUE ARCHITECTURE',
-      time: 'TIME',
-      restriction: 'RESTRICTION',
-      sound: 'SOUND',
-      countdownTitle: 'COUNTDOWN TO OPENING',
-      countdownTz: 'LONDON BST (UTC+1)',
-      lineupTitle: 'FEATURED LINEUP',
-      getTicketsFor: 'GET TICKETS FOR',
+      sectionTitle: 'NEXT SESSION',
+      badge: 'FEATURED PRODUCTION',
+      headline: 'ST. PAUL’S PANORAMA & DEEP SESSIONS',
+      dateFormatted: 'SATURDAY, 30 AUGUST 2026',
+      time: '18:00 — 04:00 BST',
+      venue: 'ONE NEW CHANGE ROOFTOP & VAULT',
+      venueArchitecture: 'VENUE & ARCHITECTURE',
+      restriction: 'ENTRY RESTRICTION',
+      countdownTitle: 'COMMENCING IN',
+      countdownTz: 'LONDON TIME (BST)',
+      lineupTitle: 'CURATED SELECTORS',
+      getTicketsFor: 'SECURE TICKETS FOR',
+      locationShort: 'LONDON EC4M',
+      synopsis: 'A seamless transition from golden hour skyline views over St. Paul’s Cathedral into deep subterranean sonic architecture. Curated selectors, bespoke Void Acoustics sound, and London’s most discerning electronic music community.',
+      tier1: 'EARLY SUNSET ENTRY (PRE-20:00)',
+      tier1Price: '£35.00',
+      tier2: 'FIRST RELEASE (ALL NIGHT ACCESS)',
+      tier2Price: '£40.00',
+      tier3: 'FINAL RELEASE / VIP FAST TRACK',
+      tier3Price: '£45.00',
+      reserveCta: 'SECURE RESERVATION (£35 — £45)',
+      detailsCta: 'EXPLORE PRODUCTION',
       days: 'DAYS',
       hours: 'HOURS',
       minutes: 'MINUTES',
       seconds: 'SECONDS',
     },
+    events: {
+      title: 'SEASON SCHEDULE',
+      subtitle: 'Limited capacity reservations across central and east London architectural landmarks.',
+      all: 'ALL GATHERINGS',
+      rooftop: 'ROOFTOPS',
+      underground: 'SUBTERRANEAN',
+      getTickets: 'GET TICKETS',
+      moreLineup: 'SELECTORS',
+    },
     experience: {
       badge: 'EDITORIAL MANIFESTO',
       title1: 'THE AZZURA',
       title2: 'EXPERIENCE',
-      subtitle: 'Elevating electronic music culture into an intimate cinematic discipline across London’s most guarded architectural spaces.',
+      subtitle: 'Elevating electronic music culture into an intimate, cinematic discipline across London’s most anomalous architectural spaces.',
       atmosphere01: 'ATMOSPHERE 01',
       atmosphere01Title: 'LIGHT ARCHITECTURE & DEEP FREQUENCIES',
-      curatedTitle: 'CURATED AUDIENCE',
-      curatedDesc: 'Strict door policy prioritizing music aficionados, fashion visionaries, and electronic purists.',
+      curatedTitle: 'CURATED COMMUNITY',
+      curatedDesc: 'Strict entry criteria prioritizing true music enthusiasts, fashion visionaries, and electronic purists.',
       pillar1Num: '01',
       pillar1Title: 'THE ATMOSPHERE IS EVERYTHING',
-      pillar1Desc: 'We do not sell standard club nights. Every Azzura production is a sensory sanctuary where sound design, architectural lighting, and curated crowds converge in rare London spaces.',
+      pillar1Desc: 'We do not produce standard parties. Each Azzura gathering is a sensory sanctuary where sound design, architectural lighting, and a discerning crowd converge in London’s rarest spaces.',
       pillar2Num: '02',
-      pillar2Title: 'SKYLINE & SUBTERRANEAN',
-      pillar2Desc: 'From golden hour panoramic rooftop terraces overlooking St. Paul’s Cathedral to historic subterranean vaulted warehouses with bone-conducting acoustic arrays.',
+      pillar2Title: 'ROOFTOPS & SUBTERRANEAN',
+      pillar2Desc: 'From golden hour panoramic terraces overlooking St. Paul’s to historical subterranean chambers with uncompromised acoustic clarity.',
       pillar3Num: '03',
       pillar3Title: 'UNCOMPROMISING SONIC CURATION',
-      pillar3Desc: 'Rooted in forward-thinking Melodic Techno, Minimal Tech, and Deep Afro House, inviting world-class underground selectors alongside our boundary-pushing residents.',
+      pillar3Desc: 'Rooted in forward-thinking Melodic Techno, Minimal Tech, and Deep Afro House, featuring international selectors alongside our resident collective.',
     },
-    events: {
-      badge: 'CALENDAR // 2026',
-      title: 'UPCOMING EVENTS',
-      all: 'ALL',
-      rooftop: 'ROOFTOP',
-      underground: 'UNDERGROUND',
-      getTickets: 'GET TICKETS',
-      moreLineup: 'MORE',
+    upcoming: {
+      badge: 'SEASON SCHEDULE // 2026',
+      title: 'UPCOMING GATHERINGS',
+      subtitle: 'Limited capacity reservations across central and east London architectural landmarks.',
+      allFilter: 'ALL SESSIONS',
+      rooftopFilter: 'ROOFTOP',
+      undergroundFilter: 'SUBTERRANEAN',
+      warehouseFilter: 'INDUSTRIAL',
+      getTickets: 'RESERVE ENTRY',
+      moreLineup: 'FULL ARTIST DETAILS',
     },
     lineup: {
-      badge: 'SONIC CURATORS & GUEST SELECTIONS',
-      title: 'LINEUP ARCHIVE',
-      subtitle: 'Resident innovators and internationally revered guest artists defining the soundscape of London.',
-      previewAudio: 'Audio Preview',
-      audioStreaming: 'AUDIO STREAMING',
+      badge: 'SONIC SELECTORS',
+      title: 'ARTIST ROSTER',
+      subtitle: 'World-class selectors shaping London’s most immersive electronic music soundtrack.',
+      previewAudio: 'PREVIEW AUDIO',
+      audioStreaming: 'PREVIEW PLAYING',
       channels: 'CHANNELS',
     },
     gallery: {
-      badge: 'VISUAL ARCHIVE & NOCTURNAL DOCUMENTATION',
-      title: 'GALLERY',
-      subtitle: 'Fragments of light, sound pressure, and transcendent collective energy captured across London.',
-      archiveTitle: 'AZZURA ARCHIVE',
-      close: 'CLOSE',
+      badge: 'VISUAL ARCHIVE',
+      title: 'MOMENTS CAPTURED',
+      subtitle: 'Glimpses into past atmospheres, architectural spaces, and collective euphoria in London.',
+      archiveTitle: 'PREVIOUS SESSIONS ARCHIVE',
+      close: 'CLOSE ARCHIVE',
     },
     instagram: {
-      badge: 'DIGITAL DISPATCH',
-      title: 'FOLLOW THE ATMOSPHERE',
-      handle: '@AZZR.LDN',
+      badge: 'COMMUNITY DISPATCH',
+      title: 'LIVE FROM THE FLOOR',
+      handle: '@AZZURA.LDN',
     },
     locations: {
       badge: 'SPATIAL CURATION',
@@ -298,20 +351,20 @@ export const translations: Record<Language, Translations> = {
       send: 'SEND MESSAGE',
       categories: {
         general: 'GENERAL ENQUIRIES',
-        partnerships: 'EVENT PARTNERSHIPS',
-        artists: 'ARTISTS',
-        private: 'PRIVATE EVENTS',
+        partnerships: 'BRAND PARTNERSHIPS & PRESS',
+        artists: 'ARTIST & SELECTOR BOOKINGS',
+        private: 'PRIVATE HIRE & VIP TABLES',
       },
     },
     newsletter: {
-      badge: 'PRIVATE ACCESS LIST',
-      title: 'JOIN THE AZZURA ATMOSPHERE',
-      subtitle: 'Gain first access to unannounced secret rooftop sessions, private pre-sale ticket releases, and guest list allocations.',
-      placeholder: 'ENTER YOUR EMAIL...',
-      join: 'JOIN',
-      joining: 'JOINING...',
-      joined: 'JOINED',
-      privacy: 'NO SPAM. ONLY CURATED EVENT RELEASES AND PRIVATE LINKS.',
+      badge: 'EXCLUSIVE ACCESS DISPATCH',
+      title: 'ENTER THE AZZURA ATMOSPHERE',
+      subtitle: 'Gain priority access to secret rooftop coordinates, private pre-sales, and curated guest list allocations.',
+      placeholder: 'ENTER EMAIL ADDRESS...',
+      join: 'JOIN ATMOSPHERE',
+      joining: 'TRANSMITTING...',
+      joined: 'REGISTERED',
+      privacy: 'NO SPAM. ONLY CURATED GATHERINGS AND PRIVATE LINKS.',
     },
     footer: {
       slogan: 'THE ATMOSPHERE IS EVERYTHING.',
@@ -342,6 +395,15 @@ export const translations: Record<Language, Translations> = {
       successMessage: 'Your entry passes have been sent to your email. The atmosphere is everything.',
       walletReady: 'QR PASSES READY IN DIGITAL WALLET',
     },
+    lgpd: {
+      badge: 'PRIVACY & COOKIES (LGPD / GDPR)',
+      title: 'DATA PRIVACY & COOKIE CONSENT',
+      desc: 'We use cookies and telemetry to optimize your experience, process secure ticket orders, and measure audio atmospheric performance in full compliance with LGPD and GDPR regulations.',
+      acceptAll: 'ACCEPT ALL',
+      essentialOnly: 'ESSENTIAL ONLY',
+      privacyPolicy: 'PRIVACY POLICY',
+      close: 'CLOSE',
+    },
   },
   pt: {
     nav: {
@@ -364,35 +426,55 @@ export const translations: Record<Language, Translations> = {
       getTickets: 'GARANTIR INGRESSOS',
       explore: 'EXPLORAR AZZURA',
       scroll: 'ROLE PARA EXPLORAR',
-      soundOn: 'SOM ATIVADO',
-      soundOff: 'SOM DESATIVADO',
+      soundOn: 'SOM LIGADO',
+      soundOff: 'SOM DESLIGADO',
     },
     marquee: [
       'AZZURA EVENTS',
       'THE ATMOSPHERE IS EVERYTHING',
       'SKYLINE DE LONDRES',
-      'ROOFTOPS OPEN AIR',
-      'SESSÕES UNDERGROUND',
-      'SISTEMA DE SOM VOID ACOUSTICS',
-      'MELODIC TECHNO & MINIMAL',
-      '30 DE AGOSTO DE 2026',
+      'ROOFTOP OPEN AIR',
+      'SESSÕES SUBTERRÂNEAS',
+      'EXCELÊNCIA ELETRÔNICA',
+      'CURADORIA VIP',
+      'SOM IMERSIVO',
     ],
     nextEvent: {
-      badge: 'EXPERIÊNCIA PRINCIPAL',
-      sectionTitle: 'PRÓXIMO EVENTO',
-      subtitle: 'SESSÕES 360° NO SKYLINE E WAREHOUSE',
-      venueArchitecture: 'ARQUITETURA DO LOCAL',
-      time: 'HORÁRIO',
-      restriction: 'CLASSIFICAÇÃO',
-      sound: 'SISTEMA DE SOM',
-      countdownTitle: 'CONTAGEM REGRESSIVA PARA ABERTURA',
-      countdownTz: 'LONDRES BST (UTC+1)',
-      lineupTitle: 'LINEUP CONFIRMADO',
-      getTicketsFor: 'GARANTIR INGRESSOS PARA',
+      sectionTitle: 'PRÓXIMA SESSÃO',
+      badge: 'PRODUÇÃO EM DESTAQUE',
+      headline: 'PANORAMA DE ST. PAUL’S & SESSÕES DEEP',
+      dateFormatted: 'SÁBADO, 30 DE AGOSTO DE 2026',
+      time: '18:00 — 04:00 BST',
+      venue: 'ROOFTOP & VAULT ONE NEW CHANGE',
+      venueArchitecture: 'LOCAL & ARQUITETURA',
+      restriction: 'RESTRIÇÃO DE IDADE',
+      countdownTitle: 'INÍCIO DA SESSÃO EM',
+      countdownTz: 'HORÁRIO DE LONDRES (BST)',
+      lineupTitle: 'LINEUP CURADO',
+      getTicketsFor: 'GARANTIR INGRESSO PARA',
+      locationShort: 'LONDRES EC4M',
+      synopsis: 'Uma transição perfeita da luz dourada sobre a Catedral de St. Paul para a arquitetura sonora subterrânea. Artistas renomados, sistema de som Void Acoustics sob medida e o público mais refinado de Londres.',
+      tier1: 'ENTRADA ANTECIPADA (ATÉ 20:00)',
+      tier1Price: '£35.00',
+      tier2: 'PRIMEIRO LOTE (ACESSO A NOITE TODA)',
+      tier2Price: '£40.00',
+      tier3: 'LOTE FINAL / VIP FAST TRACK',
+      tier3Price: '£45.00',
+      reserveCta: 'GARANTIR INGRESSO (£35 — £45)',
+      detailsCta: 'VER DETALHES',
       days: 'DIAS',
       hours: 'HORAS',
       minutes: 'MINUTOS',
       seconds: 'SEGUNDOS',
+    },
+    events: {
+      title: 'CALENDÁRIO DA TEMPORADA',
+      subtitle: 'Reservas limitadas em marcos arquitetônicos nas áreas central e leste de Londres.',
+      all: 'TODAS AS SESSÕES',
+      rooftop: 'ROOFTOPS',
+      underground: 'SUBTERRÂNEO',
+      getTickets: 'INGRESSOS',
+      moreLineup: 'SELECTORS',
     },
     experience: {
       badge: 'MANIFESTO EDITORIAL',
@@ -413,53 +495,55 @@ export const translations: Record<Language, Translations> = {
       pillar3Title: 'CURADORIA SONORA SEM CONCESSÕES',
       pillar3Desc: 'Focada em Melodic Techno de vanguarda, Minimal Tech e Deep Afro House, reunindo selectors internacionais consagrados ao lado de nossos residentes.',
     },
-    events: {
-      badge: 'CALENDÁRIO // 2026',
-      title: 'PRÓXIMOS EVENTOS',
-      all: 'TODOS',
-      rooftop: 'ROOFTOP',
-      underground: 'UNDERGROUND',
-      getTickets: 'COMPRAR INGRESSOS',
-      moreLineup: 'MAIS',
+    upcoming: {
+      badge: 'CALENDÁRIO DA TEMPORADA // 2026',
+      title: 'PRÓXIMAS SESSÕES',
+      subtitle: 'Reservas limitadas em marcos arquitetônicos nas áreas central e leste de Londres.',
+      allFilter: 'TODAS AS SESSÕES',
+      rooftopFilter: 'ROOFTOPS',
+      undergroundFilter: 'SUBTERRÂNEO',
+      warehouseFilter: 'INDUSTRIAL',
+      getTickets: 'RESERVAR ENTRADA',
+      moreLineup: 'DETALHES DO LINEUP',
     },
     lineup: {
-      badge: 'CURADORES SONOROS & CONVIDADOS',
-      title: 'ARQUIVO DE LINEUP',
-      subtitle: 'Residentes pioneiros e artistas internacionais reverenciados que moldam a identidade sonora de Londres.',
-      previewAudio: 'Prévia de Áudio',
-      audioStreaming: 'TRANSMITINDO ÁUDIO',
+      badge: 'SELECTORS DA NOITE',
+      title: 'LINEUP OFICIAL',
+      subtitle: 'Artistas internacionais e residentes definindo a trilha sonora mais imersiva de Londres.',
+      previewAudio: 'OUVIR PRÉVIA',
+      audioStreaming: 'TOCANDO PRÉVIA',
       channels: 'CANAIS',
     },
     gallery: {
-      badge: 'ARQUIVO VISUAL & DOCUMENTAÇÃO NOTURNA',
-      title: 'GALERIA',
-      subtitle: 'Fragmentos de luz, vibração acústica e energia coletiva capturados na noite londrina.',
-      archiveTitle: 'ARQUIVO AZZURA',
-      close: 'FECHAR',
+      badge: 'ARQUIVO VISUAL',
+      title: 'MOMENTOS REGISTRADOS',
+      subtitle: 'Registros de atmosferas passadas, espaços arquitetônicos e euforia coletiva em Londres.',
+      archiveTitle: 'ARQUIVO DE EDIÇÕES ANTERIORES',
+      close: 'FECHAR ARQUIVO',
     },
     instagram: {
-      badge: 'FEED DIGITAL',
-      title: 'SIGA A ATMOSFERA',
-      handle: '@AZZR.LDN',
+      badge: 'DISPATCH DA COMUNIDADE',
+      title: 'DIRETO DA PISTA',
+      handle: '@AZZURA.LDN',
     },
     locations: {
       badge: 'CURADORIA ESPACIAL',
       title: 'LOCAIS EM LONDRES',
-      subtitle: 'Espaços arquitetônicos singulares pela capital britânica — de mirantes suspensos a abóbadas industriais.',
+      subtitle: 'Ocupando anomalias arquitetônicas pela capital — de terraços panorâmicos a galerias subterrâneas.',
       capacity: 'CAPACIDADE',
       soundSpecs: 'ESPECIFICAÇÕES DE SOM',
     },
     contact: {
-      badge: 'CONTATO DIRETO & CURADORIA',
-      title: 'ENTRE EM CONTATO',
-      subtitle: 'Fale com a equipe da Azzura sobre parcerias de marca, reservas privadas de rooftop ou envio de material artístico.',
+      badge: 'CANAL DIRETO & CURADORIA',
+      title: 'FALE CONOSCO',
+      subtitle: 'Entre em contato com a equipe Azzura para parcerias, reservas de mesas VIP ou envio de materiais artísticos.',
       hqTitle: 'AZZURA EVENTS LDN',
       hqCity: 'Centro de Londres, Reino Unido',
       generalDesk: 'ATENDIMENTO GERAL',
       vipDesk: 'MESAS VIP & PRIVATIVAS',
-      pressDesk: 'IMPRENSA & ARTISTAS',
-      notice: '* Para reservas imediatas de ingressos e lista de convidados, utilize o portal oficial de ingressos.',
-      selectCat: 'SELECIONE A CATEGORIA DO CONTATO',
+      pressDesk: 'IMPRENSA & RELAÇÕES ARTÍSTICAS',
+      notice: '* Para reserva imediata de ingressos e nomes na lista, utilize o portal oficial de ingressos.',
+      selectCat: 'SELECIONE A CATEGORIA',
       yourName: 'SEU NOME *',
       email: 'SEU E-MAIL *',
       subject: 'ASSUNTO',
@@ -467,15 +551,15 @@ export const translations: Record<Language, Translations> = {
       namePlaceholder: 'ex: Julian Sterling',
       emailPlaceholder: 'ex: julian@dominio.com',
       subjectPlaceholder: 'Assunto ou detalhes do projeto',
-      messagePlaceholder: 'Descreva detalhadamente a sua solicitação...',
-      sending: 'TRANSMITINDO MENSAGEM...',
+      messagePlaceholder: 'Descreva detalhadamente sua solicitação...',
+      sending: 'ENVIANDO MENSAGEM...',
       sent: 'MENSAGEM TRANSMITIDA',
       send: 'ENVIAR MENSAGEM',
       categories: {
-        general: 'DÚVIDAS GERAIS',
-        partnerships: 'PARCERIAS DE EVENTOS',
-        artists: 'ARTISTAS & DJs',
-        private: 'EVENTOS PRIVADOS',
+        general: 'INFORMAÇÕES GERAIS',
+        partnerships: 'PARCERIAS & IMPRENSA',
+        artists: 'CURADORIA ARTÍSTICA & BOOKING',
+        private: 'EVENTOS PRIVADOS & MESAS VIP',
       },
     },
     newsletter: {
@@ -516,6 +600,15 @@ export const translations: Record<Language, Translations> = {
       accessGranted: 'ACESSO CONFIRMADO',
       successMessage: 'Seus ingressos foram emitidos e enviados para o seu e-mail. The atmosphere is everything.',
       walletReady: 'PASSES COM QR CODE DISPONÍVEIS NA CARTEIRA DIGITAL',
+    },
+    lgpd: {
+      badge: 'PRIVACIDADE & COOKIES (LGPD)',
+      title: 'CONFORMIDADE COM A LGPD & COOKIES',
+      desc: 'Utilizamos cookies e tecnologias essenciais para otimizar sua navegação, processar compras seguras de ingressos e garantir a melhor experiência sonora e visual em total conformidade com a LGPD e GDPR.',
+      acceptAll: 'ACEITAR TODOS',
+      essentialOnly: 'APENAS ESSENCIAIS',
+      privacyPolicy: 'POLÍTICA DE PRIVACIDADE',
+      close: 'FECHAR',
     },
   },
 };

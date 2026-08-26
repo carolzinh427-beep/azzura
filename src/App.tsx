@@ -6,6 +6,7 @@ import { ToastProvider } from './components/common/Toast';
 import { LanguageProvider } from './lib/LanguageContext';
 import { CustomCursor } from './components/common/CustomCursor';
 import { NoiseOverlay } from './components/common/NoiseOverlay';
+import { LGPDBanner } from './components/common/LGPDBanner';
 
 export function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -35,6 +36,7 @@ export function App() {
         <NoiseOverlay />
         <CustomCursor />
         {renderPage()}
+        <LGPDBanner />
       </ToastProvider>
     </LanguageProvider>
   );

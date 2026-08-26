@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Instagram, Music2, Disc, Shield } from 'lucide-react';
+import { ArrowUp, Instagram, Music2, Disc } from 'lucide-react';
 import { useLanguage } from '../../lib/LanguageContext';
 import LightTunnel from '../common/LightTunnel';
 
@@ -161,15 +161,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
                   {t.nav.getTickets} (£35 — £45)
                 </button>
               )}
-
-              <a
-                href="/admin"
-                className="px-3.5 py-2.5 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 text-zinc-300 hover:text-white font-mono text-xs flex items-center gap-1.5 transition-all"
-                title="Azzura Admin Portal"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                <span>{t.footer.adminBtn}</span>
-              </a>
             </div>
           </div>
         </div>
@@ -196,3 +187,5 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTickets }) => {
     </footer>
   );
 };
+
+export default Footer;
