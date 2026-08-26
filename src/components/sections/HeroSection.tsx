@@ -46,7 +46,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       if (!masterGainRef.current) {
         const master = ctx.createGain();
-        master.gain.setValueAtTime(0.24, ctx.currentTime);
+        master.gain.setValueAtTime(0.32, ctx.currentTime);
         master.connect(ctx.destination);
         masterGainRef.current = master;
       }
@@ -54,14 +54,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       const master = masterGainRef.current;
       master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(0.01, ctx.currentTime);
-      master.gain.exponentialRampToValueAtTime(0.24, ctx.currentTime + 0.6);
+      master.gain.exponentialRampToValueAtTime(0.32, ctx.currentTime + 0.4);
 
       let step = 0;
-      const bpm = 124;
-      const stepDuration = (60 / bpm) / 4; // 16th note (approx 0.121s)
-      const totalSteps = 32; // 2 bars = ~3.87 seconds phrase for hover
+      const bpm = 122;
+      const stepDuration = (60 / bpm) / 4; // 16th note (approx 0.123s)
+      const totalSteps = 32; // 2 bars = ~3.93 seconds phrase for hover
 
-      // FM chord frequencies for Fm9 (F, Ab, C, Eb, G)
+      // Lush Melodic Fm9 / Abmaj7 chord frequencies
       const chordFreqs = [174.61, 207.65, 261.63, 311.13, 392.00];
 
       isPlayingRef.current = true;
@@ -71,74 +71,102 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         if (!isPlayingRef.current) return;
         const now = ctx.currentTime;
 
-        // 1. Kick on quarter notes (steps 0, 4, 8, 12, 16, 20, 24, 28)
+        // 1. Warm Analog Sub Kick on quarter beats (steps 0, 4, 8, 12, 16, 20, 24, 28)
         if (step % 4 === 0) {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(125, now);
-          osc.frequency.exponentialRampToValueAtTime(36, now + 0.16);
+          const kickOsc = ctx.createOscillator();
+          const kickGain = ctx.createGain();
+          kickOsc.type = 'sine';
+          kickOsc.frequency.setValueAtTime(105, now);
+          kickOsc.frequency.exponentialRampToValueAtTime(38, now + 0.18);
 
-          gain.gain.setValueAtTime(0.7, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          kickGain.gain.setValueAtTime(0.85, now);
+          kickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
 
-          osc.connect(gain);
-          gain.connect(master);
-          osc.start(now);
-          osc.stop(now + 0.3);
+          kickOsc.connect(kickGain);
+          kickGain.connect(master);
+          kickOsc.start(now);
+          kickOsc.stop(now + 0.28);
         }
 
-        // 2. Rolling Progressive Bassline on 16th groove
-        if (step % 2 === 1 || step % 4 === 2) {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          const filter = ctx.createBiquadFilter();
+        // 2. Velvet Shaker / Soft Hi-Hat on offbeats (steps 2, 6, 10, 14, 18, 22, 26, 30)
+        if (step % 4 === 2) {
+          const bufferSize = Math.floor(ctx.sampleRate * 0.045);
+          const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+          }
 
-          const bassNotes = [43.65, 43.65, 51.91, 43.65, 58.27, 43.65, 51.91, 38.89];
+          const whiteNoise = ctx.createBufferSource();
+          whiteNoise.buffer = noiseBuffer;
+
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'highpass';
+          filter.frequency.setValueAtTime(7500, now);
+
+          const hatGain = ctx.createGain();
+          hatGain.gain.setValueAtTime(0.12, now);
+          hatGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+          whiteNoise.connect(filter);
+          filter.connect(hatGain);
+          hatGain.connect(master);
+
+          whiteNoise.start(now);
+          whiteNoise.stop(now + 0.05);
+        }
+
+        // 3. Warm Organic Sub-Bassline (Smooth, velvety, never aggressive)
+        if (step % 4 === 2 || step % 4 === 3) {
+          const bassOsc = ctx.createOscillator();
+          const bassGain = ctx.createGain();
+          const bassFilter = ctx.createBiquadFilter();
+
+          const bassNotes = [43.65, 51.91, 43.65, 58.27, 43.65, 38.89, 43.65, 51.91];
           const freq = bassNotes[Math.floor(step / 2) % bassNotes.length];
 
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(freq, now);
+          bassOsc.type = 'triangle';
+          bassOsc.frequency.setValueAtTime(freq, now);
 
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(280, now);
-          filter.frequency.exponentialRampToValueAtTime(90, now + 0.12);
+          bassFilter.type = 'lowpass';
+          bassFilter.frequency.setValueAtTime(180, now);
+          bassFilter.Q.setValueAtTime(1.5, now);
 
-          gain.gain.setValueAtTime(0.28, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          bassGain.gain.setValueAtTime(0.38, now);
+          bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
 
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(master);
+          bassOsc.connect(bassFilter);
+          bassFilter.connect(bassGain);
+          bassGain.connect(master);
 
-          osc.start(now);
-          osc.stop(now + 0.16);
+          bassOsc.start(now);
+          bassOsc.stop(now + 0.2);
         }
 
-        // 3. Atmospheric Melodic Synth Pad on bar start
+        // 4. Atmospheric Rooftop Chords on bar markers (steps 0 and 16)
         if (step === 0 || step === 16) {
           chordFreqs.forEach((freq, idx) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
+            const padOsc = ctx.createOscillator();
+            const padGain = ctx.createGain();
+            const padFilter = ctx.createBiquadFilter();
 
-            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
-            osc.frequency.setValueAtTime(freq * 1.5, now);
+            padOsc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+            padOsc.frequency.setValueAtTime(freq, now);
 
-            filter.type = 'bandpass';
-            filter.frequency.setValueAtTime(650 + idx * 80, now);
-            filter.Q.setValueAtTime(2.5, now);
+            padFilter.type = 'bandpass';
+            padFilter.frequency.setValueAtTime(500 + idx * 70, now);
+            padFilter.Q.setValueAtTime(2.0, now);
 
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.035, now + 0.4);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+            padGain.gain.setValueAtTime(0.001, now);
+            padGain.gain.linearRampToValueAtTime(0.045, now + 0.35);
+            padGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
 
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(master);
+            padOsc.connect(padFilter);
+            padFilter.connect(padGain);
+            padGain.connect(master);
 
-            osc.start(now);
-            osc.stop(now + 1.8);
+            padOsc.start(now);
+            padOsc.stop(now + 1.9);
           });
         }
 

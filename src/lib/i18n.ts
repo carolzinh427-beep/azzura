@@ -238,7 +238,7 @@ export const translations: Record<Language, Translations> = {
       pillar3Desc: 'Rooted in forward-thinking Melodic Techno, Minimal Tech, and Deep Afro House, featuring international selectors alongside our resident collective.',
     },
     lineup: {
-      badge: 'SONIC SELECTORS',
+      badge: 'FEATURED ARTISTS',
       title: 'ARTIST ROSTER',
       subtitle: 'World-class selectors shaping London’s most immersive electronic music soundtrack.',
       previewAudio: 'PREVIEW AUDIO',
@@ -410,7 +410,7 @@ export const translations: Record<Language, Translations> = {
       pillar3Desc: 'Focada em Melodic Techno de vanguarda, Minimal Tech e Deep Afro House, reunindo selectors internacionais consagrados ao lado de nossos residentes.',
     },
     lineup: {
-      badge: 'SELECTORS DA NOITE',
+      badge: 'ARTISTAS EM DESTAQUE',
       title: 'LINEUP OFICIAL',
       subtitle: 'Artistas internacionais e residentes definindo a trilha sonora mais imersiva de Londres.',
       previewAudio: 'OUVIR PRÉVIA',

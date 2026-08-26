@@ -45,7 +45,7 @@ export const LineupSection: React.FC<LineupSectionProps> = ({ artists }) => {
             const topBadge = (
               <div className="flex items-center justify-between w-full">
                 <span className="px-2.5 py-0.5 text-[9px] font-mono tracking-wider uppercase bg-black/85 border border-white/20 text-white rounded-full">
-                  {artist.role || 'GUEST SELECTOR'}
+                  {artist.role || 'HEADLINER'}
                 </span>
 
                 <span className="px-2 py-0.5 text-[9px] font-mono text-[#C084FC] bg-black/85 border border-white/15 rounded-full">
