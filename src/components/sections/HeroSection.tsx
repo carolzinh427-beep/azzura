@@ -17,194 +17,75 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenTickets,
 }) => {
   const { t } = useLanguage();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const isPlayingRef = useRef(false);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const synthTimerRef = useRef<number | null>(null);
-  const masterGainRef = useRef<GainNode | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const autoStopTimeoutRef = useRef<number | null>(null);
 
-  // Audio Synthesizer: 124 BPM Melodic Techno & Deep House Groove (Single Instance Guarded)
+  useEffect(() => {
+    // High-Definition Melodic Techno & Deep House Groove (Hardware Accelerated, Stutter-Free)
+    const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3');
+    audio.loop = true;
+    audio.volume = 0.80;
+    audio.preload = 'auto';
+    audioRef.current = audio;
+
+    return () => {
+      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
+      audio.pause();
+      audio.src = '';
+    };
+  }, []);
+
   const startAtmosphereAudio = (isHoverTrigger = false) => {
-    try {
-      // If already playing, DO NOT start a second sound / double beat
-      if (isPlayingRef.current || synthTimerRef.current !== null) {
-        return;
-      }
+    if (isPlayingRef.current) return;
+    isPlayingRef.current = true;
+    setIsPlaying(true);
 
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioCtx) return;
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.volume = 0.80;
+      audioRef.current.play().catch(() => {});
+    }
 
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new AudioCtx();
-      }
-
-      const ctx = audioCtxRef.current;
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
-
-      if (!masterGainRef.current) {
-        const master = ctx.createGain();
-        master.gain.setValueAtTime(0.32, ctx.currentTime);
-        master.connect(ctx.destination);
-        masterGainRef.current = master;
-      }
-
-      const master = masterGainRef.current;
-      master.gain.cancelScheduledValues(ctx.currentTime);
-      master.gain.setValueAtTime(0.01, ctx.currentTime);
-      master.gain.exponentialRampToValueAtTime(0.32, ctx.currentTime + 0.4);
-
-      let step = 0;
-      const bpm = 122;
-      const stepDuration = (60 / bpm) / 4; // 16th note (approx 0.123s)
-      const totalSteps = 32; // 2 bars = ~3.93 seconds phrase for hover
-
-      // Lush Melodic Fm9 / Abmaj7 chord frequencies
-      const chordFreqs = [174.61, 207.65, 261.63, 311.13, 392.00];
-
-      isPlayingRef.current = true;
-      setIsPlaying(true);
-
-      const playStep = () => {
-        if (!isPlayingRef.current) return;
-        const now = ctx.currentTime;
-
-        // 1. Warm Analog Sub Kick on quarter beats (steps 0, 4, 8, 12, 16, 20, 24, 28)
-        if (step % 4 === 0) {
-          const kickOsc = ctx.createOscillator();
-          const kickGain = ctx.createGain();
-          kickOsc.type = 'sine';
-          kickOsc.frequency.setValueAtTime(105, now);
-          kickOsc.frequency.exponentialRampToValueAtTime(38, now + 0.18);
-
-          kickGain.gain.setValueAtTime(0.85, now);
-          kickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
-
-          kickOsc.connect(kickGain);
-          kickGain.connect(master);
-          kickOsc.start(now);
-          kickOsc.stop(now + 0.28);
-        }
-
-        // 2. Velvet Shaker / Soft Hi-Hat on offbeats (steps 2, 6, 10, 14, 18, 22, 26, 30)
-        if (step % 4 === 2) {
-          const bufferSize = Math.floor(ctx.sampleRate * 0.045);
-          const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-          const output = noiseBuffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            output[i] = Math.random() * 2 - 1;
-          }
-
-          const whiteNoise = ctx.createBufferSource();
-          whiteNoise.buffer = noiseBuffer;
-
-          const filter = ctx.createBiquadFilter();
-          filter.type = 'highpass';
-          filter.frequency.setValueAtTime(7500, now);
-
-          const hatGain = ctx.createGain();
-          hatGain.gain.setValueAtTime(0.12, now);
-          hatGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-
-          whiteNoise.connect(filter);
-          filter.connect(hatGain);
-          hatGain.connect(master);
-
-          whiteNoise.start(now);
-          whiteNoise.stop(now + 0.05);
-        }
-
-        // 3. Warm Organic Sub-Bassline (Smooth, velvety, never aggressive)
-        if (step % 4 === 2 || step % 4 === 3) {
-          const bassOsc = ctx.createOscillator();
-          const bassGain = ctx.createGain();
-          const bassFilter = ctx.createBiquadFilter();
-
-          const bassNotes = [43.65, 51.91, 43.65, 58.27, 43.65, 38.89, 43.65, 51.91];
-          const freq = bassNotes[Math.floor(step / 2) % bassNotes.length];
-
-          bassOsc.type = 'triangle';
-          bassOsc.frequency.setValueAtTime(freq, now);
-
-          bassFilter.type = 'lowpass';
-          bassFilter.frequency.setValueAtTime(180, now);
-          bassFilter.Q.setValueAtTime(1.5, now);
-
-          bassGain.gain.setValueAtTime(0.38, now);
-          bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-
-          bassOsc.connect(bassFilter);
-          bassFilter.connect(bassGain);
-          bassGain.connect(master);
-
-          bassOsc.start(now);
-          bassOsc.stop(now + 0.2);
-        }
-
-        // 4. Atmospheric Rooftop Chords on bar markers (steps 0 and 16)
-        if (step === 0 || step === 16) {
-          chordFreqs.forEach((freq, idx) => {
-            const padOsc = ctx.createOscillator();
-            const padGain = ctx.createGain();
-            const padFilter = ctx.createBiquadFilter();
-
-            padOsc.type = idx % 2 === 0 ? 'sine' : 'triangle';
-            padOsc.frequency.setValueAtTime(freq, now);
-
-            padFilter.type = 'bandpass';
-            padFilter.frequency.setValueAtTime(500 + idx * 70, now);
-            padFilter.Q.setValueAtTime(2.0, now);
-
-            padGain.gain.setValueAtTime(0.001, now);
-            padGain.gain.linearRampToValueAtTime(0.045, now + 0.35);
-            padGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
-
-            padOsc.connect(padFilter);
-            padFilter.connect(padGain);
-            padGain.connect(master);
-
-            padOsc.start(now);
-            padOsc.stop(now + 1.9);
-          });
-        }
-
-        step = step + 1;
-
-        // If triggered by hover, stop automatically when the phrase ends (2 full bars)
-        if (isHoverTrigger && step >= totalSteps) {
-          stopAtmosphereAudio();
-        } else if (!isHoverTrigger) {
-          step = step % 32;
-        }
-      };
-
-      synthTimerRef.current = window.setInterval(playStep, stepDuration * 1000);
-    } catch {
-      // Audio fallback
+    if (isHoverTrigger) {
+      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
+      // Play 8.5 seconds preview on emblem hover, then smooth fade
+      autoStopTimeoutRef.current = window.setTimeout(() => {
+        stopAtmosphereAudio();
+      }, 8500);
     }
   };
 
   const stopAtmosphereAudio = () => {
-    if (synthTimerRef.current) {
-      clearInterval(synthTimerRef.current);
-      synthTimerRef.current = null;
-    }
     if (autoStopTimeoutRef.current) {
       clearTimeout(autoStopTimeoutRef.current);
       autoStopTimeoutRef.current = null;
     }
-    if (audioCtxRef.current && masterGainRef.current) {
-      const ctx = audioCtxRef.current;
-      masterGainRef.current.gain.cancelScheduledValues(ctx.currentTime);
-      masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+
+    if (audioRef.current && !audioRef.current.paused) {
+      let currentVol = audioRef.current.volume;
+      const fadeInterval = setInterval(() => {
+        if (!audioRef.current || currentVol <= 0.08) {
+          clearInterval(fadeInterval);
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.volume = 0.80;
+          }
+          isPlayingRef.current = false;
+          setIsPlaying(false);
+        } else {
+          currentVol -= 0.12;
+          if (audioRef.current) audioRef.current.volume = Math.max(0, currentVol);
+        }
+      }, 35);
+    } else {
+      isPlayingRef.current = false;
+      setIsPlaying(false);
     }
-    isPlayingRef.current = false;
-    setIsPlaying(false);
   };
 
-  // Emblem hover trigger: plays the full phrase once; will not duplicate if hovered again while active
+  // Emblem hover trigger: plays audio preview smoothly
   const handleEmblemHover = () => {
     if (!isPlayingRef.current) {
       startAtmosphereAudio(true);
@@ -218,14 +99,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       startAtmosphereAudio(false);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      if (synthTimerRef.current) clearInterval(synthTimerRef.current);
-      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
-      if (audioCtxRef.current) audioCtxRef.current.close().catch(() => {});
-    };
-  }, []);
 
   return (
     <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full bg-[#050505] text-white pt-20 pb-14 sm:pt-28 sm:pb-20 select-none">

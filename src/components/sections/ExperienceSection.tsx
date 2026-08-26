@@ -12,7 +12,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTick
   return (
     <section id="experience" className="relative min-h-[65vh] sm:min-h-[80vh] flex items-center justify-center bg-[#050505] border-t border-white/10 select-none overflow-hidden w-full max-w-full py-16 sm:py-24">
       {/* 3D WebGL Light Tunnel Animation */}
-      <div className="absolute inset-0 w-full h-full pointer-events-auto opacity-75 z-0">
+      <div className="absolute inset-0 w-full h-full pointer-events-auto opacity-80 z-0">
         <LightTunnel
           cableColor="#381D5E"
           pulseColor="#C084FC"
@@ -42,26 +42,26 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTick
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/85 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/90 max-w-2xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
+          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/90 backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/90 max-w-2xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
         >
-          {/* MaskedHeading Component from React Bits */}
+          {/* MaskedHeading Component: Ultra-luminous, High Contrast & Fully Legible */}
           <div className="w-full">
             <MaskedHeading
               text="THE ATMOSPHERE IS EVERYTHING"
               tag="h2"
-              src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1600&auto=format&fit=crop"
-              fillScale={1.3}
-              parallax={32}
+              src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1600&auto=format&fit=crop"
+              fillScale={1.35}
+              parallax={34}
               drift={16}
-              brightness={1.15}
-              saturation={1.3}
+              brightness={1.8}
+              saturation={1.6}
               reveal="rise"
               trigger="view"
               align="center"
               weight={900}
               tracking={-0.02}
-              textScale={0.105}
-              className="font-display uppercase drop-shadow-2xl"
+              textScale={0.115}
+              className="font-display font-black uppercase text-white"
             />
           </div>
 

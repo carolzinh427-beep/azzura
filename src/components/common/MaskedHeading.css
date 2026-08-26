@@ -5,6 +5,7 @@
   padding: 0;
   text-wrap: balance;
   -webkit-font-smoothing: antialiased;
+  filter: drop-shadow(0 0 35px rgba(192, 132, 252, 0.5)) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.9));
 }
 
 .masked-heading__measure {
@@ -44,12 +45,15 @@
   position: absolute;
   inset: 0;
   display: block;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F3E8FF 40%, #D8B4FE 75%, #C084FC 100%);
 }
 
 .masked-heading__media {
   position: absolute;
   inset: 0;
   display: block;
+  mix-blend-mode: multiply;
+  opacity: 0.92;
   will-change: transform, filter;
 }
 
