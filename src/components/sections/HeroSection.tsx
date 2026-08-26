@@ -17,80 +17,185 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenTickets,
 }) => {
   const { t } = useLanguage();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const isPlayingRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const isPlayingRef = useRef(false);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const synthTimerRef = useRef<number | null>(null);
+  const masterGainRef = useRef<GainNode | null>(null);
   const autoStopTimeoutRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    // Studio-Quality Melodic House & Techno Track (Local Asset, Zero Network Latency, 100% Stutter-Free)
-    const audio = new Audio('/audio/azzura-beat.wav');
-    audio.loop = true;
-    audio.volume = 0.95; // Clear, loud and punchy
-    audio.preload = 'auto';
-    audioRef.current = audio;
-
-    return () => {
-      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
-      audio.pause();
-      audio.src = '';
-    };
-  }, []);
-
+  // Synthesized Sound Effect Engine (Web Audio Progressive Melodic Synth)
   const startAtmosphereAudio = (isHoverTrigger = false) => {
-    if (isPlayingRef.current) return;
-    isPlayingRef.current = true;
-    setIsPlaying(true);
-
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.volume = 0.95;
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn('Audio play request:', err);
-        });
+    try {
+      if (isPlayingRef.current || synthTimerRef.current !== null) {
+        return;
       }
-    }
 
-    if (isHoverTrigger) {
-      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
-      // Play 7.74s full 4-bar phrase preview on hover, then fade out smoothly
-      autoStopTimeoutRef.current = window.setTimeout(() => {
-        stopAtmosphereAudio();
-      }, 7740);
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+
+      if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+        audioCtxRef.current = new AudioCtx();
+      }
+
+      const ctx = audioCtxRef.current;
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+
+      if (!masterGainRef.current) {
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.35, ctx.currentTime);
+        master.connect(ctx.destination);
+        masterGainRef.current = master;
+      }
+
+      const master = masterGainRef.current;
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(0.01, ctx.currentTime);
+      master.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 0.3);
+
+      let step = 0;
+      const bpm = 124;
+      const stepDuration = (60 / bpm) / 4; // 16th note (~0.121s)
+      const totalSteps = 32; // 2 bars = ~3.87s phrase for hover
+
+      const chordFreqs = [174.61, 207.65, 261.63, 311.13, 392.00];
+
+      isPlayingRef.current = true;
+      setIsPlaying(true);
+
+      const playStep = () => {
+        if (!isPlayingRef.current || !ctx || ctx.state === 'closed') return;
+        const now = ctx.currentTime;
+
+        // 1. Kick on quarter notes (steps 0, 4, 8, 12, 16, 20, 24, 28)
+        if (step % 4 === 0) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(110, now);
+          osc.frequency.exponentialRampToValueAtTime(40, now + 0.16);
+
+          gain.gain.setValueAtTime(0.88, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+          osc.connect(gain);
+          gain.connect(master);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        }
+
+        // 2. Velvet Hi-Hat on offbeats
+        if (step % 4 === 2) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(8500, now);
+
+          filter.type = 'highpass';
+          filter.frequency.setValueAtTime(6500, now);
+
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(master);
+
+          osc.start(now);
+          osc.stop(now + 0.06);
+        }
+
+        // 3. Progressive Melodic Bassline
+        if (step % 2 === 1 || step % 4 === 2) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          const bassNotes = [43.65, 43.65, 51.91, 43.65, 58.27, 43.65, 51.91, 38.89];
+          const freq = bassNotes[Math.floor(step / 2) % bassNotes.length];
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(320, now);
+          filter.frequency.exponentialRampToValueAtTime(95, now + 0.14);
+
+          gain.gain.setValueAtTime(0.36, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(master);
+
+          osc.start(now);
+          osc.stop(now + 0.18);
+        }
+
+        // 4. Rooftop Melodic Chords on bar start
+        if (step === 0 || step === 16) {
+          chordFreqs.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+
+            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq * 1.5, now);
+
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(650 + idx * 80, now);
+            filter.Q.setValueAtTime(2.2, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.055, now + 0.35);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(master);
+
+            osc.start(now);
+            osc.stop(now + 1.9);
+          });
+        }
+
+        step = step + 1;
+
+        if (isHoverTrigger && step >= totalSteps) {
+          stopAtmosphereAudio();
+        } else if (!isHoverTrigger) {
+          step = step % 32;
+        }
+      };
+
+      synthTimerRef.current = window.setInterval(playStep, stepDuration * 1000);
+    } catch {
+      // Audio fallback
     }
   };
 
   const stopAtmosphereAudio = () => {
+    if (synthTimerRef.current) {
+      clearInterval(synthTimerRef.current);
+      synthTimerRef.current = null;
+    }
     if (autoStopTimeoutRef.current) {
       clearTimeout(autoStopTimeoutRef.current);
       autoStopTimeoutRef.current = null;
     }
-
-    if (audioRef.current && !audioRef.current.paused) {
-      let currentVol = audioRef.current.volume;
-      const fadeInterval = setInterval(() => {
-        if (!audioRef.current || currentVol <= 0.1) {
-          clearInterval(fadeInterval);
-          if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.volume = 0.95;
-          }
-          isPlayingRef.current = false;
-          setIsPlaying(false);
-        } else {
-          currentVol -= 0.15;
-          if (audioRef.current) audioRef.current.volume = Math.max(0, currentVol);
-        }
-      }, 30);
-    } else {
-      isPlayingRef.current = false;
-      setIsPlaying(false);
+    if (audioCtxRef.current && masterGainRef.current) {
+      const ctx = audioCtxRef.current;
+      masterGainRef.current.gain.cancelScheduledValues(ctx.currentTime);
+      masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
     }
+    isPlayingRef.current = false;
+    setIsPlaying(false);
   };
 
-  // Emblem hover and click triggers
   const handleEmblemHover = () => {
     if (!isPlayingRef.current) {
       startAtmosphereAudio(true);
@@ -108,6 +213,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       startAtmosphereAudio(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (synthTimerRef.current) clearInterval(synthTimerRef.current);
+      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
+      if (audioCtxRef.current) audioCtxRef.current.close().catch(() => {});
+    };
+  }, []);
 
   return (
     <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full bg-[#050505] text-white pt-20 pb-14 sm:pt-28 sm:pb-20 select-none">
@@ -212,26 +325,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[11px] sm:text-sm md:text-base font-mono font-semibold tracking-[0.18em] sm:tracking-[0.25em] text-[#C084FC] uppercase mb-3 sm:mb-4 px-2 drop-shadow"
+          className="text-[11px] sm:text-sm md:text-base font-mono font-semibold tracking-[0.18em] sm:tracking-[0.25em] text-[#C084FC] uppercase mb-6 sm:mb-8 px-2 drop-shadow"
         >
           {t.hero.tagline}
         </motion.p>
 
-        {/* 4. Short Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xs sm:text-sm md:text-base text-zinc-300 font-sans max-w-lg mx-auto leading-relaxed mb-6 sm:mb-8 px-2"
-        >
-          {t.hero.subtitle}
-        </motion.p>
-
-        {/* 5. High-Intent Action Buttons */}
+        {/* 4. High-Intent Action Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-xs sm:max-w-none mb-6 sm:mb-8"
         >
           {/* Primary Action Button */}
