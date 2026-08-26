@@ -180,7 +180,7 @@ export const translations: Record<Language, Translations> = {
     hero: {
       brandName: 'AZZURA',
       tagline: 'THE ATMOSPHERE IS EVERYTHING.',
-      subtitle: 'Intimate electronic music gatherings and sonic architecture across London’s most extraordinary venues.',
+      subtitle: 'Electronic music and sonic architecture across London’s most extraordinary venues.',
       exploreEvents: 'EXPLORE EVENTS',
       discoverExperience: 'DISCOVER AZZURA',
       soundOn: 'SOUND ON',
@@ -352,7 +352,7 @@ export const translations: Record<Language, Translations> = {
     hero: {
       brandName: 'AZZURA',
       tagline: 'THE ATMOSPHERE IS EVERYTHING.',
-      subtitle: 'Curadoria intimista de música eletrônica e arquitetura sonora nos locais mais exclusivos de Londres.',
+      subtitle: 'Música eletrônica e arquitetura sonora nos locais mais exclusivos de Londres.',
       exploreEvents: 'EXPLORAR EVENTOS',
       discoverExperience: 'CONHECER A EXPERIÊNCIA',
       soundOn: 'SOM LIGADO',
