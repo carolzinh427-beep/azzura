@@ -6,6 +6,7 @@ import { useLanguage } from '../../lib/LanguageContext';
 import EchoText from '../common/EchoText';
 import SpecularButton from '../common/SpecularButton';
 import MetallicPaint from '../common/MetallicPaint';
+import GridScan from '../common/GridScan';
 
 interface HeroSectionProps {
   featuredEvent: EventItem;
@@ -43,9 +44,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen min-h-[700px] max-h-[1200px] overflow-hidden bg-black flex flex-col justify-between select-none"
+      className="relative w-full h-screen min-h-[720px] max-h-[1250px] overflow-hidden bg-black flex flex-col justify-between select-none"
     >
-      {/* Background Video Layer with Parallax */}
+      {/* Background Video Layer with Parallax & WebGL GridScan Overlay */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-[120%] -top-[10%]">
         <video
           ref={videoRef}
@@ -54,7 +55,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           muted={isMuted}
           playsInline
           poster="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1920&auto=format&fit=crop"
-          className="w-full h-full object-cover opacity-60 filter contrast-[1.1] brightness-[0.8]"
+          className="w-full h-full object-cover opacity-45 filter contrast-[1.15] brightness-[0.7]"
         >
           <source
             src="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-crowd-dancing-in-a-party-with-lights-42861-large.mp4"
@@ -62,9 +63,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           />
         </video>
 
-        {/* Cinematic Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/60 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
+        {/* 3D WebGL GridScan Background Layer */}
+        <div className="absolute inset-0 w-full h-full mix-blend-screen opacity-85 pointer-events-none">
+          <GridScan
+            sensitivity={0.6}
+            lineThickness={1}
+            linesColor="#2B1A4A"
+            gridScale={0.1}
+            scanColor="#A855F7"
+            scanOpacity={0.55}
+            enablePost={true}
+            bloomIntensity={0.7}
+            chromaticAberration={0.002}
+            noiseIntensity={0.015}
+            scanDirection="pingpong"
+            scanDuration={2.2}
+            scanDelay={1.2}
+            scanOnClick={false}
+          />
+        </div>
+
+        {/* Cinematic Vignette Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-transparent to-black/85 pointer-events-none" />
       </motion.div>
 
       {/* Top Floating Sound Control */}
@@ -74,7 +95,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenT
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           onClick={toggleSound}
-          className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-black/40 hover:bg-black/80 border border-white/15 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-colors"
+          className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-black/50 hover:bg-black/80 border border-white/15 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-colors"
           aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
         >
           {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-[#A855F7]" />}
