@@ -41,23 +41,6 @@ float bM(vec2 c,float t){
   return l.x*l.y*u.x*u.y;
 }
 
-float mG(float hi,float lo,float t,float sh,float cv){
-  sh*=(2.-u_sharp);
-  float ci=smoothstep(.15,.85,cv),r=lo;
-  float e1=.08/u_scale;
-  r=mix(r,hi,smoothstep(0.,sh*1.5,t));
-  r=mix(r,lo,smoothstep(e1-sh,e1+sh,t));
-  float e2=e1+.05/u_scale*(1.-ci*.35);
-  r=mix(r,hi,smoothstep(e2-sh,e2+sh,t));
-  float e3=e2+.025/u_scale*(1.-ci*.45);
-  r=mix(r,lo,smoothstep(e3-sh,e3+sh,t));
-  float e4=e1+.1/u_scale;
-  r=mix(r,hi,smoothstep(e4-sh,e4+sh,t));
-  float rm=1.-e4,gT=clamp((t-e4)/rm,0.,1.);
-  r=mix(r,mix(hi,lo,smoothstep(0.,1.,gT)),smoothstep(e4-sh*.5,e4+sh*.5,t));
-  return r;
-}
-
 void main(){
   sC=fract(vec3(.7548,.5698,.4154)*(u_seed+17.31))+.5;
   sM=fract(sC.zxy-sC.yzx*1.618);
@@ -75,7 +58,6 @@ void main(){
   lo.b+=smoothstep(.6,1.4,sc.x+sc.y)*.08;
   vec2 fC=sc-.5;
   float rd=length(fC+vec2(0.,sl*.15));
-  vec2 ag=rot(fC,(.22-sl*.18)*3.14159);
   float cv=1.-pow(rd*1.65,1.15);
   cv*=pow(sc.y,.35);
   float vs=shapeMask;
@@ -98,153 +80,24 @@ void main(){
   float lD=dp+(1.-dp)*u_liquid*tb;
   lD+=noiseVal*u_distort*.15*edgeFactor;
   float rB=clamp(1.-cv,0.,1.);
-  float fl=ag.x+sl;
-  fl+=noiseVal*sl*u_distort*edgeFactor;
-  fl*=mix(1.,1.-dp*.5,u_contour);
-  fl-=dp*u_contour*.8;
-  float eI=smoothstep(0.,1.,lD)*smoothstep(1.,0.,lD);
-  fl-=tb*sl*1.8*eI;
-  float cA=cv*clamp(pow(sc.y,.12),.25,1.);
-  fl*=.12+(1.05-lD)*cA;
-  fl*=smoothstep(1.,.65,lD);
-  float vA1=smoothstep(.08,.18,sc.y)*smoothstep(.38,.18,sc.y);
-  float vA2=smoothstep(.08,.18,1.-sc.y)*smoothstep(.38,.18,1.-sc.y);
-  fl+=vA1*.16+vA2*.025;
-  fl*=.45+pow(sc.y,2.)*.55;
-  fl*=u_scale;
-  fl-=an;
-  float rO=rB+cv*tb*.025;
-  float vM1=smoothstep(-.12,.18,sc.y)*smoothstep(.48,.08,sc.y);
-  float cM1=smoothstep(.35,.55,cv)*smoothstep(.95,.35,cv);
-  rO+=vM1*cM1*4.5;
-  rO-=sl;
-  float bO=rB*1.25;
-  float vM2=smoothstep(-.02,.35,sc.y)*smoothstep(.75,.08,sc.y);
-  float cM2=smoothstep(.35,.55,cv)*smoothstep(.75,.35,cv);
-  bO+=vM2*cM2*.9;
-  bO-=lD*.18;
-  rO*=u_refract*u_chroma;
-  bO*=u_refract*u_chroma;
-  float sf=u_blur;
-  float rP=fract(fl+rO);
-  float rC=mG(hi.r,lo.r,rP,sf+.018+u_refract*cv*.025,cv);
-  float gP=fract(fl);
-  float gC=mG(hi.g,lo.g,gP,sf+.008/max(.01,1.-sl),cv);
-  float bP=fract(fl-bO);
-  float bC=mG(hi.b,lo.b,bP,sf+.008,cv);
-  vec3 col=vec3(rC,gC,bC);
-  col=(col-.5)*u_contrast+.5;
-  col=clamp(col,0.,1.);
-  col=mix(col,1.-min(vec3(1.),(1.-col)/max(u_tint,vec3(.001))),length(u_tint-1.)*.5);
-  col=clamp(col,0.,1.);
-  oC=vec4(col*vs,vs);
-}`;
-
-function processImage(img: HTMLImageElement) {
-  const MAX_SIZE = 1000;
-  const MIN_SIZE = 500;
-  let width = img.naturalWidth || img.width;
-  let height = img.naturalHeight || img.height;
-
-  if (width > MAX_SIZE || height > MAX_SIZE || width < MIN_SIZE || height < MIN_SIZE) {
-    const scale =
-      width > height
-        ? width > MAX_SIZE
-          ? MAX_SIZE / width
-          : width < MIN_SIZE
-            ? MIN_SIZE / width
-            : 1
-        : height > MAX_SIZE
-          ? MAX_SIZE / height
-          : height < MIN_SIZE
-            ? MIN_SIZE / height
-            : 1;
-    width = Math.round(width * scale);
-    height = Math.round(height * scale);
-  }
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return null;
-  ctx.drawImage(img, 0, 0, width, height);
-
-  const imageData = ctx.getImageData(0, 0, width, height);
-  const data = imageData.data;
-  const size = width * height;
-  const alphaValues = new Float32Array(size);
-  const shapeMask = new Uint8Array(size);
-  const boundaryMask = new Uint8Array(size);
-
-  for (let i = 0; i < size; i++) {
-    const idx = i * 4;
-    const r = data[idx],
-      g = data[idx + 1],
-      b = data[idx + 2],
-      a = data[idx + 3];
-    const isBackground = (r > 250 && g > 250 && b > 250 && a === 255) || a < 5;
-    alphaValues[i] = isBackground ? 0 : a / 255;
-    shapeMask[i] = alphaValues[i] > 0.1 ? 1 : 0;
-  }
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const idx = y * width + x;
-      if (!shapeMask[idx]) continue;
-      if (
-        x === 0 ||
-        x === width - 1 ||
-        y === 0 ||
-        y === height - 1 ||
-        !shapeMask[idx - 1] ||
-        !shapeMask[idx + 1] ||
-        !shapeMask[idx - width] ||
-        !shapeMask[idx + width]
-      ) {
-        boundaryMask[idx] = 1;
-      }
-    }
-  }
-
-  const u = new Float32Array(size);
-  const ITERATIONS = 200;
-  const C = 0.01;
-  const omega = 1.85;
-
-  for (let iter = 0; iter < ITERATIONS; iter++) {
-    for (let y = 1; y < height - 1; y++) {
-      for (let x = 1; x < width - 1; x++) {
-        const idx = y * width + x;
-        if (!shapeMask[idx] || boundaryMask[idx]) continue;
-        const sum =
-          (shapeMask[idx + 1] ? u[idx + 1] : 0) +
-          (shapeMask[idx - 1] ? u[idx - 1] : 0) +
-          (shapeMask[idx + width] ? u[idx + width] : 0) +
-          (shapeMask[idx - width] ? u[idx - width] : 0);
-        const newVal = (C + sum) / 4;
-        u[idx] = omega * newVal + (1 - omega) * u[idx];
-      }
-    }
-  }
-
-  let maxVal = 0;
-  for (let i = 0; i < size; i++) if (u[i] > maxVal) maxVal = u[i];
-  if (maxVal === 0) maxVal = 1;
-
-  const outData = ctx.createImageData(width, height);
-  for (let i = 0; i < size; i++) {
-    const px = i * 4;
-    const depth = u[i] / maxVal;
-    const gray = Math.round(255 * (1 - depth * depth));
-    outData.data[px] = outData.data[px + 1] = outData.data[px + 2] = gray;
-    outData.data[px + 3] = Math.round(alphaValues[i] * 255);
-  }
-
-  return outData;
+  float bO=u_blur*rB;
+  float vR=lD+sin(an*2.5)*bO*.03;
+  float vG=lD+sin(an*2.5+2.094)*bO*.03;
+  float vB=lD+sin(an*2.5+4.188)*bO*.03;
+  float cOff=u_chroma*.02*(1.-dp);
+  vR+=cOff;
+  vB-=cOff;
+  float cR=mix(lo.r,hi.r,smoothstep(0.,1.,vR));
+  float cG=mix(lo.g,hi.g,smoothstep(0.,1.,vG));
+  float cB=mix(lo.b,hi.b,smoothstep(0.,1.,vB));
+  vec3 c=vec3(cR,cG,cB);
+  c+=u_tint*.12*smoothstep(.3,.7,dp);
+  c=mix(c,c*c*(3.-2.*c),u_contrast*.5);
+  oC=vec4(c*vs,vs);
 }
+`;
 
-function hexToRgb(hex: string) {
+function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255]
@@ -252,7 +105,7 @@ function hexToRgb(hex: string) {
 }
 
 export interface MetallicPaintProps {
-  imageSrc: string;
+  imageSrc?: string;
   seed?: number;
   scale?: number;
   refraction?: number;
@@ -265,136 +118,132 @@ export interface MetallicPaintProps {
   fresnel?: number;
   lightColor?: string;
   darkColor?: string;
+  tintColor?: string;
   patternSharpness?: number;
   waveAmplitude?: number;
   noiseScale?: number;
   chromaticSpread?: number;
-  mouseAnimation?: boolean;
   distortion?: number;
   contour?: number;
-  tintColor?: string;
+  mouseAnimation?: boolean;
   className?: string;
 }
 
 export const MetallicPaint: React.FC<MetallicPaintProps> = ({
-  imageSrc,
+  imageSrc = '/azzura-emblem.svg',
   seed = 42,
-  scale = 4,
-  refraction = 0.01,
-  blur = 0.015,
-  liquid = 0.75,
-  speed = 0.3,
-  brightness = 2,
-  contrast = 0.5,
-  angle = 0,
-  fresnel = 1,
-  lightColor = '#ffffff',
-  darkColor = '#000000',
-  patternSharpness = 1,
-  waveAmplitude = 1,
-  noiseScale = 0.5,
-  chromaticSpread = 2,
-  mouseAnimation = false,
-  distortion = 1,
-  contour = 0.2,
-  tintColor = '#2563EB',
+  scale = 3.2,
+  refraction = 0.015,
+  blur = 0.012,
+  liquid = 0.65,
+  speed = 0.35,
+  brightness = 1.8,
+  contrast = 0.6,
+  angle = 15,
+  fresnel = 1.2,
+  lightColor = '#FFFFFF',
+  darkColor = '#050505',
+  tintColor = '#A855F7',
+  patternSharpness = 1.2,
+  waveAmplitude = 0.9,
+  noiseScale = 0.6,
+  chromaticSpread = 1.8,
+  distortion = 0.8,
+  contour = 0.25,
+  mouseAnimation = true,
   className = ''
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glRef = useRef<WebGL2RenderingContext | null>(null);
   const programRef = useRef<WebGLProgram | null>(null);
-  const uniformsRef = useRef<Record<string, WebGLUniformLocation | null>>({});
   const textureRef = useRef<WebGLTexture | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
   const animTimeRef = useRef(0);
   const lastTimeRef = useRef(0);
-  const rafRef = useRef<number | null>(null);
   const speedRef = useRef(speed);
-  const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
+  speedRef.current = speed;
   const mouseAnimRef = useRef(mouseAnimation);
+  mouseAnimRef.current = mouseAnimation;
 
   const [ready, setReady] = useState(false);
   const [textureReady, setTextureReady] = useState(false);
-
-  useEffect(() => {
-    speedRef.current = speed;
-  }, [speed]);
-  useEffect(() => {
-    mouseAnimRef.current = mouseAnimation;
-  }, [mouseAnimation]);
+  const uniformsRef = useRef<Record<string, WebGLUniformLocation | null>>({});
 
   const initGL = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return false;
-
-    const gl = canvas.getContext('webgl2', { antialias: true, alpha: true });
+    const gl = canvas.getContext('webgl2', {
+      alpha: true,
+      antialias: false,
+      powerPreference: 'high-performance'
+    });
     if (!gl) return false;
-
-    const compile = (src: string, type: number) => {
-      const s = gl.createShader(type);
-      if (!s) return null;
-      gl.shaderSource(s, src);
-      gl.compileShader(s);
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-        gl.deleteShader(s);
-        return null;
-      }
-      return s;
-    };
-
-    const vs = compile(vertexShader, gl.VERTEX_SHADER);
-    const fs = compile(fragmentShader, gl.FRAGMENT_SHADER);
-    if (!vs || !fs) return false;
-
-    const prog = gl.createProgram();
-    if (!prog) return false;
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-      gl.deleteProgram(prog);
-      return false;
-    }
-
-    const uniforms: Record<string, WebGLUniformLocation | null> = {};
-    const count = gl.getProgramParameter(prog, gl.ACTIVE_UNIFORMS);
-    for (let i = 0; i < count; i++) {
-      const info = gl.getActiveUniform(prog, i);
-      if (info) uniforms[info.name] = gl.getUniformLocation(prog, info.name);
-    }
-
-    const verts = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
-
-    gl.useProgram(prog);
-    const pos = gl.getAttribLocation(prog, 'a_position');
-    gl.enableVertexAttribArray(pos);
-    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
-
     glRef.current = gl;
-    programRef.current = prog;
+
+    const vertShader = gl.createShader(gl.VERTEX_SHADER)!;
+    gl.shaderSource(vertShader, vertexShader);
+    gl.compileShader(vertShader);
+
+    const fragShader = gl.createShader(gl.FRAGMENT_SHADER)!;
+    gl.shaderSource(fragShader, fragmentShader);
+    gl.compileShader(fragShader);
+
+    const program = gl.createProgram()!;
+    gl.attachShader(program, vertShader);
+    gl.attachShader(program, fragShader);
+    gl.linkProgram(program);
+    gl.useProgram(program);
+    programRef.current = program;
+
+    const uNames = [
+      'u_tex', 'u_time', 'u_ratio', 'u_imgRatio', 'u_seed', 'u_scale',
+      'u_refract', 'u_blur', 'u_liquid', 'u_bright', 'u_contrast', 'u_angle',
+      'u_fresnel', 'u_sharp', 'u_wave', 'u_noise', 'u_chroma', 'u_distort',
+      'u_contour', 'u_lightColor', 'u_darkColor', 'u_tint'
+    ];
+    const uniforms: Record<string, WebGLUniformLocation | null> = {};
+    uNames.forEach(name => {
+      uniforms[name] = gl.getUniformLocation(program, name);
+    });
     uniformsRef.current = uniforms;
+
+    const posBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+      gl.STATIC_DRAW
+    );
+    const aPos = gl.getAttribLocation(program, 'a_position');
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
     return true;
   }, []);
 
-  const uploadTexture = useCallback((imgData: ImageData | null) => {
+  const processImage = (img: HTMLImageElement) => {
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth || img.width;
+    c.height = img.naturalHeight || img.height;
+    const ctx = c.getContext('2d')!;
+    ctx.drawImage(img, 0, 0);
+    return ctx.getImageData(0, 0, c.width, c.height);
+  };
+
+  const uploadTexture = useCallback((imgData: ImageData) => {
     const gl = glRef.current;
     const uniforms = uniformsRef.current;
-    if (!gl || !imgData) return;
-
-    if (textureRef.current) gl.deleteTexture(textureRef.current);
+    if (!gl) return;
 
     const tex = gl.createTexture();
-    gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, imgData);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imgData.width, imgData.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imgData.data);
-    if (uniforms.u_tex) gl.uniform1i(uniforms.u_tex, 0);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
     const ratio = imgData.width / imgData.height;
     if (uniforms.u_imgRatio) gl.uniform1f(uniforms.u_imgRatio, ratio);
@@ -409,7 +258,9 @@ export const MetallicPaint: React.FC<MetallicPaintProps> = ({
     const canvas = canvasRef.current;
     const gl = glRef.current;
     if (canvas && gl) {
-      const side = 600 * (typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1);
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, isMobile ? 1.0 : 1.5);
+      const side = Math.round((isMobile ? 320 : 480) * dpr);
       canvas.width = side;
       canvas.height = side;
       gl.viewport(0, 0, side, side);
@@ -496,6 +347,7 @@ export const MetallicPaint: React.FC<MetallicPaintProps> = ({
     const canvas = canvasRef.current;
     if (!gl || !canvas) return;
     const mouse = mouseRef.current;
+    let isVisible = true;
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -506,6 +358,10 @@ export const MetallicPaint: React.FC<MetallicPaintProps> = ({
     canvas.addEventListener('mousemove', handleMouseMove);
 
     const render = (time: number) => {
+      if (!isVisible) {
+        rafRef.current = null;
+        return;
+      }
       const delta = time - lastTimeRef.current;
       lastTimeRef.current = time;
 
@@ -522,11 +378,22 @@ export const MetallicPaint: React.FC<MetallicPaintProps> = ({
       rafRef.current = requestAnimationFrame(render);
     };
 
+    // IntersectionObserver to pause loop when out of viewport
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !rafRef.current) {
+        lastTimeRef.current = performance.now();
+        rafRef.current = requestAnimationFrame(render);
+      }
+    }, { threshold: 0.05 });
+    io.observe(canvas);
+
     lastTimeRef.current = performance.now();
     rafRef.current = requestAnimationFrame(render);
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      io.disconnect();
       canvas.removeEventListener('mousemove', handleMouseMove);
     };
   }, [ready, textureReady]);

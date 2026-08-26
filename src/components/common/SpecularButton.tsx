@@ -98,19 +98,19 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
   baseColor = '#7E22CE',
   intensity = 1.3,
   shineSize = 16,
-  shineFade = 38,
-  thickness = 1.5,
+  shineFade = 35,
+  thickness = 1.2,
   speed = 0.35,
   followMouse = true,
   proximity = 250,
-  autoAnimate = false,
+  autoAnimate = true,
   disabled = false,
   onClick,
   className = '',
   type = 'button'
 }) => {
-  const btnRef = useRef<HTMLButtonElement | null>(null);
-  const fxRef = useRef<HTMLSpanElement | null>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const fxRef = useRef<HTMLSpanElement>(null);
   const propsRef = useRef({
     radius,
     lineColor,
@@ -144,58 +144,76 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
     const fx = fxRef.current;
     if (!btn || !fx) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true, dpr });
-    const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 0);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-
-    const geometry = new Triangle(gl);
-    if ((geometry.attributes as any).uv) {
-      delete (geometry.attributes as any).uv;
+    const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || 'ontouchstart' in window);
+    const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, isMobile ? 1.0 : 1.5);
+    
+    let renderer: Renderer;
+    try {
+      renderer = new Renderer({
+        alpha: true,
+        premultipliedAlpha: false,
+        antialias: !isMobile,
+        dpr
+      });
+    } catch {
+      return;
     }
 
+    const gl = renderer.gl;
+    fx.appendChild(gl.canvas);
+
+    const geometry = new Triangle(gl);
     const program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
         uCenter: { value: [0, 0] },
-        uHalfSize: { value: [1, 1] },
+        uHalfSize: { value: [0, 0] },
         uRadius: { value: 0 },
-        uAngle: { value: 2.4 },
-        uPx: { value: dpr },
-        uLineColor: { value: [0.75, 0.52, 0.98] },
-        uBaseColor: { value: [0.49, 0.13, 0.81] },
-        uIntensity: { value: 1.3 },
-        uShineSize: { value: 0.17 },
-        uShineFade: { value: 0.7 },
-        uThickness: { value: 1.5 },
-        uBaseWidth: { value: dpr }
+        uAngle: { value: 0 },
+        uPx: { value: 1.0 },
+        uLineColor: { value: [1, 1, 1] },
+        uBaseColor: { value: [0.3, 0.3, 0.3] },
+        uIntensity: { value: 1 },
+        uShineSize: { value: 0 },
+        uShineFade: { value: 0 },
+        uThickness: { value: 1 },
+        uBaseWidth: { value: 2.0 * dpr }
       }
     });
 
     const mesh = new Mesh(gl, { geometry, program });
-    fx.appendChild(gl.canvas);
+    const sizeRef = { w: 0, h: 0 };
 
-    const sizeRef = { w: 1, h: 1 };
-    const resize = () => {
+    const updateSize = () => {
       const rect = btn.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
-      sizeRef.w = w;
-      sizeRef.h = h;
-      renderer.setSize(w + PAD * 2, h + PAD * 2);
-      program.uniforms.uCenter.value = [(PAD + w / 2) * dpr, (PAD + h / 2) * dpr];
-      program.uniforms.uHalfSize.value = [(w / 2) * dpr, (h / 2) * dpr];
+      if (rect.width === 0 || rect.height === 0) return;
+      sizeRef.w = rect.width;
+      sizeRef.h = rect.height;
+      const wPad = rect.width + PAD * 2;
+      const hPad = rect.height + PAD * 2;
+
+      renderer.setSize(wPad, hPad);
+      gl.canvas.style.width = `${wPad}px`;
+      gl.canvas.style.height = `${hPad}px`;
+      gl.canvas.style.left = `-${PAD}px`;
+      gl.canvas.style.top = `-${PAD}px`;
+
+      program.uniforms.uCenter.value = [(wPad / 2) * dpr, (hPad / 2) * dpr];
+      program.uniforms.uHalfSize.value = [(rect.width / 2) * dpr, (rect.height / 2) * dpr];
+      program.uniforms.uPx.value = dpr;
+      program.uniforms.uBaseWidth.value = 2.0 * dpr;
     };
-    const ro = new ResizeObserver(resize);
+
+    const ro = new ResizeObserver(updateSize);
     ro.observe(btn);
-    resize();
+    updateSize();
 
     let pointerAngle: number | null = null;
     let proximityT = 0;
-    const onPointerMove = (e: MouseEvent) => {
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (isMobile) return;
       const rect = btn.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
@@ -213,18 +231,26 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
       const t = Math.max(0, 1 - dist / Math.max(propsRef.current.proximity, 1));
       proximityT = t * t * (3 - 2 * t);
     };
-    window.addEventListener('pointermove', onPointerMove);
+
+    if (!isMobile) {
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+    }
 
     let angle = 2.4;
     let idleAngle = 2.4;
     let bright = 0;
     let last = performance.now();
     let raf = 0;
+    let isVisible = true;
 
     const lineC = new Color();
     const baseC = new Color();
 
     const update = (now: number) => {
+      if (!isVisible) {
+        raf = 0;
+        return;
+      }
       raf = requestAnimationFrame(update);
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
@@ -251,12 +277,26 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
       program.uniforms.uThickness.value = p.thickness * dpr;
       renderer.render({ scene: mesh });
     };
+
+    // IntersectionObserver to pause rendering when button is off screen
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && raf === 0) {
+        last = performance.now();
+        raf = requestAnimationFrame(update);
+      }
+    }, { threshold: 0.1 });
+    io.observe(btn);
+
     raf = requestAnimationFrame(update);
 
     return () => {
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
+      io.disconnect();
       ro.disconnect();
-      window.removeEventListener('pointermove', onPointerMove);
+      if (!isMobile) {
+        window.removeEventListener('pointermove', onPointerMove);
+      }
       if (gl.canvas.parentNode === fx) fx.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };

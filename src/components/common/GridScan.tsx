@@ -392,7 +392,7 @@ export const GridScan: React.FC<GridScanProps> = ({
   scanPhaseTaper = 0.9,
   scanDuration = 2.5,
   scanDelay = 1.5,
-  mouseInteraction = true,
+  mouseInteraction = false,
   enableGyro = false,
   scanOnClick = false,
   snapBackDelay = 250,
@@ -517,9 +517,16 @@ export const GridScan: React.FC<GridScanProps> = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, isMobile ? 1.0 : 1.5);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !isMobile,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
     rendererRef.current = renderer;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(dpr);
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.NoToneMapping;
@@ -542,7 +549,7 @@ export const GridScan: React.FC<GridScanProps> = ({
       uLineStyle: { value: lineStyle === 'dashed' ? 1 : lineStyle === 'dotted' ? 2 : 0 },
       uLineJitter: { value: Math.max(0, Math.min(1, lineJitter || 0)) },
       uScanOpacity: { value: scanOpacity },
-      uNoise: { value: noiseIntensity },
+      uNoise: { value: isMobile ? 0.005 : noiseIntensity },
       uBloomOpacity: { value: bloomIntensity },
       uScanGlow: { value: scanGlow },
       uScanSoftness: { value: scanSoftness },
@@ -570,7 +577,7 @@ export const GridScan: React.FC<GridScanProps> = ({
     scene.add(quad);
 
     let composer: EffectComposer | null = null;
-    if (enablePost) {
+    if (enablePost && !isMobile) {
       composer = new EffectComposer(renderer);
       composerRef.current = composer;
       const renderPass = new RenderPass(scene, camera);
@@ -604,7 +611,13 @@ export const GridScan: React.FC<GridScanProps> = ({
     window.addEventListener('resize', onResize);
 
     let last = performance.now();
+    let isVisible = true;
+
     const tick = () => {
+      if (!isVisible) {
+        rafRef.current = null;
+        return;
+      }
       const now = performance.now();
       const dt = Math.max(0, Math.min(0.1, (now - last) / 1000));
       last = now;
@@ -655,10 +668,22 @@ export const GridScan: React.FC<GridScanProps> = ({
       }
       rafRef.current = requestAnimationFrame(tick);
     };
+
+    // IntersectionObserver to pause loop when Hero is not on screen
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !rafRef.current) {
+        last = performance.now();
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.05 });
+    io.observe(container);
+
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      io.disconnect();
       window.removeEventListener('resize', onResize);
       material.dispose();
       quad.geometry.dispose();
