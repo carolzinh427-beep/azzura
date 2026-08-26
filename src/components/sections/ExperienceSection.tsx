@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Disc3 } from 'lucide-react';
 import LightTunnel from '../common/LightTunnel';
-import SpecularButton from '../common/SpecularButton';
 
 interface ExperienceSectionProps {
   onOpenTickets?: () => void;
@@ -42,33 +41,26 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ onOpenTick
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/80 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/90 max-w-xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
+          className="p-8 sm:p-12 md:p-14 rounded-3xl bg-[#080808]/85 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/90 max-w-xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8"
         >
           {/* Main Statement */}
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white tracking-tight leading-tight uppercase break-words">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-white tracking-tight leading-tight uppercase break-words drop-shadow-lg">
             THE ATMOSPHERE <br />
             <span className="text-[#C084FC]">IS EVERYTHING</span>
           </h2>
 
-          {/* Action Button */}
+          {/* Action Button: Non-overlapping Clean Luxury Action Button */}
           {onOpenTickets && (
-            <div className="w-full sm:w-auto">
-              <SpecularButton
-                size="lg"
-                tint="#9333EA"
-                lineColor="#C084FC"
-                baseColor="#7E22CE"
-                intensity={1.4}
-                radius={999}
-                className="w-full sm:w-auto px-8 py-3.5 font-mono text-xs font-bold tracking-widest uppercase shadow-xl"
+            <div className="pt-2 w-full sm:w-auto">
+              <button
+                type="button"
                 onClick={onOpenTickets}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4 rounded-full bg-[#9333EA] hover:bg-[#A855F7] text-white font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#9333EA]/40 hover:shadow-[#A855F7]/60 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer border border-[#C084FC]/50 group"
               >
-                <div className="flex items-center justify-center gap-2.5">
-                  <Disc3 className="w-4 h-4" />
-                  <span>GARANTIR INGRESSO</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </SpecularButton>
+                <Disc3 className="w-4 h-4 text-white group-hover:rotate-180 transition-transform duration-700" />
+                <span>GARANTIR INGRESSO</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           )}
         </motion.div>
