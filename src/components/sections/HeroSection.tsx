@@ -6,6 +6,7 @@ import { useLanguage } from '../../lib/LanguageContext';
 import MetallicPaint from '../common/MetallicPaint';
 import GridScan from '../common/GridScan';
 import SpecularButton from '../common/SpecularButton';
+import FuzzyText from '../common/FuzzyText';
 
 interface HeroSectionProps {
   featuredEvent?: EventItem;
@@ -262,15 +263,35 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           />
         </motion.div>
 
-        {/* 2. Brand Title: AZZURA */}
-        <motion.h1
+        {/* 2. Brand Title: AZZURA with FuzzyText Effect */}
+        <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display font-black text-4xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-white leading-none mb-2 sm:mb-3 break-words drop-shadow-2xl"
+          className="w-full flex justify-center mb-2 sm:mb-3"
         >
-          AZZURA
-        </motion.h1>
+          <FuzzyText
+            fontSize="clamp(2.8rem, 11vw, 7.5rem)"
+            fontWeight={900}
+            fontFamily="'Playfair Display', Georgia, serif"
+            color="#FFFFFF"
+            gradient={['#FFFFFF', '#F3E8FF', '#D8B4FE', '#C084FC']}
+            enableHover={true}
+            baseIntensity={0.15}
+            hoverIntensity={0.45}
+            fuzzRange={24}
+            fps={45}
+            direction="horizontal"
+            clickEffect={true}
+            glitchMode={true}
+            glitchInterval={3500}
+            glitchDuration={160}
+            letterSpacing={2}
+            className="select-none drop-shadow-2xl"
+          >
+            AZZURA
+          </FuzzyText>
+        </motion.div>
 
         {/* 3. Main Manifesto / Hook */}
         <motion.p
