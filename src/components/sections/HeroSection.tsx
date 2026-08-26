@@ -17,13 +17,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const { t } = useLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
+  const isPlayingRef = useRef(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const synthTimerRef = useRef<number | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
+  const autoStopTimeoutRef = useRef<number | null>(null);
 
-  // Audio Synthesizer: 124 BPM Melodic Techno & Deep House Groove
-  const startAtmosphereAudio = () => {
+  // Audio Synthesizer: 124 BPM Melodic Techno & Deep House Groove (Single Instance Guarded)
+  const startAtmosphereAudio = (isHoverTrigger = false) => {
     try {
+      // If already playing, DO NOT start a second sound / double beat
+      if (isPlayingRef.current || synthTimerRef.current !== null) {
+        return;
+      }
+
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
 
@@ -46,19 +53,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       const master = masterGainRef.current;
       master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(0.01, ctx.currentTime);
-      master.gain.exponentialRampToValueAtTime(0.24, ctx.currentTime + 1.2);
+      master.gain.exponentialRampToValueAtTime(0.24, ctx.currentTime + 0.6);
 
       let step = 0;
       const bpm = 124;
-      const stepDuration = (60 / bpm) / 4; // 16th note
+      const stepDuration = (60 / bpm) / 4; // 16th note (approx 0.121s)
+      const totalSteps = 32; // 2 bars = ~3.87 seconds phrase for hover
 
       // FM chord frequencies for Fm9 (F, Ab, C, Eb, G)
       const chordFreqs = [174.61, 207.65, 261.63, 311.13, 392.00];
 
+      isPlayingRef.current = true;
+      setIsPlaying(true);
+
       const playStep = () => {
+        if (!isPlayingRef.current) return;
         const now = ctx.currentTime;
 
-        // 1. Kick on quarter notes (steps 0, 4, 8, 12)
+        // 1. Kick on quarter notes (steps 0, 4, 8, 12, 16, 20, 24, 28)
         if (step % 4 === 0) {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
@@ -103,7 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         }
 
         // 3. Atmospheric Melodic Synth Pad on bar start
-        if (step === 0 || step === 8) {
+        if (step === 0 || step === 16) {
           chordFreqs.forEach((freq, idx) => {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
@@ -129,11 +141,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           });
         }
 
-        step = (step + 1) % 16;
+        step = step + 1;
+
+        // If triggered by hover, stop automatically when the phrase ends (2 full bars)
+        if (isHoverTrigger && step >= totalSteps) {
+          stopAtmosphereAudio();
+        } else if (!isHoverTrigger) {
+          step = step % 32;
+        }
       };
 
       synthTimerRef.current = window.setInterval(playStep, stepDuration * 1000);
-      setIsPlaying(true);
     } catch {
       // Audio fallback
     }
@@ -144,25 +162,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       clearInterval(synthTimerRef.current);
       synthTimerRef.current = null;
     }
+    if (autoStopTimeoutRef.current) {
+      clearTimeout(autoStopTimeoutRef.current);
+      autoStopTimeoutRef.current = null;
+    }
     if (audioCtxRef.current && masterGainRef.current) {
       const ctx = audioCtxRef.current;
       masterGainRef.current.gain.cancelScheduledValues(ctx.currentTime);
-      masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+      masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
     }
+    isPlayingRef.current = false;
     setIsPlaying(false);
+  };
+
+  // Emblem hover trigger: plays the full phrase once; will not duplicate if hovered again while active
+  const handleEmblemHover = () => {
+    if (!isPlayingRef.current) {
+      startAtmosphereAudio(true);
+    }
   };
 
   const toggleAudio = () => {
     if (isPlaying) {
       stopAtmosphereAudio();
     } else {
-      startAtmosphereAudio();
+      startAtmosphereAudio(false);
     }
   };
 
   useEffect(() => {
     return () => {
       if (synthTimerRef.current) clearInterval(synthTimerRef.current);
+      if (autoStopTimeoutRef.current) clearTimeout(autoStopTimeoutRef.current);
       if (audioCtxRef.current) audioCtxRef.current.close().catch(() => {});
     };
   }, []);
@@ -193,15 +224,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         
-        {/* 1. Liquid Chrome Metallic Emblem */}
+        {/* 1. Liquid Chrome Metallic Emblem with Single-Instance Hover Audio */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85, y: -20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center mb-1 sm:mb-2 pointer-events-auto"
+          onMouseEnter={handleEmblemHover}
+          className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center mb-1 sm:mb-2 pointer-events-auto cursor-pointer group"
+          title="Passe o cursor para tocar o áudio"
         >
           {/* Subtle Ambient Backlight Glow */}
-          <div className="absolute inset-4 rounded-full bg-[#A855F7]/25 blur-2xl pointer-events-none" />
+          <div className="absolute inset-4 rounded-full bg-[#A855F7]/25 blur-2xl pointer-events-none group-hover:bg-[#A855F7]/45 transition-all duration-700" />
           
           <MetallicPaint
             imageSrc="/azzura-emblem.svg"
