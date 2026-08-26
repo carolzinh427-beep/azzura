@@ -79,7 +79,7 @@ export const ContactSection: React.FC = () => {
           {/* Left Column: Direct Info */}
           <div className="lg:col-span-4 space-y-6">
             <div className="p-8 bg-[#0C0C0C] rounded-3xl border border-white/10 space-y-6 shadow-2xl">
-              <span className="text-xs font-mono text-[#2563EB] tracking-widest uppercase block font-semibold">
+              <span className="text-xs font-mono text-[#9333EA] tracking-widest uppercase block font-semibold">
                 HEADQUARTERS
               </span>
               <div>
@@ -90,21 +90,21 @@ export const ContactSection: React.FC = () => {
               <div className="space-y-4 pt-4 border-t border-white/10 text-xs font-mono">
                 <div>
                   <span className="text-zinc-500 block uppercase">{t.contact.generalDesk}</span>
-                  <a href="mailto:contact@azzura.events" className="text-white hover:text-[#3B82F6] transition-colors">
+                  <a href="mailto:contact@azzura.events" className="text-white hover:text-[#A855F7] transition-colors">
                     contact@azzura.events
                   </a>
                 </div>
 
                 <div>
                   <span className="text-zinc-500 block uppercase">{t.contact.vipDesk}</span>
-                  <a href="mailto:vip@azzura.events" className="text-white hover:text-[#3B82F6] transition-colors">
+                  <a href="mailto:vip@azzura.events" className="text-white hover:text-[#A855F7] transition-colors">
                     vip@azzura.events
                   </a>
                 </div>
 
                 <div>
                   <span className="text-zinc-500 block uppercase">{t.contact.pressDesk}</span>
-                  <a href="mailto:press@azzura.events" className="text-white hover:text-[#3B82F6] transition-colors">
+                  <a href="mailto:press@azzura.events" className="text-white hover:text-[#A855F7] transition-colors">
                     press@azzura.events
                   </a>
                 </div>
@@ -131,7 +131,7 @@ export const ContactSection: React.FC = () => {
                       onClick={() => setSelectedCategory(cat.id)}
                       className={`p-4 rounded-2xl text-xs font-mono tracking-wider uppercase text-left border transition-all ${
                         selectedCategory === cat.id
-                          ? 'bg-[#2563EB]/20 border-[#2563EB] text-white font-bold shadow-lg shadow-[#2563EB]/15'
+                          ? 'bg-[#9333EA]/20 border-[#9333EA] text-white font-bold shadow-lg shadow-[#9333EA]/15'
                           : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white hover:border-white/20'
                       }`}
                     >
@@ -153,7 +153,7 @@ export const ContactSection: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder={t.contact.namePlaceholder}
-                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
+                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
                   />
                 </div>
 
@@ -168,7 +168,7 @@ export const ContactSection: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder={t.contact.emailPlaceholder}
-                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
+                    className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
                   />
                 </div>
               </div>
@@ -183,7 +183,7 @@ export const ContactSection: React.FC = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder={t.contact.subjectPlaceholder}
-                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors"
+                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors"
                 />
               </div>
 
@@ -198,7 +198,7 @@ export const ContactSection: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder={t.contact.messagePlaceholder}
-                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#2563EB] transition-colors resize-none"
+                  className="w-full px-4 py-3.5 bg-black/60 rounded-xl border border-white/10 text-white placeholder-zinc-600 font-mono text-xs focus:outline-none focus:border-[#9333EA] transition-colors resize-none"
                 />
               </div>
 
@@ -206,13 +206,13 @@ export const ContactSection: React.FC = () => {
                 type="submit"
                 size="lg"
                 radius={14}
-                tint="#2563EB"
+                tint="#9333EA"
                 tintOpacity={0.95}
                 lineColor="#93C5FD"
-                baseColor="#1E40AF"
+                baseColor="#581C87"
                 intensity={1.3}
                 disabled={isSubmitting}
-                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#2563EB]/25"
+                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#9333EA]/25"
               >
                 {isSubmitting ? (
                   <span>{t.contact.sending}</span>

@@ -60,7 +60,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
               className="font-display font-black text-xl tracking-tighter text-white flex items-center gap-1.5"
             >
               <span>AZZURA</span>
-              <span className="text-xs text-[#2563EB] font-mono font-normal">®</span>
+              <span className="text-xs text-[#9333EA] font-mono font-normal">®</span>
             </a>
 
             {/* Language Switcher in Mobile Header */}
@@ -69,7 +69,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
                 <button
                   onClick={() => setLanguage('en')}
                   className={`px-2.5 py-1 transition-colors ${
-                    language === 'en' ? 'bg-[#2563EB] text-white font-bold' : 'text-zinc-400 hover:text-white'
+                    language === 'en' ? 'bg-[#9333EA] text-white font-bold' : 'text-zinc-400 hover:text-white'
                   }`}
                 >
                   EN
@@ -77,7 +77,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
                 <button
                   onClick={() => setLanguage('pt')}
                   className={`px-2.5 py-1 transition-colors ${
-                    language === 'pt' ? 'bg-[#2563EB] text-white font-bold' : 'text-zinc-400 hover:text-white'
+                    language === 'pt' ? 'bg-[#9333EA] text-white font-bold' : 'text-zinc-400 hover:text-white'
                   }`}
                 >
                   PT
@@ -86,7 +86,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
 
               <button
                 onClick={onClose}
-                className="p-2 bg-white/5 border border-white/10 text-white hover:bg-[#2563EB] transition-colors"
+                className="p-2 bg-white/5 border border-white/10 text-white hover:bg-[#9333EA] transition-colors"
                 aria-label="Close Navigation Menu"
               >
                 <X className="w-5 h-5" />
@@ -106,8 +106,8 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
                 onClick={() => handleLinkClick(link.href)}
               >
                 <div className="flex items-baseline gap-3.5">
-                  <span className="font-mono text-xs text-[#2563EB] tracking-widest">{link.number}</span>
-                  <span className="font-display text-xl sm:text-3xl font-bold tracking-tight text-white group-hover:text-[#3B82F6] transition-colors">
+                  <span className="font-mono text-xs text-[#9333EA] tracking-widest">{link.number}</span>
+                  <span className="font-display text-xl sm:text-3xl font-bold tracking-tight text-white group-hover:text-[#A855F7] transition-colors">
                     {link.label}
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
                 onClose();
                 onOpenTickets();
               }}
-              className="w-full py-3.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[#9333EA] hover:bg-[#7E22CE] text-white font-mono text-xs font-bold tracking-widest uppercase transition-colors flex items-center justify-center gap-2"
             >
               <span>{t.nav.getTickets}</span>
               <ArrowUpRight className="w-4 h-4" />
@@ -131,7 +131,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenT
 
             <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-400">
               <div className="flex items-center gap-2 text-zinc-400">
-                <MapPin className="w-3.5 h-3.5 text-[#2563EB]" />
+                <MapPin className="w-3.5 h-3.5 text-[#9333EA]" />
                 <span>LONDON, UK</span>
               </div>
 

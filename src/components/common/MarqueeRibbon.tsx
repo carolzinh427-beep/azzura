@@ -13,7 +13,7 @@ export const MarqueeRibbon: React.FC = () => {
             <span className="font-mono text-xs sm:text-sm tracking-widest text-zinc-400 uppercase font-medium">
               {item}
             </span>
-            <span className="w-1.5 h-1.5 bg-[#2563EB]" />
+            <span className="w-1.5 h-1.5 bg-[#9333EA]" />
           </div>
         ))}
       </div>

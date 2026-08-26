@@ -1,391 +1,343 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Music } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowDown, VolumeX } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
-import EchoText from '../common/EchoText';
-import SpecularButton from '../common/SpecularButton';
 import MetallicPaint from '../common/MetallicPaint';
 import GridScan from '../common/GridScan';
+import SpecularButton from '../common/SpecularButton';
 
 interface HeroSectionProps {
-  featuredEvent: EventItem;
+  featuredEvent?: EventItem;
   onOpenTickets: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ featuredEvent, onOpenTickets }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  onOpenTickets,
+}) => {
   const { t } = useLanguage();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const synthTimerRef = useRef<number | null>(null);
+  const masterGainRef = useRef<GainNode | null>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  });
-
-  const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
-  const opacityText = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
-  // Melodic Techno / Rooftop Party Atmosphere Synth (Warm, soft volume party groove)
-  const playPartySound = (durationSec = 3.6) => {
+  // Audio Synthesizer: 124 BPM Melodic Techno & Deep House Groove
+  const startAtmosphereAudio = () => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
-      
-      if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+
+      if (!audioCtxRef.current) {
         audioCtxRef.current = new AudioCtx();
       }
+
       const ctx = audioCtxRef.current;
       if (ctx.state === 'suspended') {
         ctx.resume();
       }
 
-      const now = ctx.currentTime;
+      if (!masterGainRef.current) {
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.24, ctx.currentTime);
+        master.connect(ctx.destination);
+        masterGainRef.current = master;
+      }
+
+      const master = masterGainRef.current;
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(0.01, ctx.currentTime);
+      master.gain.exponentialRampToValueAtTime(0.24, ctx.currentTime + 1.2);
+
+      let step = 0;
       const bpm = 124;
-      const beatSec = 60 / bpm;
+      const stepDuration = (60 / bpm) / 4; // 16th note
 
-      const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0.001, now);
-      masterGain.gain.linearRampToValueAtTime(0.24, now + 0.12);
-      masterGain.gain.setValueAtTime(0.24, now + durationSec - 0.6);
-      masterGain.gain.linearRampToValueAtTime(0.001, now + durationSec);
-      masterGain.connect(ctx.destination);
-
-      // 1. Deep Club Kick
-      const totalBeats = Math.floor(durationSec / beatSec);
-      for (let i = 0; i < totalBeats; i++) {
-        const beatTime = now + i * beatSec;
-        if (beatTime + 0.25 > now + durationSec) break;
-
-        const kickOsc = ctx.createOscillator();
-        const kickGain = ctx.createGain();
-        kickOsc.type = 'sine';
-        kickOsc.frequency.setValueAtTime(110, beatTime);
-        kickOsc.frequency.exponentialRampToValueAtTime(45, beatTime + 0.12);
-
-        kickGain.gain.setValueAtTime(0.45, beatTime);
-        kickGain.gain.exponentialRampToValueAtTime(0.001, beatTime + 0.22);
-
-        kickOsc.connect(kickGain);
-        kickGain.connect(masterGain);
-
-        kickOsc.start(beatTime);
-        kickOsc.stop(beatTime + 0.25);
-
-        // Offbeat Shaker / Hi-Hat
-        const hatTime = beatTime + beatSec * 0.5;
-        if (hatTime + 0.1 < now + durationSec) {
-          const hatBufferSize = Math.floor(ctx.sampleRate * 0.05);
-          const hatBuffer = ctx.createBuffer(1, hatBufferSize, ctx.sampleRate);
-          const hatData = hatBuffer.getChannelData(0);
-          for (let j = 0; j < hatBufferSize; j++) {
-            hatData[j] = (Math.random() * 2 - 1) * Math.exp(-j / (hatBufferSize * 0.35));
-          }
-          const hatSource = ctx.createBufferSource();
-          hatSource.buffer = hatBuffer;
-
-          const hatFilter = ctx.createBiquadFilter();
-          hatFilter.type = 'highpass';
-          hatFilter.frequency.setValueAtTime(6500, hatTime);
-
-          const hatGain = ctx.createGain();
-          hatGain.gain.setValueAtTime(0.12, hatTime);
-          hatGain.gain.exponentialRampToValueAtTime(0.001, hatTime + 0.06);
-
-          hatSource.connect(hatFilter);
-          hatFilter.connect(hatGain);
-          hatGain.connect(masterGain);
-
-          hatSource.start(hatTime);
-          hatSource.stop(hatTime + 0.07);
-        }
-      }
-
-      // 2. Rolling Melodic Progressive Bassline (F minor)
-      const bassNotes = [43.65, 51.91, 58.27, 43.65];
-      const stepSec = beatSec / 2;
-      const totalSteps = Math.floor(durationSec / stepSec);
-
-      for (let s = 0; s < totalSteps; s++) {
-        const stepTime = now + s * stepSec;
-        if (stepTime + 0.2 > now + durationSec) break;
-
-        const noteFreq = bassNotes[s % bassNotes.length];
-        const bassOsc = ctx.createOscillator();
-        const bassFilter = ctx.createBiquadFilter();
-        const bassGain = ctx.createGain();
-
-        bassOsc.type = 'sawtooth';
-        bassOsc.frequency.setValueAtTime(noteFreq, stepTime);
-
-        bassFilter.type = 'lowpass';
-        bassFilter.frequency.setValueAtTime(220, stepTime);
-        bassFilter.frequency.exponentialRampToValueAtTime(480, stepTime + 0.04);
-        bassFilter.frequency.exponentialRampToValueAtTime(160, stepTime + stepSec * 0.8);
-        bassFilter.Q.setValueAtTime(3.0, stepTime);
-
-        bassGain.gain.setValueAtTime(0.22, stepTime);
-        bassGain.gain.exponentialRampToValueAtTime(0.001, stepTime + stepSec * 0.85);
-
-        bassOsc.connect(bassFilter);
-        bassFilter.connect(bassGain);
-        bassGain.connect(masterGain);
-
-        bassOsc.start(stepTime);
-        bassOsc.stop(stepTime + stepSec);
-      }
-
-      // 3. Lush Melodic Rooftop Party Synth Chords (Fm9)
+      // FM chord frequencies for Fm9 (F, Ab, C, Eb, G)
       const chordFreqs = [174.61, 207.65, 261.63, 311.13, 392.00];
-      chordFreqs.forEach((freq, idx) => {
-        const padOsc = ctx.createOscillator();
-        const padFilter = ctx.createBiquadFilter();
-        const padGain = ctx.createGain();
 
-        padOsc.type = idx % 2 === 0 ? 'sine' : 'triangle';
-        padOsc.frequency.setValueAtTime(freq, now);
+      const playStep = () => {
+        const now = ctx.currentTime;
 
-        padFilter.type = 'lowpass';
-        padFilter.frequency.setValueAtTime(550, now);
-        padFilter.frequency.linearRampToValueAtTime(1100, now + durationSec * 0.4);
-        padFilter.frequency.linearRampToValueAtTime(450, now + durationSec);
+        // 1. Kick on quarter notes (steps 0, 4, 8, 12)
+        if (step % 4 === 0) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(125, now);
+          osc.frequency.exponentialRampToValueAtTime(36, now + 0.16);
 
-        padGain.gain.setValueAtTime(0.001, now);
-        padGain.gain.linearRampToValueAtTime(0.08, now + 0.3);
-        padGain.gain.setValueAtTime(0.08, now + durationSec - 0.5);
-        padGain.gain.linearRampToValueAtTime(0.001, now + durationSec);
+          gain.gain.setValueAtTime(0.7, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
 
-        padOsc.connect(padFilter);
-        padFilter.connect(padGain);
-        padGain.connect(masterGain);
+          osc.connect(gain);
+          gain.connect(master);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        }
 
-        padOsc.start(now);
-        padOsc.stop(now + durationSec);
-      });
+        // 2. Rolling Progressive Bassline on 16th groove
+        if (step % 2 === 1 || step % 4 === 2) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          const bassNotes = [43.65, 43.65, 51.91, 43.65, 58.27, 43.65, 51.91, 38.89];
+          const freq = bassNotes[Math.floor(step / 2) % bassNotes.length];
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(280, now);
+          filter.frequency.exponentialRampToValueAtTime(90, now + 0.12);
+
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(master);
+
+          osc.start(now);
+          osc.stop(now + 0.16);
+        }
+
+        // 3. Atmospheric Melodic Synth Pad on bar start
+        if (step === 0 || step === 8) {
+          chordFreqs.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+
+            osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+            osc.frequency.setValueAtTime(freq * 1.5, now);
+
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(650 + idx * 80, now);
+            filter.Q.setValueAtTime(2.5, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.035, now + 0.4);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(master);
+
+            osc.start(now);
+            osc.stop(now + 1.8);
+          });
+        }
+
+        step = (step + 1) % 16;
+      };
+
+      synthTimerRef.current = window.setInterval(playStep, stepDuration * 1000);
+      setIsPlaying(true);
     } catch {
-      // audio fallback
+      // Audio fallback
     }
   };
 
-  const handleExploreClick = () => {
-    const nextSection = document.querySelector('#next-event') || document.querySelector('#experience');
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
+  const stopAtmosphereAudio = () => {
+    if (synthTimerRef.current) {
+      clearInterval(synthTimerRef.current);
+      synthTimerRef.current = null;
+    }
+    if (audioCtxRef.current && masterGainRef.current) {
+      const ctx = audioCtxRef.current;
+      masterGainRef.current.gain.cancelScheduledValues(ctx.currentTime);
+      masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+    }
+    setIsPlaying(false);
+  };
+
+  const toggleAudio = () => {
+    if (isPlaying) {
+      stopAtmosphereAudio();
+    } else {
+      startAtmosphereAudio();
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (synthTimerRef.current) clearInterval(synthTimerRef.current);
+      if (audioCtxRef.current) audioCtxRef.current.close().catch(() => {});
+    };
+  }, []);
 
   return (
-    <section
-      ref={containerRef}
-      className="relative w-full min-h-[100svh] max-h-[1250px] overflow-hidden bg-[#050505] flex flex-col justify-between select-none"
-    >
-      {/* Background 3D WebGL GridScan Atmosphere Layer (Centered, static perspective without mouse tracking) */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
-        <div className="absolute inset-0 w-full h-full">
-          <GridScan
-            mouseInteraction={false}
-            sensitivity={0}
-            lineThickness={1.2}
-            linesColor="#2D154B"
-            gridScale={0.09}
-            scanColor="#A855F7"
-            scanOpacity={0.65}
-            enablePost={true}
-            bloomIntensity={0.85}
-            chromaticAberration={0.002}
-            noiseIntensity={0.015}
-            scanDirection="pingpong"
-            scanDuration={2.4}
-            scanDelay={1.0}
-            scanOnClick={false}
-          />
-        </div>
-
-        {/* Ambient Dark Vignette Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/60 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
-      </motion.div>
-
-      {/* Top spacing */}
-      <div className="relative z-10 pt-24 sm:pt-32 px-4 sm:px-12 max-w-7xl mx-auto w-full flex items-center justify-end">
-        <button
-          onClick={() => playPartySound(4.0)}
-          className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-black/60 hover:bg-[#9333EA]/20 border border-white/15 hover:border-[#9333EA]/50 backdrop-blur-md rounded-full text-xs font-mono text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg"
-          title="Play Party Preview Groove"
-          aria-label="Play Party Sound Groove"
-        >
-          <Music className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C084FC] animate-pulse" />
-          <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold">PREVIEW</span>
-        </button>
+    <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] text-white pt-24 pb-16 sm:pt-28 sm:pb-20 select-none">
+      {/* 3D WebGL Background: Centered Laser Grid */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-50 z-0">
+        <GridScan
+          sensitivity={0.55}
+          lineThickness={1}
+          linesColor="#2F293A"
+          gridScale={0.1}
+          scanColor="#A855F7"
+          scanOpacity={0.4}
+          enablePost
+          bloomIntensity={0.5}
+          chromaticAberration={0.002}
+          noiseIntensity={0.015}
+          mouseInteraction={false}
+        />
       </div>
 
-      {/* Main Hero Center Content - Responsive and Centered */}
-      <motion.div
-        style={{ opacity: opacityText }}
-        className="relative z-10 px-3 sm:px-8 max-w-5xl mx-auto w-full my-auto flex flex-col items-center justify-center text-center space-y-2.5 sm:space-y-4"
-      >
-        {/* 1. LIQUID CHROME EMBLEM directly above AZZURA */}
+      {/* Atmospheric Vignette & Gradients */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/80 pointer-events-none z-[1]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#9333EA]/12 rounded-full blur-[160px] pointer-events-none z-[1]" />
+
+      {/* Main Hero Container */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        
+        {/* 1. Liquid Chrome Metallic Emblem */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          onMouseEnter={() => playPartySound(3.0)}
-          onClick={() => playPartySound(4.0)}
-          title="Azzura Atmosphere - Click or Hover for Party Groove"
-          className="relative w-36 sm:w-52 md:w-64 h-20 sm:h-28 md:h-32 flex items-center justify-center pointer-events-auto cursor-pointer group"
+          initial={{ opacity: 0, scale: 0.85, y: -20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center mb-1 sm:mb-2 pointer-events-auto"
         >
+          {/* Subtle Ambient Backlight Glow */}
+          <div className="absolute inset-4 rounded-full bg-[#A855F7]/25 blur-2xl pointer-events-none" />
+          
           <MetallicPaint
             imageSrc="/azzura-emblem.svg"
             seed={42}
             scale={3.2}
-            patternSharpness={1.2}
-            noiseScale={0.6}
-            speed={0.35}
-            liquid={0.65}
-            mouseAnimation={true}
-            brightness={1.8}
-            contrast={0.6}
             refraction={0.015}
             blur={0.012}
-            chromaticSpread={1.8}
-            fresnel={1.2}
+            liquid={0.65}
+            speed={0.35}
+            brightness={1.8}
+            contrast={0.6}
             angle={15}
-            waveAmplitude={0.9}
-            distortion={0.8}
-            contour={0.25}
+            fresnel={1.2}
             lightColor="#FFFFFF"
             darkColor="#050505"
             tintColor="#A855F7"
-          />
-
-          <div className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[8px] sm:text-[9px] font-mono text-[#C084FC] flex items-center gap-1 bg-black/80 px-2.5 py-0.5 rounded-full border border-[#9333EA]/30 pointer-events-none shadow-lg">
-            <Music className="w-2.5 h-2.5 text-[#A855F7]" />
-            <span>AZZURA PARTY BEAT</span>
-          </div>
-        </motion.div>
-
-        {/* 2. Manifesto Tagline */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex items-center justify-center gap-2 sm:gap-2.5"
-        >
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
-          <p className="text-[11px] sm:text-sm font-mono tracking-wider sm:tracking-ultra-wide text-zinc-300 uppercase font-medium">
-            {t.hero.tagline}
-          </p>
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#A855F7] shadow-lg shadow-[#A855F7]/50" />
-        </motion.div>
-
-        {/* 3. Centered Kinetic Echo Typography: AZZURA */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full flex justify-center py-1 overflow-visible"
-        >
-          <EchoText
-            text="AZZURA"
-            echoes={8}
-            lag={0.22}
-            offset={24}
-            direction="right"
-            fade={0.72}
-            blur={2.5}
-            tint="#A855F7"
-            mode="both"
-            cursorRadius={320}
-            duration={900}
-            ease="ease-out"
-            fontSize="clamp(2.8rem, 11vw, 8.5rem)"
-            fontWeight={900}
-            color="#FFFFFF"
-            className="font-display font-black tracking-tighter text-white leading-none uppercase text-center mx-auto"
+            patternSharpness={1.2}
+            waveAmplitude={0.9}
+            noiseScale={0.6}
+            chromaticSpread={1.8}
+            distortion={0.8}
+            contour={0.25}
+            mouseAnimation={true}
+            className="w-full h-full"
           />
         </motion.div>
 
-        {/* 4. Next Event Bar (Centered) */}
-        <motion.div
+        {/* 2. Brand Title: AZZURA */}
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="pt-2 sm:pt-4 flex flex-col sm:flex-row sm:items-center justify-center gap-1.5 sm:gap-6 text-xs sm:text-sm font-mono text-zinc-300 border-t border-white/10 max-w-xl mx-auto w-full px-2"
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase tracking-tight text-white leading-none mb-3 sm:mb-4"
         >
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2">
-            <span className="text-[#A855F7] font-bold">{t.hero.nextEvent}</span>
-            <span className="text-white font-semibold truncate">{featuredEvent.title}</span>
-          </div>
-          <div className="hidden sm:block text-zinc-600">//</div>
-          <div className="flex items-center justify-center gap-3 sm:gap-4 text-zinc-400">
-            <span>{t.hero.date}</span>
-            <span>•</span>
-            <span className="text-[#C084FC]">LONDON (£35 — £45)</span>
-          </div>
-        </motion.div>
+          AZZURA
+        </motion.h1>
 
-        {/* 5. Purple Specular Buttons (Centered & Stackable on mobile) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+        {/* 3. Main Manifesto / Hook */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-3 sm:pt-6 w-full max-w-xs sm:max-w-none"
+          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="text-xs sm:text-sm md:text-base font-mono font-semibold tracking-[0.25em] text-[#C084FC] uppercase mb-4 sm:mb-5"
         >
+          {t.hero.tagline}
+        </motion.p>
+
+        {/* 4. Short Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="text-sm sm:text-base text-zinc-300 font-sans max-w-xl mx-auto leading-relaxed mb-8 sm:mb-10"
+        >
+          {t.hero.subtitle}
+        </motion.p>
+
+        {/* 5. High-Intent Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md sm:max-w-none mb-8 sm:mb-10"
+        >
+          {/* Primary Action Button */}
           <SpecularButton
             size="lg"
-            radius={24}
             tint="#9333EA"
-            tintOpacity={0.95}
-            lineColor="#E9D5FF"
+            lineColor="#C084FC"
             baseColor="#7E22CE"
-            intensity={1.4}
-            thickness={1.5}
-            shineSize={18}
-            shineFade={35}
+            intensity={1.3}
+            radius={999}
+            className="w-full sm:w-auto px-8 py-3.5"
             onClick={onOpenTickets}
-            className="w-full sm:w-auto font-mono text-xs font-bold tracking-widest uppercase shadow-2xl shadow-[#9333EA]/35 justify-center"
           >
-            <span>{t.hero.getTickets}</span>
-            <ArrowUpRight className="w-4 h-4" />
+            <span className="font-mono text-xs font-bold tracking-widest uppercase">
+              {t.hero.exploreEvents}
+            </span>
           </SpecularButton>
 
-          <SpecularButton
-            size="lg"
-            radius={24}
-            tint="#ffffff"
-            tintOpacity={0.06}
-            blur={12}
-            lineColor="#ffffff"
-            baseColor="#27272a"
-            intensity={1.0}
-            thickness={1}
-            onClick={handleExploreClick}
-            className="w-full sm:w-auto font-mono text-xs font-bold tracking-widest uppercase justify-center"
+          {/* Secondary Action Button */}
+          <a
+            href="#experience"
+            className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white border border-white/15 font-mono text-xs font-semibold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2"
           >
-            {t.hero.explore}
-          </SpecularButton>
+            <span>{t.hero.discoverExperience}</span>
+          </a>
         </motion.div>
-      </motion.div>
 
-      {/* Bottom Footer Bar with Scroll Cue */}
-      <div className="relative z-10 pb-6 sm:pb-10 px-4 sm:px-12 max-w-7xl mx-auto w-full flex items-end justify-between border-t border-white/5 pt-3 sm:pt-4">
-        <div className="hidden md:flex items-center gap-6 text-xs font-mono text-zinc-500">
-          <span>51°30'26"N 0°07'39"W</span>
-          <span>•</span>
-          <span>ROOFTOP & SUBTERRANEAN SESSIONS</span>
-        </div>
-
-        <button
-          onClick={handleExploreClick}
-          className="flex items-center gap-3 text-xs font-mono tracking-widest text-zinc-400 hover:text-white transition-colors group cursor-pointer mx-auto md:mx-0 md:ml-auto"
-          aria-label="Scroll to explore"
+        {/* 6. Minimalist Elegant Audio Controller */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="flex items-center gap-3"
         >
-          <span className="text-[10px] sm:text-[11px] uppercase">{t.hero.scroll}</span>
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#A855F7] group-hover:bg-[#9333EA]/10 transition-all">
-            <ArrowDown className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-y-0.5 transition-transform" />
-          </div>
-        </button>
+          <button
+            onClick={toggleAudio}
+            className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#0E0E0E]/90 hover:bg-[#151515] border border-white/15 text-zinc-300 hover:text-white transition-all cursor-pointer shadow-lg shadow-black/60 group"
+            title="Toggle atmospheric audio"
+          >
+            {isPlaying ? (
+              <>
+                <div className="flex items-center gap-1 h-3.5 w-4.5 justify-center">
+                  <span className="w-1 bg-[#C084FC] rounded-full animate-eq-1" />
+                  <span className="w-1 bg-[#A855F7] rounded-full animate-eq-2" />
+                  <span className="w-1 bg-[#9333EA] rounded-full animate-eq-3" />
+                </div>
+                <span className="text-[10px] font-mono font-bold tracking-widest text-[#C084FC] uppercase">
+                  {t.hero.soundOn}
+                </span>
+              </>
+            ) : (
+              <>
+                <VolumeX className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300" />
+                <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
+                  {t.hero.soundOff}
+                </span>
+              </>
+            )}
+          </button>
+        </motion.div>
+
       </div>
+
+      {/* Subtle Scroll Down Prompt */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center gap-1.5 text-zinc-500"
+      >
+        <ArrowDown className="w-4 h-4 text-zinc-500 animate-bounce" />
+      </motion.div>
     </section>
   );
 };
+
+export default HeroSection;

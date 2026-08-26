@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, ArrowUpRight, Ticket } from 'lucide-react';
+import { MapPin, Calendar, Ticket, ArrowUpRight } from 'lucide-react';
 import { EventItem } from '../../types';
 import { useLanguage } from '../../lib/LanguageContext';
 
@@ -23,12 +23,15 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
   });
 
   return (
-    <section id="events" className="relative py-28 sm:py-36 bg-[#080808] border-t border-white/10">
+    <section id="events" className="relative py-28 sm:py-36 bg-[#080808] border-t border-white/10 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Editorial Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/10 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 sm:mb-20 border-b border-white/10 pb-8">
           <div>
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-black text-white uppercase tracking-tight">
+            <span className="text-[11px] font-mono text-[#A855F7] tracking-[0.25em] uppercase font-bold block mb-2">
+              {t.events.badge}
+            </span>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-display font-bold text-white tracking-tight">
               {t.events.title}
             </h2>
           </div>
@@ -43,7 +46,7 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setFilter(tab.id as any)}
-                className={`px-4 py-2 text-xs font-mono tracking-widest uppercase rounded-full transition-all ${
+                className={`px-4 py-2 text-xs font-mono tracking-widest uppercase rounded-full transition-all cursor-pointer ${
                   filter === tab.id
                     ? 'bg-[#9333EA] text-white font-bold shadow-lg shadow-[#9333EA]/35'
                     : 'text-zinc-400 hover:text-white hover:bg-white/5'
@@ -55,103 +58,87 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
           </div>
         </div>
 
-        {/* Event Rounded Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Editorial Event Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
           {filteredEvents.map((event, index) => (
             <motion.div
               key={event.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative flex flex-col justify-between bg-[#0E0E0E] rounded-3xl border border-white/10 hover:border-[#9333EA]/60 hover:shadow-2xl hover:shadow-[#9333EA]/15 transition-all duration-500 overflow-hidden"
+              transition={{ duration: 0.7, delay: index * 0.1 }}
+              className="group rounded-3xl bg-[#0E0E0E] border border-white/10 hover:border-[#9333EA]/40 overflow-hidden flex flex-col justify-between transition-all duration-500 shadow-xl hover:shadow-[#9333EA]/15"
             >
-              {/* Top Image Container */}
-              <div className="relative aspect-[16/11] overflow-hidden bg-[#151515] m-3 rounded-2xl">
+              {/* Card Image */}
+              <div className="relative aspect-[16/10] overflow-hidden bg-[#151515]">
                 <img
                   src={event.image}
                   alt={event.title}
                   loading="lazy"
-                  className="w-full h-full object-cover filter brightness-90 contrast-105 group-hover:scale-105 transition-transform duration-700 ease-out"
+                  decoding="async"
+                  className="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E] via-transparent to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E0E] via-transparent to-transparent opacity-90" />
 
                 {/* Status Badge */}
-                <div className="absolute top-3 left-3">
-                  <span className={`px-3 py-1 text-[10px] font-mono tracking-widest uppercase rounded-full border backdrop-blur-md ${
-                    event.status === 'SELLING FAST' 
-                      ? 'bg-amber-950/80 border-amber-500/80 text-amber-300'
-                      : event.status === 'FINAL RELEASE'
-                      ? 'bg-red-950/80 border-red-500/80 text-red-300'
-                      : 'bg-black/80 border-white/20 text-white'
-                  }`}>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-black/70 backdrop-blur-md border border-white/15 rounded-full text-[10px] font-mono text-[#C084FC] uppercase font-bold tracking-wider">
                     {event.status}
                   </span>
                 </div>
 
-                {/* City Marker */}
-                <div className="absolute top-3 right-3 text-[10px] font-mono tracking-widest text-zinc-300 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
-                  {event.city}
+                {/* Date on Image */}
+                <div className="absolute bottom-3 left-5">
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-white/90">
+                    <Calendar className="w-3.5 h-3.5 text-[#A855F7]" />
+                    <span>{event.date}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Event Body Content */}
-              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-6">
+              {/* Card Content */}
+              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5">
                 <div className="space-y-3">
-                  {/* Date & Time */}
-                  <div className="flex items-center gap-3 text-xs font-mono text-zinc-400">
-                    <span className="text-[#C084FC] font-semibold">{event.displayDate}</span>
-                    <span>•</span>
-                    <span>{event.time}</span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white uppercase tracking-tight group-hover:text-zinc-100 transition-colors">
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white group-hover:text-[#C084FC] transition-colors leading-snug">
                     {event.title}
                   </h3>
 
-                  {/* Venue */}
-                  <p className="text-xs font-mono text-zinc-400 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#9333EA]" />
-                    <span>{event.venue}</span>
-                  </p>
-
-                  {/* Lineup Preview */}
-                  <div className="pt-2">
-                    <span className="text-[10px] font-mono text-zinc-500 tracking-wider uppercase block mb-1.5 font-semibold">
-                      LINEUP
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {event.lineup.slice(0, 3).map((artist) => (
-                        <span
-                          key={artist}
-                          className="px-2.5 py-0.5 text-[11px] font-mono bg-white/5 border border-white/10 rounded-full text-zinc-300"
-                        >
-                          {artist}
-                        </span>
-                      ))}
-                      {event.lineup.length > 3 && (
-                        <span className="px-2.5 py-0.5 text-[11px] font-mono bg-white/5 border border-white/10 rounded-full text-zinc-500">
-                          +{event.lineup.length - 3} {t.events.moreLineup}
-                        </span>
-                      )}
-                    </div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+                    <MapPin className="w-3.5 h-3.5 text-[#A855F7]" />
+                    <span className="truncate">{event.venue} — {event.address}</span>
                   </div>
+
+                  <p className="text-xs text-zinc-400 font-sans line-clamp-2 leading-relaxed">
+                    {event.description}
+                  </p>
                 </div>
 
-                {/* Card Bottom CTA & Pricing */}
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs font-mono text-[#C084FC] font-bold">
-                    <Ticket className="w-3.5 h-3.5" />
-                    <span>£35 — £45</span>
+                {/* Lineup & Footer Actions */}
+                <div className="space-y-4 pt-4 border-t border-white/5">
+                  <div className="flex flex-wrap gap-1.5">
+                    {event.lineup.slice(0, 3).map((artist, i) => (
+                      <span
+                        key={i}
+                        className="px-2.5 py-1 bg-white/5 rounded-md text-[11px] font-mono text-zinc-300"
+                      >
+                        {artist}
+                      </span>
+                    ))}
+                    {event.lineup.length > 3 && (
+                      <span className="px-2 py-1 text-[11px] font-mono text-[#A855F7]">
+                        +{event.lineup.length - 3} {t.events.moreLineup}
+                      </span>
+                    )}
                   </div>
 
+                  {/* Reserve Action Button */}
                   <button
                     onClick={() => onSelectEvent(event)}
-                    className="px-4 py-2 bg-[#9333EA] hover:bg-[#7E22CE] text-white rounded-full font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 flex items-center gap-1.5 shadow-lg shadow-[#9333EA]/30"
+                    className="w-full py-3 px-4 rounded-2xl bg-white/5 hover:bg-[#9333EA] border border-white/10 hover:border-[#9333EA] text-zinc-200 hover:text-white font-mono text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-[#9333EA]/30"
                   >
-                    <span>{t.events.getTickets}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <Ticket className="w-3.5 h-3.5" />
+                    <span>{t.events.getTickets} (£35 — £45)</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </button>
                 </div>
               </div>
@@ -162,3 +149,5 @@ export const UpcomingEventsSection: React.FC<UpcomingEventsSectionProps> = ({
     </section>
   );
 };
+
+export default UpcomingEventsSection;

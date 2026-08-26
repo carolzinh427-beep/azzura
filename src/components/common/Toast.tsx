@@ -65,14 +65,14 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               className="pointer-events-auto flex items-start gap-3.5 p-4 rounded-none bg-[#0E0E0E]/95 border border-white/10 backdrop-blur-xl shadow-2xl shadow-black/80"
               style={{
                 borderLeft: t.type === 'success' 
-                  ? '3px solid #2563EB' 
+                  ? '3px solid #9333EA' 
                   : t.type === 'error' 
                   ? '3px solid #EF4444' 
                   : '3px solid #FFFFFF'
               }}
             >
               <div className="mt-0.5 shrink-0">
-                {t.type === 'success' && <CheckCircle2 className="w-5 h-5 text-[#2563EB]" />}
+                {t.type === 'success' && <CheckCircle2 className="w-5 h-5 text-[#9333EA]" />}
                 {t.type === 'error' && <AlertCircle className="w-5 h-5 text-red-400" />}
                 {t.type === 'info' && <Info className="w-5 h-5 text-zinc-300" />}
               </div>

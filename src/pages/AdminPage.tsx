@@ -92,7 +92,7 @@ export const AdminPage: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-xs font-mono text-[#2563EB]">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#9333EA]">
               <Lock className="w-3.5 h-3.5" />
               <span>AUTHENTICATION REQUIRED</span>
             </div>
@@ -113,13 +113,13 @@ export const AdminPage: React.FC = () => {
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
                 placeholder="Enter password (e.g. azzura2026)"
-                className="w-full px-4 py-3 bg-black/70 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-4 py-3 bg-black/70 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold tracking-widest uppercase transition-colors"
+              className="w-full py-3.5 bg-[#9333EA] hover:bg-[#7E22CE] text-white font-mono text-xs font-bold tracking-widest uppercase transition-colors"
             >
               AUTHENTICATE
             </button>
@@ -152,7 +152,7 @@ export const AdminPage: React.FC = () => {
             <span className="text-zinc-600">|</span>
             <div className="flex items-center gap-2">
               <span className="font-display font-black text-sm tracking-tight">AZZURA</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#2563EB]/20 border border-[#2563EB] text-[#3B82F6]">
+              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#9333EA]/20 border border-[#9333EA] text-[#A855F7]">
                 CURATOR CONSOLE
               </span>
             </div>
@@ -187,7 +187,7 @@ export const AdminPage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id as AdminTab)}
                 className={`flex items-center gap-2 px-4 py-2 text-xs font-mono tracking-wider uppercase whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-[#2563EB] text-white font-bold'
+                    ? 'bg-[#9333EA] text-white font-bold'
                     : 'text-zinc-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -215,7 +215,7 @@ export const AdminPage: React.FC = () => {
                   setEditingEvent(null);
                   setIsEventModalOpen(true);
                 }}
-                className="flex items-center gap-2 px-4 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold uppercase transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-[#9333EA] hover:bg-[#7E22CE] text-white font-mono text-xs font-bold uppercase transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 <span>ADD NEW EVENT</span>
@@ -237,14 +237,14 @@ export const AdminPage: React.FC = () => {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         {ev.isFeatured && (
-                          <span className="px-2 py-0.5 bg-[#2563EB] text-white text-[9px] font-mono uppercase font-bold flex items-center gap-1">
+                          <span className="px-2 py-0.5 bg-[#9333EA] text-white text-[9px] font-mono uppercase font-bold flex items-center gap-1">
                             <Star className="w-2.5 h-2.5" /> FEATURED
                           </span>
                         )}
                         <span className="px-2 py-0.5 bg-white/5 border border-white/10 text-[10px] font-mono text-zinc-300">
                           {ev.status}
                         </span>
-                        <span className="text-xs font-mono text-[#3B82F6]">{ev.displayDate}</span>
+                        <span className="text-xs font-mono text-[#A855F7]">{ev.displayDate}</span>
                       </div>
                       <h3 className="text-lg font-display font-bold text-white uppercase">{ev.title}</h3>
                       <p className="text-xs font-mono text-zinc-400">{ev.venue} // {ev.city} ({ev.time})</p>
@@ -260,7 +260,7 @@ export const AdminPage: React.FC = () => {
                       }}
                       className={`p-2 border text-xs font-mono transition-colors ${
                         ev.isFeatured
-                          ? 'bg-[#2563EB]/20 border-[#2563EB] text-[#3B82F6]'
+                          ? 'bg-[#9333EA]/20 border-[#9333EA] text-[#A855F7]'
                           : 'bg-white/5 border-white/10 text-zinc-400 hover:text-white'
                       }`}
                       title="Toggle Featured"
@@ -312,7 +312,7 @@ export const AdminPage: React.FC = () => {
                   setEditingArtist(null);
                   setIsArtistModalOpen(true);
                 }}
-                className="flex items-center gap-2 px-4 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold uppercase transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-[#9333EA] hover:bg-[#7E22CE] text-white font-mono text-xs font-bold uppercase transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 <span>ADD ARTIST</span>
@@ -329,7 +329,7 @@ export const AdminPage: React.FC = () => {
                       className="w-16 h-16 object-cover border border-white/10 shrink-0"
                     />
                     <div>
-                      <span className="text-[10px] font-mono text-[#3B82F6] uppercase block">{art.genre}</span>
+                      <span className="text-[10px] font-mono text-[#A855F7] uppercase block">{art.genre}</span>
                       <h3 className="text-lg font-display font-bold text-white uppercase">{art.name}</h3>
                       {art.role && <span className="text-[10px] font-mono text-zinc-400 uppercase">{art.role}</span>}
                     </div>
@@ -384,7 +384,7 @@ export const AdminPage: React.FC = () => {
 
               <button
                 onClick={() => setIsGalleryModalOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold uppercase transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-[#9333EA] hover:bg-[#7E22CE] text-white font-mono text-xs font-bold uppercase transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 <span>ADD MEDIA</span>
@@ -396,7 +396,7 @@ export const AdminPage: React.FC = () => {
                 <div key={g.id} className="relative group bg-[#0D0D0D] border border-white/10 overflow-hidden aspect-square">
                   <img src={g.image} alt={g.title} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between">
-                    <span className="text-[10px] font-mono text-[#3B82F6] uppercase">{g.category}</span>
+                    <span className="text-[10px] font-mono text-[#A855F7] uppercase">{g.category}</span>
                     <p className="text-xs font-display font-bold text-white uppercase line-clamp-2">{g.title}</p>
                     <div className="flex justify-end">
                       <button
@@ -429,7 +429,7 @@ export const AdminPage: React.FC = () => {
                 onClick={handleExportNewsletterCSV}
                 className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/15 text-white font-mono text-xs font-bold uppercase transition-colors"
               >
-                <Download className="w-4 h-4 text-[#2563EB]" />
+                <Download className="w-4 h-4 text-[#9333EA]" />
                 <span>EXPORT CSV</span>
               </button>
             </div>
@@ -487,7 +487,7 @@ export const AdminPage: React.FC = () => {
                   <div key={m.id} className="p-6 bg-[#0D0D0D] border border-white/10 space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
                       <div>
-                        <span className="px-2 py-0.5 bg-[#2563EB]/15 border border-[#2563EB] text-[#3B82F6] text-[10px] font-mono uppercase">
+                        <span className="px-2 py-0.5 bg-[#9333EA]/15 border border-[#9333EA] text-[#A855F7] text-[10px] font-mono uppercase">
                           {m.category}
                         </span>
                         <h3 className="text-base font-display font-bold text-white mt-1">{m.subject}</h3>
@@ -536,7 +536,7 @@ export const AdminPage: React.FC = () => {
                   type="text"
                   value={settings.nextEventDate}
                   onChange={(e) => store.updateSettings({ nextEventDate: e.target.value })}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
                 />
                 <span className="text-[10px] font-mono text-zinc-500 block">
                   Format: 2026-08-30T15:00:00+01:00
@@ -551,7 +551,7 @@ export const AdminPage: React.FC = () => {
                   type="text"
                   value={settings.announcementText}
                   onChange={(e) => store.updateSettings({ announcementText: e.target.value })}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
                 />
               </div>
 
@@ -563,7 +563,7 @@ export const AdminPage: React.FC = () => {
                   type="text"
                   value={settings.instagramHandle}
                   onChange={(e) => store.updateSettings({ instagramHandle: e.target.value })}
-                  className="w-full px-4 py-3 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                  className="w-full px-4 py-3 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
                 />
               </div>
 
@@ -583,7 +583,7 @@ export const AdminPage: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-mono text-xs font-bold uppercase"
+                  className="px-6 py-2 bg-[#9333EA] hover:bg-[#7E22CE] text-white font-mono text-xs font-bold uppercase"
                 >
                   SAVE CHANGES
                 </button>
@@ -694,7 +694,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
                 required
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
             <div>
@@ -702,7 +702,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as EventStatus })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               >
                 <option value="ON SALE">ON SALE</option>
                 <option value="SELLING FAST">SELLING FAST</option>
@@ -720,7 +720,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
                 type="text"
                 value={formData.displayDate}
                 onChange={(e) => setFormData({ ...formData, displayDate: e.target.value })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
             <div>
@@ -729,7 +729,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
                 type="text"
                 value={formData.time}
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
             <div>
@@ -738,7 +738,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
                 type="text"
                 value={formData.city}
                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
           </div>
@@ -749,7 +749,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
               type="text"
               value={formData.venue}
               onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
@@ -759,7 +759,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
               type="text"
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
@@ -769,7 +769,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
               type="text"
               value={formData.lineup}
               onChange={(e) => setFormData({ ...formData, lineup: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
@@ -779,7 +779,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
               rows={3}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB] resize-none"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA] resize-none"
             />
           </div>
 
@@ -789,14 +789,14 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ event, onClose, onSave 
               id="isFeatured"
               checked={formData.isFeatured}
               onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
-              className="accent-[#2563EB]"
+              className="accent-[#9333EA]"
             />
             <label htmlFor="isFeatured" className="text-xs font-mono text-zinc-300">Set as Flagship Featured Event on Homepage Hero</label>
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
             <button type="button" onClick={onClose} className="px-4 py-2 bg-white/5 text-xs font-mono text-zinc-400 hover:text-white">CANCEL</button>
-            <button type="submit" className="px-6 py-2 bg-[#2563EB] text-white font-mono text-xs font-bold uppercase">SAVE EVENT</button>
+            <button type="submit" className="px-6 py-2 bg-[#9333EA] text-white font-mono text-xs font-bold uppercase">SAVE EVENT</button>
           </div>
         </form>
       </div>
@@ -844,7 +844,7 @@ const ArtistFormModal: React.FC<ArtistFormModalProps> = ({ artist, onClose, onSa
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
             <div>
@@ -854,7 +854,7 @@ const ArtistFormModal: React.FC<ArtistFormModalProps> = ({ artist, onClose, onSa
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                 placeholder="HEADLINER / RESIDENT"
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               />
             </div>
           </div>
@@ -866,7 +866,7 @@ const ArtistFormModal: React.FC<ArtistFormModalProps> = ({ artist, onClose, onSa
               value={formData.genre}
               onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
               placeholder="e.g. Melodic Techno / Hypnotic"
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
@@ -876,7 +876,7 @@ const ArtistFormModal: React.FC<ArtistFormModalProps> = ({ artist, onClose, onSa
               type="text"
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
@@ -886,7 +886,7 @@ const ArtistFormModal: React.FC<ArtistFormModalProps> = ({ artist, onClose, onSa
               rows={3}
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB] resize-none"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA] resize-none"
             />
           </div>
 
@@ -922,7 +922,7 @@ const ArtistFormModal: React.FC<ArtistFormModalProps> = ({ artist, onClose, onSa
 
           <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
             <button type="button" onClick={onClose} className="px-4 py-2 bg-white/5 text-xs font-mono text-zinc-400 hover:text-white">CANCEL</button>
-            <button type="submit" className="px-6 py-2 bg-[#2563EB] text-white font-mono text-xs font-bold uppercase">SAVE ARTIST</button>
+            <button type="submit" className="px-6 py-2 bg-[#9333EA] text-white font-mono text-xs font-bold uppercase">SAVE ARTIST</button>
           </div>
         </form>
       </div>
@@ -967,7 +967,7 @@ const GalleryFormModal: React.FC<GalleryFormModalProps> = ({ onClose, onSave }) 
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               placeholder="e.g. Laser Architecture at Tobacco Dock"
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
@@ -977,7 +977,7 @@ const GalleryFormModal: React.FC<GalleryFormModalProps> = ({ onClose, onSave }) 
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               >
                 <option value="Rooftop">Rooftop</option>
                 <option value="Underground">Underground</option>
@@ -992,7 +992,7 @@ const GalleryFormModal: React.FC<GalleryFormModalProps> = ({ onClose, onSave }) 
               <select
                 value={formData.aspectRatio}
                 onChange={(e) => setFormData({ ...formData, aspectRatio: e.target.value as any })}
-                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+                className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
               >
                 <option value="horizontal">Horizontal (4:3)</option>
                 <option value="vertical">Vertical (3:4)</option>
@@ -1009,13 +1009,13 @@ const GalleryFormModal: React.FC<GalleryFormModalProps> = ({ onClose, onSave }) 
               required
               value={formData.image}
               onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#2563EB]"
+              className="w-full px-3 py-2 bg-black/60 border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-[#9333EA]"
             />
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
             <button type="button" onClick={onClose} className="px-4 py-2 bg-white/5 text-xs font-mono text-zinc-400 hover:text-white">CANCEL</button>
-            <button type="submit" className="px-6 py-2 bg-[#2563EB] text-white font-mono text-xs font-bold uppercase">SAVE MEDIA</button>
+            <button type="submit" className="px-6 py-2 bg-[#9333EA] text-white font-mono text-xs font-bold uppercase">SAVE MEDIA</button>
           </div>
         </form>
       </div>

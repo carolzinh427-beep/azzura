@@ -71,7 +71,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
           particleCount: 80,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ['#2563EB', '#60A5FA', '#FFFFFF', '#1E40AF'],
+          colors: ['#9333EA', '#C084FC', '#FFFFFF', '#581C87'],
         });
       } catch {
         // Fallback
@@ -112,7 +112,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
           {/* Header */}
           <div className="p-6 sm:p-8 border-b border-white/10 flex items-start justify-between bg-black/40">
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-[#2563EB] uppercase mb-1">
+              <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-[#9333EA] uppercase mb-1">
                 <Ticket className="w-3.5 h-3.5" />
                 <span>{t.ticketModal.title}</span>
                 <span className="text-zinc-500">•</span>
@@ -137,14 +137,14 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
 
           {isComplete ? (
             <div className="p-10 sm:p-14 flex flex-col items-center justify-center text-center space-y-4">
-              <div className="w-20 h-20 rounded-full bg-[#2563EB]/20 border border-[#2563EB] flex items-center justify-center text-[#2563EB] shadow-2xl shadow-[#2563EB]/30">
+              <div className="w-20 h-20 rounded-full bg-[#9333EA]/20 border border-[#9333EA] flex items-center justify-center text-[#9333EA] shadow-2xl shadow-[#9333EA]/30">
                 <Sparkles className="w-10 h-10" />
               </div>
               <h3 className="text-2xl sm:text-3xl font-display font-black uppercase">{t.ticketModal.accessGranted}</h3>
               <p className="text-sm text-zinc-400 max-w-md font-mono">
                 {t.ticketModal.successMessage}
               </p>
-              <div className="pt-4 font-mono text-xs text-[#3B82F6] px-4 py-2 bg-[#2563EB]/10 rounded-full border border-[#2563EB]/30">
+              <div className="pt-4 font-mono text-xs text-[#A855F7] px-4 py-2 bg-[#9333EA]/10 rounded-full border border-[#9333EA]/30">
                 {t.ticketModal.walletReady}
               </div>
             </div>
@@ -155,7 +155,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                   <label className="block text-xs font-mono tracking-widest text-zinc-400 uppercase font-semibold">
                     {t.ticketModal.selectCategory}
                   </label>
-                  <span className="text-[11px] font-mono text-[#3B82F6]">
+                  <span className="text-[11px] font-mono text-[#A855F7]">
                     OFFICIAL PRICE TIER
                   </span>
                 </div>
@@ -173,7 +173,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                           isSoldOut
                             ? 'opacity-40 border-white/5 cursor-not-allowed bg-black/20'
                             : isSelected
-                            ? 'border-[#2563EB] bg-[#2563EB]/15 shadow-lg shadow-[#2563EB]/10'
+                            ? 'border-[#9333EA] bg-[#9333EA]/15 shadow-lg shadow-[#9333EA]/10'
                             : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
                         }`}
                       >
@@ -181,7 +181,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                           <div className="flex items-center gap-3.5">
                             <div
                               className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
-                                isSelected ? 'border-[#2563EB] bg-[#2563EB]' : 'border-zinc-600'
+                                isSelected ? 'border-[#9333EA] bg-[#9333EA]' : 'border-zinc-600'
                               }`}
                             >
                               {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -249,7 +249,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
                 </div>
 
                 <div className="flex items-center gap-2 text-[11px] text-zinc-500 font-mono">
-                  <ShieldCheck className="w-4 h-4 text-[#2563EB]" />
+                  <ShieldCheck className="w-4 h-4 text-[#9333EA]" />
                   <span>{t.ticketModal.security}</span>
                 </div>
               </div>
@@ -258,14 +258,14 @@ export const TicketModal: React.FC<TicketModalProps> = ({ event, isOpen, onClose
               <SpecularButton
                 size="lg"
                 radius={12}
-                tint="#2563EB"
+                tint="#9333EA"
                 tintOpacity={0.95}
                 lineColor="#93C5FD"
-                baseColor="#1E40AF"
+                baseColor="#581C87"
                 intensity={1.3}
                 type="submit"
                 disabled={isProcessing}
-                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#2563EB]/25"
+                className="w-full font-mono text-xs font-bold tracking-widest uppercase shadow-xl shadow-[#9333EA]/25"
               >
                 {isProcessing ? (
                   <span>{t.ticketModal.authenticating}</span>

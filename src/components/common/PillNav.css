@@ -69,7 +69,7 @@
 }
 
 .pill-logo:hover {
-  background: #2563EB;
+  background: #9333EA;
 }
 
 .pill-logo img {
@@ -128,7 +128,7 @@
   left: 50%;
   bottom: 0;
   border-radius: 50%;
-  background: var(--base, #2563EB);
+  background: var(--base, #9333EA);
   z-index: 1;
   display: block;
   pointer-events: none;
@@ -161,7 +161,7 @@
 }
 
 .pill.is-active {
-  border-color: var(--base, #2563EB);
+  border-color: var(--base, #9333EA);
 }
 
 .desktop-only {
@@ -252,6 +252,6 @@
 .mobile-menu-popover .mobile-menu-link:hover,
 .mobile-menu-popover .mobile-menu-link.is-active {
   cursor: pointer;
-  background-color: var(--base, #2563EB);
+  background-color: var(--base, #9333EA);
   color: #ffffff;
 }

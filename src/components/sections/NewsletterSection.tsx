@@ -38,7 +38,7 @@ export const NewsletterSection: React.FC = () => {
 
   return (
     <section className="relative py-24 sm:py-32 bg-[#080808] border-t border-white/10 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#2563EB]/15 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#9333EA]/15 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8 bg-[#0C0C0C]/80 backdrop-blur-xl p-8 sm:p-14 rounded-3xl border border-white/10 shadow-2xl">
         <div className="space-y-4">
@@ -52,7 +52,7 @@ export const NewsletterSection: React.FC = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
-          <div className="flex flex-col sm:flex-row items-stretch gap-2 bg-[#0E0E0E] p-2 rounded-full border border-white/15 focus-within:border-[#2563EB] shadow-xl transition-all">
+          <div className="flex flex-col sm:flex-row items-stretch gap-2 bg-[#0E0E0E] p-2 rounded-full border border-white/15 focus-within:border-[#9333EA] shadow-xl transition-all">
             <input
               type="email"
               required
@@ -65,14 +65,14 @@ export const NewsletterSection: React.FC = () => {
             <SpecularButton
               size="md"
               radius={24}
-              tint="#2563EB"
+              tint="#9333EA"
               tintOpacity={0.95}
               lineColor="#93C5FD"
-              baseColor="#1E40AF"
+              baseColor="#581C87"
               intensity={1.3}
               type="submit"
               disabled={isSubmitting || isJoined}
-              className="font-mono text-xs font-bold tracking-widest uppercase shadow-lg shadow-[#2563EB]/25"
+              className="font-mono text-xs font-bold tracking-widest uppercase shadow-lg shadow-[#9333EA]/25"
             >
               {isSubmitting ? (
                 <span>{t.newsletter.joining}</span>
@@ -91,7 +91,7 @@ export const NewsletterSection: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-500">
-            <Shield className="w-3.5 h-3.5 text-[#2563EB]" />
+            <Shield className="w-3.5 h-3.5 text-[#9333EA]" />
             <span>{t.newsletter.privacy}</span>
           </div>
         </form>

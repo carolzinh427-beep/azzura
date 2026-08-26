@@ -9,43 +9,28 @@ export interface Translations {
     locations: string;
     contact: string;
     getTickets: string;
-    admin: string;
     close: string;
   };
   hero: {
+    brandName: string;
     tagline: string;
-    brandTag: string;
-    nextEvent: string;
-    date: string;
-    city: string;
-    getTickets: string;
-    explore: string;
-    scroll: string;
+    subtitle: string;
+    exploreEvents: string;
+    discoverExperience: string;
     soundOn: string;
     soundOff: string;
   };
   marquee: string[];
   nextEvent: {
+    sectionBadge: string;
     sectionTitle: string;
-    badge: string;
-    headline: string;
-    dateFormatted: string;
-    time: string;
-    venue: string;
     venueArchitecture: string;
+    time: string;
     restriction: string;
     countdownTitle: string;
     countdownTz: string;
     lineupTitle: string;
     getTicketsFor: string;
-    locationShort: string;
-    synopsis: string;
-    tier1: string;
-    tier1Price: string;
-    tier2: string;
-    tier2Price: string;
-    tier3: string;
-    tier3Price: string;
     reserveCta: string;
     detailsCta: string;
     days: string;
@@ -54,6 +39,7 @@ export interface Translations {
     seconds: string;
   };
   events: {
+    badge: string;
     title: string;
     subtitle: string;
     all: string;
@@ -67,10 +53,6 @@ export interface Translations {
     title1: string;
     title2: string;
     subtitle: string;
-    atmosphere01: string;
-    atmosphere01Title: string;
-    curatedTitle: string;
-    curatedDesc: string;
     pillar1Num: string;
     pillar1Title: string;
     pillar1Desc: string;
@@ -80,17 +62,6 @@ export interface Translations {
     pillar3Num: string;
     pillar3Title: string;
     pillar3Desc: string;
-  };
-  upcoming: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    allFilter: string;
-    rooftopFilter: string;
-    undergroundFilter: string;
-    warehouseFilter: string;
-    getTickets: string;
-    moreLineup: string;
   };
   lineup: {
     badge: string;
@@ -165,10 +136,6 @@ export interface Translations {
     originDesc: string;
     location: string;
     navTitle: string;
-    channelsTitle: string;
-    adminTitle: string;
-    adminDesc: string;
-    adminBtn: string;
     copyright: string;
     privacyPolicy: string;
     terms: string;
@@ -208,66 +175,51 @@ export const translations: Record<Language, Translations> = {
       locations: 'LOCATIONS',
       contact: 'CONTACT',
       getTickets: 'GET TICKETS',
-      admin: 'ADMIN',
       close: 'CLOSE',
     },
     hero: {
+      brandName: 'AZZURA',
       tagline: 'THE ATMOSPHERE IS EVERYTHING.',
-      brandTag: 'LONDON NIGHTLIFE & SOUND ARCHITECTURE',
-      nextEvent: 'NEXT EVENT:',
-      date: '30 AUGUST 2026',
-      city: 'LONDON',
-      getTickets: 'GET TICKETS',
-      explore: 'EXPLORE AZZURA',
-      scroll: 'SCROLL TO EXPLORE',
+      subtitle: 'Intimate electronic music gatherings and sonic architecture across London’s most extraordinary venues.',
+      exploreEvents: 'EXPLORE EVENTS',
+      discoverExperience: 'DISCOVER AZZURA',
       soundOn: 'SOUND ON',
       soundOff: 'SOUND OFF',
     },
     marquee: [
       'AZZURA EVENTS',
       'THE ATMOSPHERE IS EVERYTHING',
-      'LONDON SKYLINE',
-      'ROOFTOP OPEN AIR',
-      'SUBTERRANEAN SESSIONS',
-      'ELECTRONIC EXCELLENCE',
-      'VIP CURATION',
-      'IMMERSIVE SOUND',
+      'LONDON SKYLINE SESSIONS',
+      'ARCHITECTURAL NIGHTLIFE',
+      'CURATED ELECTRONIC PURITY',
+      'VOID ACOUSTICS SOUND',
+      'INTIMATE SANCTUARY',
     ],
     nextEvent: {
-      sectionTitle: 'NEXT SESSION',
-      badge: 'FEATURED PRODUCTION',
-      headline: 'ST. PAUL’S PANORAMA & DEEP SESSIONS',
-      dateFormatted: 'SATURDAY, 30 AUGUST 2026',
-      time: '18:00 — 04:00 BST',
-      venue: 'ONE NEW CHANGE ROOFTOP & VAULT',
+      sectionBadge: 'CURATED SESSION',
+      sectionTitle: 'NEXT GATHERING',
       venueArchitecture: 'VENUE & ARCHITECTURE',
+      time: 'SCHEDULE',
       restriction: 'ENTRY RESTRICTION',
       countdownTitle: 'COMMENCING IN',
       countdownTz: 'LONDON TIME (BST)',
       lineupTitle: 'CURATED SELECTORS',
-      getTicketsFor: 'SECURE TICKETS FOR',
-      locationShort: 'LONDON EC4M',
-      synopsis: 'A seamless transition from golden hour skyline views over St. Paul’s Cathedral into deep subterranean sonic architecture. Curated selectors, bespoke Void Acoustics sound, and London’s most discerning electronic music community.',
-      tier1: 'EARLY SUNSET ENTRY (PRE-20:00)',
-      tier1Price: '£35.00',
-      tier2: 'FIRST RELEASE (ALL NIGHT ACCESS)',
-      tier2Price: '£40.00',
-      tier3: 'FINAL RELEASE / VIP FAST TRACK',
-      tier3Price: '£45.00',
+      getTicketsFor: 'SECURE RESERVATION FOR',
       reserveCta: 'SECURE RESERVATION (£35 — £45)',
-      detailsCta: 'EXPLORE PRODUCTION',
+      detailsCta: 'VIEW PRODUCTION DETAILS',
       days: 'DAYS',
       hours: 'HOURS',
       minutes: 'MINUTES',
       seconds: 'SECONDS',
     },
     events: {
-      title: 'SEASON SCHEDULE',
+      badge: 'SEASON SCHEDULE // 2026',
+      title: 'UPCOMING GATHERINGS',
       subtitle: 'Limited capacity reservations across central and east London architectural landmarks.',
       all: 'ALL GATHERINGS',
       rooftop: 'ROOFTOPS',
       underground: 'SUBTERRANEAN',
-      getTickets: 'GET TICKETS',
+      getTickets: 'RESERVE ENTRY',
       moreLineup: 'SELECTORS',
     },
     experience: {
@@ -275,10 +227,6 @@ export const translations: Record<Language, Translations> = {
       title1: 'THE AZZURA',
       title2: 'EXPERIENCE',
       subtitle: 'Elevating electronic music culture into an intimate, cinematic discipline across London’s most anomalous architectural spaces.',
-      atmosphere01: 'ATMOSPHERE 01',
-      atmosphere01Title: 'LIGHT ARCHITECTURE & DEEP FREQUENCIES',
-      curatedTitle: 'CURATED COMMUNITY',
-      curatedDesc: 'Strict entry criteria prioritizing true music enthusiasts, fashion visionaries, and electronic purists.',
       pillar1Num: '01',
       pillar1Title: 'THE ATMOSPHERE IS EVERYTHING',
       pillar1Desc: 'We do not produce standard parties. Each Azzura gathering is a sensory sanctuary where sound design, architectural lighting, and a discerning crowd converge in London’s rarest spaces.',
@@ -288,17 +236,6 @@ export const translations: Record<Language, Translations> = {
       pillar3Num: '03',
       pillar3Title: 'UNCOMPROMISING SONIC CURATION',
       pillar3Desc: 'Rooted in forward-thinking Melodic Techno, Minimal Tech, and Deep Afro House, featuring international selectors alongside our resident collective.',
-    },
-    upcoming: {
-      badge: 'SEASON SCHEDULE // 2026',
-      title: 'UPCOMING GATHERINGS',
-      subtitle: 'Limited capacity reservations across central and east London architectural landmarks.',
-      allFilter: 'ALL SESSIONS',
-      rooftopFilter: 'ROOFTOP',
-      undergroundFilter: 'SUBTERRANEAN',
-      warehouseFilter: 'INDUSTRIAL',
-      getTickets: 'RESERVE ENTRY',
-      moreLineup: 'FULL ARTIST DETAILS',
     },
     lineup: {
       badge: 'SONIC SELECTORS',
@@ -373,10 +310,6 @@ export const translations: Record<Language, Translations> = {
       originDesc: 'Azzura Events is London’s premier nightlife curator, dedicated to electronic music excellence and rare architectural productions.',
       location: 'LONDON, UNITED KINGDOM',
       navTitle: 'NAVIGATION',
-      channelsTitle: 'CHANNELS',
-      adminTitle: 'ADMINISTRATION',
-      adminDesc: 'Curator management console for events, artists, and press releases.',
-      adminBtn: 'ADMIN PORTAL',
       copyright: '© 2026 AZZURA EVENTS. ALL RIGHTS RESERVED.',
       privacyPolicy: 'PRIVACY POLICY',
       terms: 'TERMS OF ENTRY',
@@ -414,66 +347,51 @@ export const translations: Record<Language, Translations> = {
       locations: 'LOCAIS',
       contact: 'CONTATO',
       getTickets: 'INGRESSOS',
-      admin: 'PAINEL',
       close: 'FECHAR',
     },
     hero: {
+      brandName: 'AZZURA',
       tagline: 'THE ATMOSPHERE IS EVERYTHING.',
-      brandTag: 'VIDA NOTURNA & ARQUITETURA SONORA EM LONDRES',
-      nextEvent: 'PRÓXIMO EVENTO:',
-      date: '30 DE AGOSTO DE 2026',
-      city: 'LONDRES',
-      getTickets: 'GARANTIR INGRESSOS',
-      explore: 'EXPLORAR AZZURA',
-      scroll: 'ROLE PARA EXPLORAR',
+      subtitle: 'Curadoria intimista de música eletrônica e arquitetura sonora nos locais mais exclusivos de Londres.',
+      exploreEvents: 'EXPLORAR EVENTOS',
+      discoverExperience: 'CONHECER A EXPERIÊNCIA',
       soundOn: 'SOM LIGADO',
       soundOff: 'SOM DESLIGADO',
     },
     marquee: [
       'AZZURA EVENTS',
       'THE ATMOSPHERE IS EVERYTHING',
-      'SKYLINE DE LONDRES',
-      'ROOFTOP OPEN AIR',
-      'SESSÕES SUBTERRÂNEAS',
+      'SESSÕES NO SKYLINE DE LONDRES',
+      'ARQUITETURA NOTURNA',
       'EXCELÊNCIA ELETRÔNICA',
-      'CURADORIA VIP',
-      'SOM IMERSIVO',
+      'SISTEMA DE SOM VOID ACOUSTICS',
+      'SANTUÁRIO SENSORIAL',
     ],
     nextEvent: {
-      sectionTitle: 'PRÓXIMA SESSÃO',
-      badge: 'PRODUÇÃO EM DESTAQUE',
-      headline: 'PANORAMA DE ST. PAUL’S & SESSÕES DEEP',
-      dateFormatted: 'SÁBADO, 30 DE AGOSTO DE 2026',
-      time: '18:00 — 04:00 BST',
-      venue: 'ROOFTOP & VAULT ONE NEW CHANGE',
+      sectionBadge: 'SESSÃO EM DESTAQUE',
+      sectionTitle: 'PRÓXIMO EVENTO',
       venueArchitecture: 'LOCAL & ARQUITETURA',
+      time: 'CRONOGRAMA',
       restriction: 'RESTRIÇÃO DE IDADE',
       countdownTitle: 'INÍCIO DA SESSÃO EM',
       countdownTz: 'HORÁRIO DE LONDRES (BST)',
       lineupTitle: 'LINEUP CURADO',
       getTicketsFor: 'GARANTIR INGRESSO PARA',
-      locationShort: 'LONDRES EC4M',
-      synopsis: 'Uma transição perfeita da luz dourada sobre a Catedral de St. Paul para a arquitetura sonora subterrânea. Artistas renomados, sistema de som Void Acoustics sob medida e o público mais refinado de Londres.',
-      tier1: 'ENTRADA ANTECIPADA (ATÉ 20:00)',
-      tier1Price: '£35.00',
-      tier2: 'PRIMEIRO LOTE (ACESSO A NOITE TODA)',
-      tier2Price: '£40.00',
-      tier3: 'LOTE FINAL / VIP FAST TRACK',
-      tier3Price: '£45.00',
       reserveCta: 'GARANTIR INGRESSO (£35 — £45)',
-      detailsCta: 'VER DETALHES',
+      detailsCta: 'VER DETALHES DA PRODUÇÃO',
       days: 'DIAS',
       hours: 'HORAS',
       minutes: 'MINUTOS',
       seconds: 'SEGUNDOS',
     },
     events: {
-      title: 'CALENDÁRIO DA TEMPORADA',
+      badge: 'CALENDÁRIO DA TEMPORADA // 2026',
+      title: 'PRÓXIMAS SESSÕES',
       subtitle: 'Reservas limitadas em marcos arquitetônicos nas áreas central e leste de Londres.',
       all: 'TODAS AS SESSÕES',
       rooftop: 'ROOFTOPS',
       underground: 'SUBTERRÂNEO',
-      getTickets: 'INGRESSOS',
+      getTickets: 'RESERVAR INGRESSO',
       moreLineup: 'SELECTORS',
     },
     experience: {
@@ -481,10 +399,6 @@ export const translations: Record<Language, Translations> = {
       title1: 'A EXPERIÊNCIA',
       title2: 'AZZURA',
       subtitle: 'Elevando a cultura da música eletrônica a uma disciplina cinematográfica intimista nos espaços arquitetônicos mais exclusivos de Londres.',
-      atmosphere01: 'ATMOSFERA 01',
-      atmosphere01Title: 'ARQUITETURA DE LUZ & FREQUÊNCIAS PROFUNDAS',
-      curatedTitle: 'PÚBLICO CURADO',
-      curatedDesc: 'Critério rigoroso de entrada priorizando apaixonados por música, visionários da moda e puristas da música eletrônica.',
       pillar1Num: '01',
       pillar1Title: 'THE ATMOSPHERE IS EVERYTHING',
       pillar1Desc: 'Não produzimos festas convencionais. Cada evento da Azzura é um santuário sensorial onde design acústico, iluminação cênica e público selecionado convergem em locais raros de Londres.',
@@ -494,17 +408,6 @@ export const translations: Record<Language, Translations> = {
       pillar3Num: '03',
       pillar3Title: 'CURADORIA SONORA SEM CONCESSÕES',
       pillar3Desc: 'Focada em Melodic Techno de vanguarda, Minimal Tech e Deep Afro House, reunindo selectors internacionais consagrados ao lado de nossos residentes.',
-    },
-    upcoming: {
-      badge: 'CALENDÁRIO DA TEMPORADA // 2026',
-      title: 'PRÓXIMAS SESSÕES',
-      subtitle: 'Reservas limitadas em marcos arquitetônicos nas áreas central e leste de Londres.',
-      allFilter: 'TODAS AS SESSÕES',
-      rooftopFilter: 'ROOFTOPS',
-      undergroundFilter: 'SUBTERRÂNEO',
-      warehouseFilter: 'INDUSTRIAL',
-      getTickets: 'RESERVAR ENTRADA',
-      moreLineup: 'DETALHES DO LINEUP',
     },
     lineup: {
       badge: 'SELECTORS DA NOITE',
@@ -579,10 +482,6 @@ export const translations: Record<Language, Translations> = {
       originDesc: 'A Azzura Events é a principal curadora de nightlife de Londres, dedicada à excelência em música eletrônica e produções arquitetônicas raras.',
       location: 'LONDRES, REINO UNIDO',
       navTitle: 'NAVEGAÇÃO',
-      channelsTitle: 'CANAIS OFICIAIS',
-      adminTitle: 'ADMINISTRAÇÃO',
-      adminDesc: 'Console de curadoria para gerenciamento de eventos, artistas e comunicados.',
-      adminBtn: 'PAINEL DO CURADOR',
       copyright: '© 2026 AZZURA EVENTS. TODOS OS DIREITOS RESERVADOS.',
       privacyPolicy: 'POLÍTICA DE PRIVACIDADE',
       terms: 'TERMOS DE ENTRADA',

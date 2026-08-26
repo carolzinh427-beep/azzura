@@ -90,7 +90,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
         {/* Top Bar */}
         <div className="w-full max-w-7xl flex items-center justify-between z-10 py-2 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold tracking-widest text-[#2563EB]">
+            <span className="text-xs font-mono font-bold tracking-widest text-[#9333EA]">
               AZZURA ARCHIVE
             </span>
             <span className="text-zinc-600">/</span>
@@ -116,7 +116,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
           {/* Navigation Controls Desktop */}
           <button
             onClick={handlePrev}
-            className="absolute left-2 sm:left-4 z-20 p-3 sm:p-4 rounded-none bg-black/60 hover:bg-[#2563EB] border border-white/10 text-white transition-all transform -translate-y-1/2 top-1/2 group"
+            className="absolute left-2 sm:left-4 z-20 p-3 sm:p-4 rounded-none bg-black/60 hover:bg-[#9333EA] border border-white/10 text-white transition-all transform -translate-y-1/2 top-1/2 group"
             aria-label="Previous photo"
           >
             <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
@@ -124,7 +124,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
 
           <button
             onClick={handleNext}
-            className="absolute right-2 sm:right-4 z-20 p-3 sm:p-4 rounded-none bg-black/60 hover:bg-[#2563EB] border border-white/10 text-white transition-all transform -translate-y-1/2 top-1/2 group"
+            className="absolute right-2 sm:right-4 z-20 p-3 sm:p-4 rounded-none bg-black/60 hover:bg-[#9333EA] border border-white/10 text-white transition-all transform -translate-y-1/2 top-1/2 group"
             aria-label="Next photo"
           >
             <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
@@ -153,7 +153,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
         {/* Bottom Details Bar */}
         <div className="w-full max-w-7xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-white/10">
           <div>
-            <span className="text-[10px] font-mono text-[#3B82F6] tracking-widest uppercase block">
+            <span className="text-[10px] font-mono text-[#A855F7] tracking-widest uppercase block">
               {currentItem.category}
             </span>
             <h3 className="text-base sm:text-lg font-display font-medium text-white">
@@ -164,7 +164,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
           <div className="flex items-center gap-4 text-xs font-mono text-zinc-400">
             {currentItem.location && (
               <span className="flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#2563EB]" />
+                <MapPin className="w-3.5 h-3.5 text-[#9333EA]" />
                 {currentItem.location}
               </span>
             )}

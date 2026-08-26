@@ -171,9 +171,9 @@ export interface LightTunnelProps {
 }
 
 export const LightTunnel: React.FC<LightTunnelProps> = ({
-  cableColor = '#2563EB',
-  pulseColor = '#60A5FA',
-  tunnelColor = '#1D4ED8',
+  cableColor = '#9333EA',
+  pulseColor = '#C084FC',
+  tunnelColor = '#7E22CE',
   tunnelOpacity = 0.05,
   speed = 0.1,
   flowDirection = 'outward',

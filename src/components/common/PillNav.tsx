@@ -31,7 +31,7 @@ export const PillNav: React.FC<PillNavProps> = ({
   activeHref,
   className = '',
   ease = 'power3.easeOut',
-  baseColor = '#2563EB',
+  baseColor = '#9333EA',
   pillColor = '#111111',
   hoveredPillTextColor = '#ffffff',
   pillTextColor = '#ffffff',

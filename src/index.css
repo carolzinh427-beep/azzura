@@ -6,10 +6,10 @@
   :root {
     --color-bg: #080808;
     --color-deep-black: #000000;
-    --color-azzura-blue: #2563EB;
-    --color-azzura-blue-light: #3B82F6;
-    --color-surface-dark: #111111;
-    --color-surface-card: #151515;
+    --color-azzura-purple: #9333EA;
+    --color-azzura-purple-light: #A855F7;
+    --color-surface-dark: #0E0E0E;
+    --color-surface-card: #121212;
   }
 
   html {
@@ -29,15 +29,28 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.015em;
   }
+}
+
+/* Editorial & Display Typography Utilities */
+.font-editorial {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-sans-clean {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 /* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -46,60 +59,61 @@
 
 ::-webkit-scrollbar-thumb {
   background: #222222;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563EB;
+  background: #9333EA;
 }
 
 /* Subtle Film Grain Noise Texture */
 .bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
-}
-
-/* High Fashion Editorial Typography Utilities */
-.text-stroke-white {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
-  color: transparent;
-}
-
-.text-stroke-blue {
-  -webkit-text-stroke: 1px rgba(37, 99, 235, 0.45);
-  color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
 }
 
 /* Glass & Border Accents */
-.azzura-border {
-  border: 1px solid rgba(255, 255, 255, 0.07);
+.azzura-card {
+  background-color: rgba(14, 14, 14, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.azzura-border-glow:hover {
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: 0 0 25px -5px rgba(37, 99, 235, 0.2);
+.azzura-card:hover {
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(147, 51, 234, 0.15);
 }
 
-.azzura-glow-text {
-  text-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+/* Equalizer Bars Animation */
+@keyframes eqBar1 {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
 }
 
-/* Smooth Image Transitions */
-.reveal-image-container {
-  overflow: hidden;
-  position: relative;
+@keyframes eqBar2 {
+  0%, 100% { height: 14px; }
+  50% { height: 6px; }
 }
 
-.reveal-image-container img {
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+@keyframes eqBar3 {
+  0%, 100% { height: 8px; }
+  50% { height: 16px; }
 }
 
-.reveal-image-container:hover img {
-  transform: scale(1.05);
+.animate-eq-1 {
+  animation: eqBar1 0.8s ease-in-out infinite;
+}
+
+.animate-eq-2 {
+  animation: eqBar2 0.7s ease-in-out infinite;
+}
+
+.animate-eq-3 {
+  animation: eqBar3 0.9s ease-in-out infinite;
 }
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
